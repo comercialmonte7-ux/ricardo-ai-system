@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Interactiva: Protegiendo Vista al Mar</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #12151b;
+            --bg-charcoal: #1c2129;
+            --bg-light: #f5f5f3;
+            --text-dark: #0f172a;
+            --text-light: #f8fafc;
+            --text-muted: #64748b;
+            --orange: #ea580c;
+            --terracotta: #9a3412;
+            --border-light: #e2e8f0;
+            --border-dark: rgba(255, 255, 255, 0.08);
+            --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+            --sidebar-width: 320px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: rgba(28, 33, 41, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-dark);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .project-title-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .badge-gore {
+            background-color: rgba(234, 88, 12, 0.15);
+            color: #ff9d6e;
+            border: 1px solid rgba(234, 88, 12, 0.3);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .top-bar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .top-bar-controls {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid var(--border-dark);
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--orange);
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--terracotta);
+            border-color: var(--terracotta);
+        }
+
+        /* Presentation Workspace Layout */
+        .workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 53px);
+            overflow: hidden;
+        }
+
+        /* Slide Viewport Frame */
+        .slide-viewport-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: var(--bg-dark);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-light);
+            font-size: calc(16px * var(--scale-factor, 1));
+            border-radius: 16px;
+            box-shadow: var(--shadow-premium);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #slideContainer:fullscreen {
+            width: var(--fs-width, 100vw) !important;
+            height: var(--fs-height, 100vh) !important;
+            max-width: none !important;
+            max-height: none !important;
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        /* Side notes Panel */
+        .notes-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-charcoal);
+            border-left: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            z-index: 50;
+        }
+
+        .notes-sidebar.collapsed {
+            width: 0;
+            border-left-width: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .notes-timer {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--orange);
+            background: rgba(234, 88, 12, 0.08);
+            border: 1px solid rgba(234, 88, 12, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        .notes-content {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #d1d5db;
+        }
+
+        .notes-preview-box {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border-dark);
+            background: rgba(0,0,0,0.15);
+        }
+
+        .notes-preview-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .notes-preview-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Floating Nav Controls Overlay */
+        .slide-nav-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 21, 27, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-dark);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 80;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .nav-info {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--orange);
+        }
+
+        .nav-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Slide Template Layouts */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 2.2em 3.5em 1.8em 3.5em;
+            flex-direction: column;
+            justify-content: flex-start;
+            transition: all 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Slide Theme Colors */
+        .slide.theme-dark {
+            background-color: var(--bg-charcoal);
+            color: var(--text-light);
+        }
+
+        .slide.theme-light {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Slide Header styles */
+        .slide-header {
+            margin-bottom: 1.25em;
+            position: relative;
+            padding-bottom: 0.8em;
+        }
+
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--terracotta);
+        }
+
+        .slide.theme-dark .slide-header::after {
+            background: var(--orange);
+        }
+
+        .slide-badge {
+            font-size: 0.95em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 0.25em;
+        }
+
+        .slide.theme-dark .slide-badge {
+            color: var(--orange);
+        }
+
+        .slide-title {
+            font-size: 2.75em;
+            font-weight: 800;
+        }
+
+        /* Layout Grids */
+        .slide-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5em;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .grid-2col {
+            grid-template-columns: 1.1fr 0.9fr;
+        }
+
+        .grid-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4col {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        /* Custom Visual Cards */
+        .slide-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 1.5em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-light);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slide-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--text-muted);
+        }
+
+        .slide-card.accent-terracotta::before { background-color: var(--terracotta); }
+        .slide-card.accent-orange::before { background-color: var(--orange); }
+        .slide-card.accent-charcoal::before { background-color: var(--bg-charcoal); }
+
+        .slide.theme-dark .slide-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-dark);
+            box-shadow: none;
+        }
+
+        .card-title {
+            font-size: 1.55em;
+            font-weight: 700;
+            margin-bottom: 0.75em;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .card-title {
+            color: var(--text-light);
+        }
+
+        .card-title.color-terracotta { color: var(--terracotta); }
+        .card-title.color-orange { color: var(--orange); }
+
+        .slide-card p, .slide-card ul {
+            font-size: 1.15em;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .slide-card p, .slide.theme-dark .slide-card ul {
+            color: #94a3b8;
+        }
+
+        .slide-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+        }
+
+        .slide-card ul li {
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+        .slide-card ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* Image Display Layouts */
+        .photo-card {
+            border-radius: 12px;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background-color: #e2e8f0;
+        }
+
+        .photo-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--orange);
+            z-index: 10;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Animations & Entry States */
+        .slide-viewport-wrapper .slide-container * {
+            backface-visibility: hidden;
+        }
+
+        .animate-fade {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active .animate-fade {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* SVG Doughnut Chart */
+        .doughnut-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .doughnut-chart {
+            transform: rotate(-90deg);
+            width: 11.25em;
+            height: 11.25em;
+        }
+
+        .chart-segment {
+            transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1);
+            stroke-dashoffset: var(--dashoffset);
+        }
+
+        .slide.active .chart-segment {
+            stroke-dashoffset: 0;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+            justify-content: center;
+            padding-left: 1em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .legend-color {
+            width: 0.875em;
+            height: 0.875em;
+            border-radius: 0.25em;
+        }
+
+        /* Animated Bar Chart */
+        .bar-chart-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 11.25em;
+            width: 100%;
+            padding: 0 1em;
+            border-bottom: 0.125em solid var(--border-light);
+            margin-bottom: 1.5em;
+            margin-top: 1em;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+
+        .bar-fill {
+            width: 3.125em;
+            height: 0;
+            background-color: var(--text-muted);
+            border-radius: 0.375em 0.375em 0 0;
+            transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .bar-fill.bg-orange { background-color: var(--orange); }
+        .bar-fill.bg-terracotta { background-color: var(--terracotta); }
+
+        .slide.active .bar-fill {
+            height: var(--height);
+        }
+
+        .bar-value {
+            margin-bottom: 0.5em;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .bar-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* Interactive FAQ Accordions */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25em;
+        }
+
+        .faq-item {
+            background-color: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5em;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 0.125em 0.5em rgba(0,0,0,0.02);
+        }
+
+        .faq-item:hover {
+            border-color: var(--orange);
+            transform: translateY(-1px);
+        }
+
+        .faq-q {
+            padding: 0.9em 1.25em;
+            font-weight: 700;
+            font-size: 1.2em;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.01);
+        }
+
+        .faq-q::after {
+            content: '+';
+            font-weight: bold;
+            color: var(--orange);
+            font-size: 1.3em;
+            transition: transform 0.2s;
+        }
+
+        .faq-item.expanded .faq-q::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s;
+            padding: 0 1.25em;
+            font-size: 1.05em;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .faq-item.expanded .faq-a {
+            max-height: 10em;
+            padding: 0.8em 1.25em 1.1em 1.25em;
+            border-top: 0.0625em solid var(--border-light);
+        }
+
+        /* Cover Slide Graphics */
+        .cover-visual {
+            border-left: 6px solid var(--terracotta);
+            padding-left: 2em;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+        }
+
+        .btn-notes-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+        }
+
+        /* Slide 18 Custom Socials and Promo styling */
+        .social-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6em;
+            margin-top: 0.8em;
+        }
+
+        .social-link-card {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.8em;
+            padding: 0.7em 1.2em;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--border-light);
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .slide.theme-dark .social-link-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        .social-link-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--orange);
+            background: rgba(234, 88, 12, 0.05);
+        }
+
+        .social-link-card svg {
+            width: 1.25em;
+            height: 1.25em;
+            fill: currentColor;
+        }
+
+        .promo-highlight-box {
+            background: rgba(234, 88, 12, 0.06);
+            border: 1px dashed var(--orange);
+            border-radius: 10px;
+            padding: 1em 1.2em;
+            margin-top: 1.2em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-tag {
+            background: var(--orange);
+            color: white;
+            font-size: 0.75em;
+            font-weight: 800;
+            padding: 0.25em 0.6em;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 0.4em;
+        }
+
+        .promo-title {
+            font-size: 1.15em;
+            font-weight: 800;
+            color: var(--terracotta);
+            margin-bottom: 0.25em;
+        }
+
+        .slide.theme-dark .promo-title {
+            color: var(--orange);
+        }
+
+        .promo-desc {
+            font-size: 0.95em;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .promo-desc {
+            color: #cbd5e1;
+        }
+
+        .promo-contact {
+            margin-top: 0.6em;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-weight: 700;
+            font-size: 1em;
+            color: #16a34a; /* WhatsApp Green */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header bar -->
+    <div class="top-bar">
+        <div class="project-title-area">
+            <span class="badge-gore">FNDR 8% GORE Biobío</span>
+            <span class="top-bar-title">Protegiendo Vista al Mar (Código 2024SCXXXX)</span>
+        </div>
+        <div class="top-bar-controls">
+            <button class="btn btn-notes-toggle" id="notesToggleBtn" onclick="toggleNotesSidebar()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Modo Presentador
+            </button>
+            <button class="btn btn-primary" onclick="openPowerPoint()">
+                Descargar PPTX
+            </button>
+        </div>
+    </div>
+
+    <!-- Presentation Viewport Workspace -->
+    <div class="workspace">
+        <div class="slide-viewport-wrapper">
+            <div class="slide-container" id="slideContainer">
+                
+                <!-- SLIDE 1: Portada (Dark charcoal) -->
+                <div class="slide theme-dark" id="slide-1" data-notes="Muy buenas tardes a todos los vecinos y vecinas, a la directiva de nuestra Junta de Vecinos y a los representantes del GORE. Es un orgullo presentarles de forma oficial y detallada el cierre del proyecto 'Protegiendo Vista al Mar', código 2024SCXXXX, financiado por el GORE Biobío y desarrollado por nuestra empresa Router.">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <div class="cover-visual animate-fade">
+                            <span style="font-size: 1.15em; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em;">Fondo Seguridad Ciudadana</span>
+                            <h1 style="font-size: 4.2em; font-weight: 800; line-height: 1.1; margin-bottom: 0.5em; letter-spacing: -0.02em;">PROTEGIENDO<br><span style="color: var(--orange);">VISTA AL MAR</span></h1>
+                            <p style="font-size: 1.55em; color: #94a3b8; font-weight: 400; margin-bottom: 2em;">Sistema de Seguridad, Monitoreo y Prevención Comunitaria</p>
+                            <div style="margin-top: 1em;">
+                                <p style="font-size: 1.2em; font-weight: 700; color: #ffffff;">ROUTER &bull; Tecnología y Seguridad</p>
+                                <p style="font-size: 1.05em; color: #64748b;">Presentan: Ricardo Mari & Ivan Santos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: El Camino Hacia la Seguridad (Light Background) -->
+                <div class="slide theme-light" id="slide-2" data-notes="Todo gran proyecto nace de una necesidad sentida por la comunidad. En Vista al Mar, el anhelo de tener calles transitadas con tranquilidad, donde nuestros hijos puedan jugar y nuestros adultos mayores caminen sin temor, fue el motor principal. Nos dimos cuenta de que la seguridad no es solo tarea de las policías, sino que nosotros, organizados y apoyados por la tecnología, podíamos marcar una gran diferencia.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Origen del Proyecto</div>
+                        <h2 class="slide-title">El Sueño de un Barrio Más Seguro</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">La Necesidad Comunitaria</h3>
+                            <ul style="margin-top: 1em;">
+                                <li>Recuperar la tranquilidad en las calles para las familias y niños.</li>
+                                <li>Implementar disuasión efectiva frente a robos e incivilidades.</li>
+                                <li>Consolidar la organización vecinal a través de capacitación y tecnología.</li>
+                                <li>Proveer evidencias confiables en caso de incidentes.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_playground.jpg" alt="Parque Vista al Mar">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: La Postulación y la Larga Espera (Light Background) -->
+                <div class="slide theme-light" id="slide-3" data-notes="Postulamos en abril de 2024. La espera administrativa generó incertidumbre. Router estuvo constantemente explicando detalles técnicos para dar tranquilidad, cimentando una confianza mutua que permitió resolver rápido la entrega de nueva documentación exigida por el GORE a última hora. Los fondos se adjudicaron a fines de 2025 y llegaron en febrero de 2026.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Cronología de Adjudicación</div>
+                        <h2 class="slide-title">Crónica de un Logro: Postulación y Espera</h2>
+                    </div>
+                    <div class="slide-body grid-3col">
+                        <div class="slide-card accent-charcoal animate-fade delay-1">
+                            <h3 class="card-title">1. Postulación (2024)</h3>
+                            <p style="margin-top: 0.5em;">En Abril de 2024, la Junta de Vecinos formaliza la postulación al fondo de Seguridad Ciudadana FNDR 8%.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Comienza el largo proceso administrativo de revisión en el Gobierno Regional.</p>
+                        </div>
+                        <div class="slide-card accent-terracotta animate-fade delay-2">
+                            <h3 class="card-title color-terracotta">2. Respaldo Técnico</h3>
+                            <p style="margin-top: 0.5em;">Durante los retrasos administrativos del GORE, el equipo de ingenieros de Router brindó soporte técnico constante.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Su proactividad explicando plazos y alternativas técnicas mantuvo la calma y cimentó la confianza.</p>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-3">
+                            <h3 class="card-title color-orange">3. Unión y Triunfo</h3>
+                            <p style="margin-top: 0.5em;">La confianza en Router permite aportar documentación ágilmente ante nuevos requisitos de última hora.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Fondos aprobados a fines de 2025 y transferidos en Febrero de 2026.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 4: Composición y Distribución del Fondo (Light Background) -->
+                <div class="slide theme-light" id="slide-4" data-notes="Este proyecto fue financiado con un monto total de 7 millones de pesos chilenos. Siguiendo las directrices del GORE Biobío, el presupuesto se dividió de manera óptima para maximizar el impacto en seguridad. El 80%, correspondiente a $5.600.000, se destinó íntegramente a la adquisición de la tecnología de vigilancia. El porcentaje restante financió las charlas de capacitación para la comunidad, los honorarios profesionales del experto en seguridad y los elementos de difusión para que todos en el sector sepan que Vista al Mar es ahora un barrio protegido.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Presupuesto FNDR</div>
+                        <h2 class="slide-title">¿Cómo se Invirtieron los Recursos del Fondo?</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Distribución del Fondo ($7.000.000)</h3>
+                            <ul style="margin-top: 0.5em;">
+                                <li><strong>EQUIPAMIENTO (80%):</strong> $5.600.000 CLP. Adquisición e instalación de las 16 cámaras IP, red streaming e infraestructura.</li>
+                                <li><strong>GASTOS GENERALES (15,7%):</strong> $1.100.000 CLP. Difusión, coffee breaks para charlas y el banquete del cierre final.</li>
+                                <li><strong>RECURSOS HUMANOS (4,3%):</strong> $300.000 CLP. Honorarios de experto en seguridad y prevención de riesgos.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="display: flex; flex-direction: row; gap: 1em; align-items: center;">
+                            <div class="doughnut-wrapper">
+                                <svg width="180" height="180" viewBox="0 0 36 36" class="doughnut-chart">
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e2e8f0" stroke-width="4"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--terracotta)" stroke-width="4" stroke-dasharray="80 20" stroke-dashoffset="25" class="chart-segment"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="15.7 84.3" stroke-dashoffset="-55" class="chart-segment"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#64748b" stroke-width="4" stroke-dasharray="4.3 95.7" stroke-dashoffset="-70.7" class="chart-segment"></circle>
+                                </svg>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: var(--terracotta);"></span>
+                                    <span>Equipamiento (80.0%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: var(--orange);"></span>
+                                    <span>Gastos Generales (15.7%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #64748b;"></span>
+                                    <span>R. Humanos (4.3%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 5: Capacitación y Prevención (Talleres) (Light Background) -->
+                <div class="slide theme-light" id="slide-5" data-notes="Para asegurar que el sistema sea realmente efectivo, se contempló un ítem de Recursos Humanos por $300.000 para la realización de charlas de capacitación y prevención. Estas actividades están a cargo de un experto en seguridad, que puede ser un ingeniero en prevención de riesgos o un ex-funcionario de las Fuerzas Armadas especialista en la materia. Su rol es educar a los vecinos en el autocuidado, prevención del delito y uso responsable de las grabaciones del sistema, acompañando el encuentro con coffee breaks para fortalecer la cohesión vecinal.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Factor Humano y Social</div>
+                        <h2 class="slide-title">El Factor Humano: Capacitación y Prevención</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Charlas de Seguridad y Prevención</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Equipo Expositor Calificado:</strong> Taller dirigido por profesionales de Router y un Ingeniero en Prevención de Riesgos experto en seguridad ($300.000 CLP).</li>
+                                <li><strong>Talleres Didácticos y Prácticos:</strong> Capacitación integral sobre prevención comunitaria, autocuidado y el uso ético y legal de las filmaciones.</li>
+                                <li><strong>Unión Vecinal y Cohesión:</strong> Coffee break diseñado para fomentar el diálogo constructivo y estrechar lazos entre las familias del sector.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/vecinos_alessandri.png" alt="Vecinos en taller">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 6: Equipamiento Tecnológico Adquirido (Light Background) -->
+                <div class="slide theme-light" id="slide-6" data-notes="Seleccionamos cámaras IP Bullet de calidad profesional con una resolución de 4 Megapíxeles, que brindan imágenes sumamente nítidas para distinguir rostros y detalles. Tienen tecnología Smart Hybrid Light con un alcance infrarrojo de hasta 60 metros en oscuridad total. Además, cuentan con micrófonos incorporados para el registro acústico, lentes varifocales motorizadas que nos permiten regular el enfoque, y una certificación IP67 que garantiza su funcionamiento sin importar el clima o la lluvia. Todo el cableado es de cobre de la más alta calidad para garantizar que la red nunca sufra caídas de rendimiento.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Ficha Técnica de Equipos</div>
+                        <h2 class="slide-title">Equipamiento Tecnológico de Alta Gama</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cámaras IP Bullet Professional</h3>
+                            <ul style="margin-top: 0.5em;">
+                                <li><strong>4 Megapíxeles:</strong> Imágenes de altísima definición y nitidez.</li>
+                                <li><strong>Smart Hybrid Light:</strong> Visión nocturna infrarroja hasta 60m.</li>
+                                <li><strong>Micrófono Incorporado:</strong> Captación de audio ambiental en zonas clave.</li>
+                                <li><strong>Lente Varifocal Motorizada:</strong> Zoom y enfoque remotos ópticos.</li>
+                                <li><strong>Certificación IP67:</strong> Resistencia absoluta a lluvia y climas severos.</li>
+                                <li><strong>Calidad sin Compromiso:</strong> Cableado 100% cobre puro (evitando aleaciones baratas) para garantizar máxima velocidad y cero caídas de señal.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_camera_red_wall.jpg" alt="Cámara de Seguridad Real">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 7: Una Instalación Única: Tecnología Streaming (Light Background) -->
+                <div class="slide theme-light" id="slide-7" data-notes="Aquí viene lo más importante: este proyecto cuenta con una innovación tecnológica que marca un precedente a nivel regional e incluso nacional. En lugar de utilizar cableados tradicionales que habrían requerido romper calles y veredas, encareciendo el proyecto de manera prohibitiva, diseñamos una infraestructura de red vía streaming inalámbrico. Esto nos permitió distribuir estratégicamente 16 cámaras en diferentes puntos lejanos de la población y transmitir la señal en tiempo real sin interferencias. Además, la naturaleza nos acompañó con un clima excelente para realizar el montaje de forma rápida y segura.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Infraestructura de Red</div>
+                        <h2 class="slide-title">Instalación Innovadora Vía Streaming</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Red Inalámbrica Avanzada</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>16 Puntos de Vigilancia:</strong> Distribución estratégica por toda la población.</li>
+                                <li><strong>Tecnología Streaming de Alta Velocidad:</strong> Comunicación inalámbrica y en tiempo real con la central.</li>
+                                <li><strong>Sin Obras Civiles:</strong> Se evitó romper veredas o calles, reduciendo costos y molestias para los vecinos.</li>
+                                <li><strong>Excelente Clima:</strong> Permitió un montaje rápido y óptimo de los equipos en postes.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/red_streaming.png" alt="Esquema de Red Streaming">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 8: Mapa de Ubicación: Cobertura Vecinal (Light Background) -->
+                <div class="slide theme-light" id="slide-8" data-notes="Este es el mapa oficial de distribución de nuestras 16 cámaras de seguridad en la población Eduardo Frei Montalva. Como pueden observar en el plano, los puntos rojos con los conos de visión verdes y amarillos representan la ubicación exacta y la dirección de enfoque de cada cámara. Diseñamos este trazado de manera sumamente estratégica en conjunto con la directiva, priorizando los pasajes interiores, los accesos principales de la población y las esquinas clave como Barros Arana y Bilbao. De esta forma, no dejamos 'puntos ciegos' significativos en los recorridos más habituales de nuestros vecinos, garantizando una cobertura comunitaria y un fuerte efecto disuasivo en toda la zona.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Mapa de Cobertura</div>
+                        <h2 class="slide-title">Mapa de Ubicación: Cobertura Vecinal</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Distribución Estratégica</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>16 Cámaras IP Bullet:</strong> Distribuidas de manera uniforme para maximizar la cobertura en todos los accesos principales, pasajes internos y áreas comunes.</li>
+                                <li><strong>Puntos Críticos de Vigilancia:</strong> Resguardo y monitoreo continuo de vías clave como Barros Arana, Francisco Bilbao, Rigoberto Iglesias, entre otras.</li>
+                                <li><strong>Visualización Clara:</strong> Permite a los vecinos identificar con total precisión el campo visual y los sectores cubiertos para coordinar la prevención.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/mapa_camaras.jpg" alt="Mapa de distribución de cámaras">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 9: Visualización en Vivo: Áreas Comunes (Light Background) -->
+                <div class="slide theme-light" id="slide-9" data-notes="Como una imagen vale más que mil palabras, queremos mostrarles de forma muy concreta cómo se ven nuestras cámaras instaladas y operativas en plena noche. Esta captura que ven en pantalla corresponde al sector del parque, enfocando la zona de juegos infantiles y la multicancha. Como pueden notar, gracias a la tecnología de iluminación híbrida y la resolución de 4 Megapíxeles, la imagen nocturna es sumamente nítida, brillante y con un rango de visión muy amplio. De esta manera, garantizamos que los espacios públicos donde se reúnen nuestros niños y jóvenes estén constantemente monitoreados, trayendo tranquilidad a todas las familias que viven cerca del parque.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Visualización en Vivo</div>
+                        <h2 class="slide-title">Monitoreo en Tiempo Real: Áreas Comunes</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Espacios Comunes Protegidos</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Sector Juegos y Multicancha:</strong> Vigilancia constante de los principales puntos de esparcimiento familiar.</li>
+                                <li><strong>Calidad de Visión Nocturna:</strong> Imágenes reales a color en penumbra e infrarrojo de gran nitidez y amplio rango.</li>
+                                <li><strong>Tranquilidad Comunitaria:</strong> Resguardo continuo para que niños y jóvenes utilicen la plaza pública de forma segura.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2" style="display: flex; flex-direction: column; gap: 0.5em; align-items: stretch; justify-content: flex-start; height: 100%;">
+                            <!-- Dynamic Gallery Tabs -->
+                            <div class="gallery-tabs" style="display: flex; gap: 0.25em; background: var(--border); padding: 0.25em; border-radius: 8px;">
+                                <button class="gallery-tab active" onclick="switchCameraFeed(this, 'vista_parque.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: var(--orange); color: white; transition: all 0.2s ease;">Parque</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_1.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">V. Mackenna</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_2.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">E. Frei Montalva</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_3.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">Lastarria/Barros</button>
+                            </div>
+                            <div onclick="openCameraLightbox()" style="flex: 1; border-radius: 8px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative; min-height: 250px; cursor: pointer;" title="Hacer clic para pantalla completa">
+                                <img id="camera-feed-img" src="./images/vista_parque.jpg" alt="Sector Parque" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s ease; hover: opacity: 0.9;">
+                                <!-- Hover Zoom Overlay -->
+                                <div style="position: absolute; bottom: 0.75em; right: 0.75em; background: rgba(0,0,0,0.65); padding: 0.4em 0.6em; border-radius: 6px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); color: white; font-size: 0.9em; font-weight: 600; gap: 0.35em; pointer-events: none;">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" style="vertical-align: middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    Ampliar Vista
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 10: Claridad Tecnológica: ¿Por qué No Leen Patentes? (Light Background) -->
+                <div class="slide theme-light" id="slide-10" data-notes="Queremos hacer una aclaración técnica muy relevante para evitar falsas expectativas y ser 100% transparentes: estas cámaras NO leen patentes automáticas. ¿Por qué se tomó esta decisión? Un sistema lector de patentes real y homologado (tecnología LPR) cuesta hasta 10 veces más que una cámara de seguridad de alta calidad. Si hubiésemos optado por lectores de patentes, el presupuesto solo nos habría alcanzado para vigilar una o dos esquinas de la población, dejando al resto de los vecinos desprotegidos. Al elegir cámaras de alta resolución estándar de 4MP, pudimos proteger 16 puntos estratégicos. Si ocurre un incidente, igual podemos ver el auto, su color, modelo y dirección, pero la lectura automática de la placa de un vehículo en movimiento requiere otra gama de costos no viable en este tipo de fondos comunitarios.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Límites Técnicos del Proyecto</div>
+                        <h2 class="slide-title">Transparencia: Límites Técnicos del Equipamiento</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cámaras 4 Megapíxeles Adquiridas</h3>
+                            <p style="margin-bottom: 1em; font-weight: 600;">Cobertura territorial extendida para el resguardo de 16 pasajes.</p>
+                            <ul>
+                                <li>Registran imagen general y movimiento 24/7.</li>
+                                <li>Alta resolución permite discernir modelos de autos, colores y rostros.</li>
+                                <li>Prioriza proteger a toda la comunidad.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Lector de Patentes (Tecnología LPR)</h3>
+                            <p style="margin-bottom: 1em; font-weight: 600; color: var(--orange)">NO incluido en esta configuración.</p>
+                            <ul>
+                                <li>Un solo lector de patentes LPR real cuesta hasta 10 veces más.</li>
+                                <li>Implementar LPR habría limitado la vigilancia a una sola esquina de la población.</li>
+                                <li>Dejando al 90% del barrio sin resguardo técnico.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 11: Grabación y Almacenamiento Optimizado (Light Background) -->
+                <div class="slide theme-light" id="slide-11" data-notes="¿Cómo funciona el almacenamiento de las grabaciones? Cada cámara cuenta con almacenamiento interno en tarjetas de memoria industrial de 64 Gigabytes. Técnicamente, las cámaras podrían grabar hasta 15 días en una calidad comprimida. Sin embargo, para que el sistema sea realmente útil, tomamos la decisión estratégica de configurarlas para grabar los últimos 5 días. Al acortar el rango, podemos configurarlas en la máxima resolución y calidad posible de imagen. Es mejor tener 5 días de video nítido e impecable donde se distingan bien las caras y detalles, que tener 15 días borrosos o pixelados que no sirvan como evidencia en tribunales. Las pruebas fueron exitosas y todo el sistema está rinding conforme a lo comprometido.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Estrategia de Almacenamiento</div>
+                        <h2 class="slide-title">Estrategia de Grabación para Máxima Utilidad</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Calidad sobre Cantidad de Días</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>SD Industrial 64GB:</strong> Almacenamiento local en cada cámara.</li>
+                                <li><strong>Decisión Técnica de Router:</strong> Grabar 5 días de video continuo.</li>
+                                <li><strong>Nitidez Máxima:</strong> Priorizar la tasa de fotogramas (FPS) y la definición del sensor para que el video sirva como evidencia real ante tribunales.</li>
+                                <li><strong>Capacidad Validada:</strong> Pruebas de grabación y red superadas con éxito.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="display: flex; flex-direction: column; justify-content: center;">
+                            <div class="bar-chart-container">
+                                <div class="bar-group">
+                                    <div class="bar-value" style="color: var(--orange)">95%</div>
+                                    <div class="bar-fill bg-orange" style="--height: 120px;"></div>
+                                    <div class="bar-label">Configurado: 5 Días</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar-value" style="color: var(--text-muted)">30%</div>
+                                    <div class="bar-fill bg-terracotta" style="--height: 38px;"></div>
+                                    <div class="bar-label">Comprimido: 15 Días</div>
+                                </div>
+                            </div>
+                            <p style="text-align: center; font-size: 0.8em; color: var(--text-muted); font-weight: 600;">Índice de Nitidez y Utilidad del Video</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 12: Responsabilidad Local: Encargado de Cámaras (Light Background) -->
+                <div class="slide theme-light" id="slide-12" data-notes="Un sistema de seguridad comunitario requiere una persona de absoluta confianza a cargo de los equipos para garantizar la privacidad y el uso responsable. La asamblea y la directiva han asignado formalmente esta importante labor a un vecino de absoluta confianza designado formalmente. Este custodio será el custodio técnico de la central de monitoreo, velando por que los equipos funcionen correctamente y actuando bajo un estricto principio de confidencialidad y respeto a la privacidad de todas las familias.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Administración del Sistema</div>
+                        <h2 class="slide-title">Custodia Vecinal y Resguardo del Sistema</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Custodia y Nexo Vecinal</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Encargado Técnico:</strong> Custodio Técnico designado por la directiva.</li>
+                                <li><strong>Misión de Custodia:</strong> Velar por el correcto funcionamiento de los grabadores y central.</li>
+                                <li><strong>Privacidad de Datos:</strong> Custodiar el acceso a las grabaciones con total confidencialidad, respetando a las familias.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_neighbors.jpg" alt="Custodio de Equipos y Vecinos en Terreno">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 13: Protocolo de Seguridad y Privacidad (Light Background) -->
+                <div class="slide theme-light" id="slide-13" data-notes="Para resguardar el derecho a la privacidad de todos los hogares, hemos diseñado un protocolo formal y transparente de acceso a las grabaciones. Las cámaras no son para 'espiar' el día a día del barrio; son para proteger. Por lo tanto, si un vecino necesita revisar una grabación debido a un robo, choque, daño o cualquier ilícito, no debe acudir directamente al Custodio Técnico. El canal correcto es presentar una solicitud formal ante la Directiva de la Junta de Vecinos. La directiva analizará el caso de forma reservada, autorizará la extracción del video de la fecha y hora indicadas, y el Custodio procesará el clip para que sea enviado de manera rápida y segura vía WhatsApp al vecino o directamente a las policías como medio de prueba para la denuncia formal.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Protocolo de Privacidad</div>
+                        <h2 class="slide-title">Protocolo de Seguridad y Privacidad</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">¿Cuándo se Activa el Protocolo?</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Hechos Delictivos:</strong> Ante la sospecha o comisión de un delito (hurtos, robos, daños).</li>
+                                <li><strong>Daños Materiales:</strong> Daño en el mobiliario público o fachadas de viviendas de vecinos.</li>
+                                <li><strong>Accidentes de Tránsito:</strong> Colisiones o incidentes viales en calles del barrio.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Límites y Reglas de Privacidad</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Orientación Exclusiva:</strong> Lentes calibradas para apuntar a calles y espacios públicos comunes.</li>
+                                <li><strong>Resguardo Hogareño:</strong> Enfoque bloquea o evita captar ventanas y patios privados de los vecinos.</li>
+                                <li><strong>Uso Restringido:</strong> Prohibido usar el sistema para esparcimiento o fines no contemplados en el acta vecinal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 14: Pasos Formales de Solicitud (Protocolo) (Light Background) -->
+                <div class="slide theme-light" id="slide-14" data-notes="Este es un detalle fundamental que debemos memorizar: el plazo máximo para solicitar una grabación es de 5 días. Debido a que el sistema sobrescribe las grabaciones antiguas para mantener the mejor calidad del video, si un incidente ocurre un lunes, la directiva debe recibir la solicitud antes del viernes de esa misma semana. La solicitud debe indicar con la mayor precisión posible el día, la hora y el lugar del hecho. Con esto garantizamos un proceso ordenado, rápido y sobre todo legal ante cualquier requerimiento de los tribunales.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Protocolo Formal</div>
+                        <h2 class="slide-title">Pasos Formales de Solicitud (Protocolo)</h2>
+                    </div>
+                    <div class="slide-body grid-4col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--terracotta);">1. Solicitud</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">El vecino afectado realiza la solicitud formal a la Directiva de la Junta de Vecinos por escrito o por su WhatsApp oficial.</p>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--orange);">2. Datos</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">Especificar la fecha exacta, rango aproximado de hora y ubicación o cámara asociada al evento.</p>
+                        </div>
+                        <div class="slide-card accent-charcoal animate-fade delay-3" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--text-muted);">3. WhatsApp</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">La directiva aprueba y canaliza la solicitud con el Custodio Técnico, quien extrae el clip de video y lo envía vía WhatsApp.</p>
+                        </div>
+                        <div class="slide-card accent-charcoal animate-fade delay-4" style="padding: 1em 0.8em; background-color: var(--bg-charcoal); border-color: var(--orange);">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--orange);">Límite: 5 Días</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: #94a3b8;"><strong>IMPORTANTE:</strong> La solicitud debe realizarse antes de que se cumplan los 5 días, o el sistema sobrescribirá el video.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 15: Aclarando Dudas Comunitarias (FAQ) (Light Background) -->
+                <div class="slide theme-light" id="slide-15" data-notes="Es muy común que en estas reuniones surjan dudas. Por ejemplo, sobre el costo eléctrico: es de unos $1.200 pesos mensuales por cámara, costo que es asumido generosamente por los vecinos colaboradores que prestan la energía de sus hogares. Tampoco hay cuotas mensuales para los vecinos; el sistema es propio de la Junta. Además, las grabaciones viajan de forma segura por una red inalámbrica local y no se suben a internet. Para que el sistema dure en el tiempo, se recomienda realizar mantenciones preventivas cada 3 meses.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Preguntas Frecuentes</div>
+                        <h2 class="slide-title">Aclarando Dudas Frecuentes (FAQ)</h2>
+                    </div>
+                    <div class="slide-body" style="grid-template-columns: 1fr;">
+                        <div class="faq-grid">
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Quién financia el costo eléctrico?</div>
+                                <div class="faq-a">Costo mensual de $1.200 pesos de electricidad por cámara. Este costo es asumido generosamente por los vecinos que apoyaron en el proyecto (quienes facilitaron la conexión eléctrica desde sus hogares).</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Se transmiten por Internet pública?</div>
+                                <div class="faq-a">No. El sistema utiliza una red inalámbrica local exclusiva para transmitir hacia la central del proyecto. No se suben clips a nubes públicas ni redes de libre acceso.</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Tiene costo mensual para el vecino?</div>
+                                <div class="faq-a">No. El fondo FNDR 8% financió el 100% de la instalación y equipos. Se entrega en propiedad de la Junta de Vecinos libre de cuotas fijas mensuales ($0 CLP de mantención obligatoria).</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Cada cuánto tiempo es la mantención?</div>
+                                <div class="faq-a">Las mantenciones preventivas deben ser idealmente cada 3 meses para limpiar las ópticas de las cámaras, revisar soportes físicos y verificar el correcto funcionamiento de toda la red.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 16: Garantía Oficial del Sistema (Light Background) -->
+                <div class="slide theme-light" id="slide-16" data-notes="Nuestra empresa Router se hace cargo de una garantía oficial por 6 meses que comenzó a regir desde el primero de mayo de este año. Esto cubre fallas técnicas de fábrica o desperfectos en el montaje de los equipos. Es sumamente importante recalcar que esta garantía no contempla daños provocados por la manipulación no autorizada de terceros, ni actos de vandalismo o robos de las cámaras. Debemos comprometernos como comunidad a cuidar de este gran activo.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Garantía del Proyecto</div>
+                        <h2 class="slide-title">Garantía Oficial del Sistema</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cobertura de Garantía Router</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Vigencia Ampliada:</strong> Garantía de 6 meses desde la entrega, respaldada directamente por el servicio técnico oficial de Router.</li>
+                                <li><strong>Soporte y Respuesta Rápida:</strong> Visitas técnicas prioritarias y reemplazo inmediato de componentes ante fallas de fábrica o montaje.</li>
+                                <li><strong>Monitoreo de Calidad:</strong> Canal de comunicación directo con la Directiva para asegurar la operatividad permanente del sistema.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Exclusiones Importantes</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Manipulación de Terceros:</strong> La garantía queda invalidada si personas no autorizadas modifican los equipos.</li>
+                                <li><strong>Siniestros y Vandalismo:</strong> No cubre daños por vandalismo, robos del equipamiento o condiciones de sobretensión eléctrica externa.</li>
+                                <li><strong>Mantención:</strong> Limpieza y mantención preventiva no se consideran garantía.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 17: Espacio de Consultas y Diálogo (Light Background) -->
+                <div class="slide theme-light" id="slide-17" data-notes="Ahora abrimos la palabra para ustedes. Queremos escuchar sus consultas, sugerencias o impresiones. Ninguna pregunta es menos importante; al contrario, este es el momento para que todos nos vayamos a casa con total claridad sobre el funcionamiento de nuestra nueva red de seguridad comunitaria.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Asamblea Comunitaria</div>
+                        <h2 class="slide-title">Foro Abierto: Preguntas y Diálogo Vecinal</h2>
+                    </div>
+                    <div class="slide-body" style="grid-template-columns: 1fr;">
+                        <div class="slide-card accent-terracotta animate-fade delay-1" style="align-items: center; justify-content: center; text-align: center; padding: 3em;">
+                            <div style="width: 5em; height: 5em; border-radius: 50%; background: rgba(154, 52, 18, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5em;">
+                                <svg style="width: 2.25em; height: 2.25em;" fill="none" stroke="var(--terracotta)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            </div>
+                            <h3 style="font-size: 1.8em; font-weight: 800; color: var(--terracotta);">Espacio de Consultas para la Asamblea</h3>
+                            <p style="font-size: 1.1em; color: var(--text-dark); max-width: 500px; margin-top: 1em; line-height: 1.6;">Tu opinión y tus dudas son muy importantes.</p>
+                            <p style="font-size: 0.95em; color: var(--text-muted); max-width: 550px; margin-top: 0.5em;">Por favor, levanta la mano y comparte tus inquietudes con la Directiva de la Junta de Vecinos Eduardo Frei Montalva y el Equipo Técnico de Router.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 18: Difusión y Video Promocional (Light Background) -->
+                <div class="slide theme-light" id="slide-18" data-notes="Parte integral del proyecto financiado por el GORE es la difusión. Creamos un video promocional de alta calidad que muestra el trabajo realizado, la instalación y la unión de nuestros vecinos. Les pedimos que lo compartan activamente en sus redes sociales y grupos de WhatsApp vecinales. Mientras más personas sepan que en Vista al Mar estamos organizados, coordinados y monitoreados con 16 cámaras de alta tecnología, menos delincuentes se atreverán a ingresar a nuestras calles.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Difusión del Proyecto</div>
+                        <h2 class="slide-title">¡Vista al Mar Unida en Redes Sociales!</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta" style="margin-bottom: 0.5em;">La Seguridad se Construye Comunicando</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.6em; font-size: 1.05em;">
+                                <li><strong>¡Síguenos en Redes Sociales!</strong> Sigue a Router y mantente informado de consejos y proyectos de seguridad.</li>
+                                <li><strong>Foco Disuasivo:</strong> Comparte el video promocional para alertar a extraños que el barrio está protegido.</li>
+                                <li><strong>Viraliza el Proyecto:</strong> Comparte el video y actas en tus grupos de pasajes y WhatsApp.</li>
+                            </ul>
+                            
+                            <!-- Redes Sociales -->
+                            <div class="social-container" style="margin-top: 1.5em;">
+                                <a href="https://www.instagram.com/routersolucionestecnologicas/" target="_blank" class="social-link-card">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                                    <span><strong>Instagram:</strong> @routersolucionestecnologicas</span>
+                                </a>
+                                <a href="https://www.facebook.com/routersolucionestecnologicas/" target="_blank" class="social-link-card">
+                                    <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                                    <span><strong>Facebook:</strong> /routersolucionestecnologicas</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_playground_aerial.jpg" alt="Parque Vista al Mar Aéreo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 19: Promoción Especial Vecinos (Light Background) -->
+                <div class="slide theme-light" id="slide-19" data-notes="Para apoyar a toda la comunidad de la Junta de Vecinos de Vista al Mar en su seguridad familiar, desde Router hemos preparado un beneficio exclusivo para ustedes. Se trata de una promoción especial para instalar una cámara particular en sus hogares por un valor preferencial de $90.000 pesos. Este kit contempla una cámara de alta gama Full HD, equipada con audio y una tarjeta micro SD de 64GB para almacenar los videos. Es muy importante destacar que este precio incluye tanto la instalación técnica como la garantía oficial de Router. Tengan en consideración que la vigencia de esta promoción es limitada y vencerá de forma impostergable el 15 de julio de 2026. Si desean coordinar, pueden agendar desde ya al WhatsApp que aparece en pantalla: +56 9 7858 9090.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Beneficio Comunitario</div>
+                        <h2 class="slide-title">Promoción Especial para tu Hogar</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-orange animate-fade delay-1" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2em;">
+                            <div>
+                                <span class="promo-tag" style="font-size: 0.9em; padding: 0.3em 0.8em; margin-bottom: 0.8em;">Exclusivo Junta de Vecinos</span>
+                                <h3 class="card-title color-orange" style="font-size: 1.85em; margin-bottom: 0.4em;">Instalación de 1 Cámara Domiciliaria</h3>
+                                <p style="font-size: 1.25em; font-weight: 700; color: var(--terracotta); margin-bottom: 0.8em;">Precio Preferencial: $90.000 CLP (Pago Único)</p>
+                                
+                                <ul style="margin-top: 0.5em; gap: 0.6em; font-size: 1.05em;">
+                                    <li><strong>Cámara de Alta Gama:</strong> Resolución Full HD con visión nocturna y audio bidireccional.</li>
+                                    <li><strong>Almacenamiento Local:</strong> Tarjeta Micro SD de 64GB de alta velocidad incluida.</li>
+                                    <li><strong>Todo Incluido:</strong> Instalación técnica profesional, configuración y garantía oficial Router.</li>
+                                    <li><strong>Vigencia Limitada:</strong> Promoción válida solo hasta el <strong>15 de Julio de 2026</strong>.</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- WhatsApp Highlight Contact -->
+                            <div class="promo-highlight-box" style="margin-top: 1em; background: rgba(22, 163, 74, 0.05); border: 2px dashed #16a34a; border-radius: 12px; padding: 1.2em; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                                <span style="font-size: 0.9em; font-weight: 800; color: #16a34a; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3em;">¡Reserva tu instalación hoy!</span>
+                                <a href="https://wa.me/56978589090" target="_blank" style="text-decoration: none; font-size: 1.85em; font-weight: 800; color: #16a34a; display: flex; align-items: center; gap: 0.4em; justify-content: center;">
+                                    <svg viewBox="0 0 24 24" style="width: 1.25em; height: 1.25em; fill: currentColor;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.458L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.863-9.864.001-2.637-1.03-5.116-2.905-6.994C16.556 1.867 14.075.83 11.439.83c-5.44 0-9.863 4.42-9.866 9.865-.001 1.902.5 3.753 1.458 5.378L2.016 22.1l6.23-1.63a9.78 9.78 0 0 0-1.599-1.316zm11.517-5.698c-.318-.159-1.88-.928-2.18-.1.038-.3-.159-.44-.45-.63-.318-.19-.63-.38-.95-.57a.38.38 0 0 0-.57 0c-.22.22-.44.44-.66.66-.19.19-.38.19-.63 0a7.48 7.48 0 0 1-2.45-2.45c-.19-.25-.19-.44 0-.63.22-.22.44-.44.66-.66a.38.38 0 0 0 0-.57c-.19-.32-.38-.63-.57-.95-.19-.29-.33-.48-.63-.3-.3.18-.54.4-.7.68-.38.64-.53 1.39-.3 2.12.33 1.06.9 2.03 1.63 2.76A10.15 10.15 0 0 0 12.5 17.5c.82.35 1.7.5 2.58.33.68-.13 1.28-.5 1.63-1.12.16-.3.1-.63-.12-.85-.14-.14-.28-.28-.42-.42z"/></svg>
+                                    +56 9 7858 9090
+                                </a>
+                            </div>
+                        </div>
+                        <div class="photo-card animate-fade delay-2" style="background-color: #ffffff;">
+                            <img src="./images/camera_alessandri.png" alt="Instalación de Cámara Particular Router" style="object-fit: contain; padding: 1.5em;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 20: Conclusión y Agradecimientos (Dark charcoal background) -->
+                <div class="slide theme-dark" id="slide-20" data-notes="Llegamos al final de esta presentación, pero esto es solo el comienzo de una etapa más segura para todos. Queremos reiterar nuestro más profundo agradecimiento al Gobierno Regional del Biobío por confiar en nosotros y proveer los recursos; a la directiva que no durmió recopilando papeles y empujando el proyecto; y a cada uno de ustedes por su paciencia durante la larga espera y su apoyo activo en la instalación. Como dice nuestro lema final: las cámaras vigilan, pero es la organización vecinal y la solidaridad entre nosotros lo que realmente protege a nuestras familias. ¡Muchas gracias a todos y a disfrutar de un barrio más seguro!">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <div class="cover-visual animate-fade" style="border-left-color: var(--orange);">
+                            <h2 style="font-size: 3.2em; font-weight: 800; line-height: 1.1; margin-bottom: 1em; color: #ffffff;">¡JUNTOS HACEMOS UN<br><span style="color: var(--orange);">BARRIO MÁS SEGURO!</span></h2>
+                            <p style="font-size: 1.65em; color: var(--orange); font-weight: 600; font-style: italic; margin-bottom: 2em;">"La tecnología vigila, pero la comunidad organizada protege."</p>
+                            <div style="margin-top: 1em; border-top: 1px solid var(--border-dark); padding-top: 1.5em; max-width: 650px; display: flex; justify-content: space-between; gap: 2em;">
+                                <div>
+                                    <p style="font-size: 1.05em; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5em;">Agradecimientos Especiales:</p>
+                                    <p style="font-size: 1.05em; color: #64748b; line-height: 1.5;">&bull; Gobierno Regional del Biobío (GORE Biobío)<br>&bull; Directiva Junta de Vecinos Eduardo Frei Montalva<br>&bull; Vecinos y Vecinas de Vista al Mar</p>
+                                </div>
+                                <div style="border-left: 1px solid var(--border-dark); padding-left: 2em; display: flex; flex-direction: column; justify-content: center;">
+                                    <p style="font-size: 1.05em; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5em;">Socio Tecnológico:</p>
+                                    <p style="font-size: 1.35em; color: #16a34a; font-weight: 800; display: flex; align-items: center; gap: 0.4em; white-space: nowrap;">
+                                        WhatsApp: +56 9 7858 9090
+                                    </p>
+                                    <p style="font-size: 0.9em; color: #64748b; margin-top: 0.25em;">Router &bull; Soluciones Tecnológicas y de Ingeniería</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+            <!-- Lightbox Modal for camera gallery -->
+            <div id="camera-lightbox" class="lightbox-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;">
+                <button class="lightbox-close" onclick="closeCameraLightbox()" style="position: absolute; top: 1.5em; right: 1.5em; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: white; width: 3em; height: 3em; font-size: 1.8em; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">&times;</button>
+                
+                <!-- Main Large Image -->
+                <div class="lightbox-content" style="width: 90%; height: 75%; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <img id="lightbox-img" src="./images/vista_parque.jpg" alt="Vista Ampliada" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transition: opacity 0.2s ease;">
+                </div>
+                
+                <!-- Lightbox Controls -->
+                <div class="lightbox-controls" style="margin-top: 1.5em; display: flex; flex-direction: column; align-items: center; gap: 0.75em;">
+                    <div class="gallery-tabs lightbox-tabs" style="display: flex; gap: 0.5em; background: rgba(255,255,255,0.08); padding: 0.4em; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                        <button class="gallery-tab active lightbox-tab" onclick="switchLightboxFeed(this, 'vista_parque.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: var(--orange); color: white; transition: all 0.2s ease;">Parque</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_1.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">V. Mackenna</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_2.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">E. Frei Montalva</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_3.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">Lastarria/Barros</button>
+                    </div>
+                    <p style="color: #64748b; font-size: 0.8em; margin: 0; font-family: sans-serif;">Presiona <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">ESC</kbd> para salir • Usa las flechas <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">&larr;</kbd> <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">&rarr;</kbd> para cambiar</p>
+                </div>
+            </div>
+</div>
+
+            
+            
+            
+            <!-- Slide Navigation HUD Overlay -->
+            <div class="slide-nav-overlay">
+                <button class="nav-btn" onclick="prevSlide()" title="Anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <div class="nav-info" id="slideIndicator">1 / 20</div>
+                <button class="nav-btn" onclick="nextSlide()" title="Siguiente">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="nav-btn" onclick="toggleFullscreen()" title="Pantalla Completa">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Presenter Side notes (Modo Presentador) -->
+        <div class="notes-sidebar collapsed" id="notesSidebar">
+            <div class="sidebar-header">
+                <h3>Notas del Expositor</h3>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn" style="padding: 0.25rem 0.5rem;" onclick="resetTimer()" title="Reiniciar Cronómetro">⏱️</button>
+                    <div class="notes-timer" id="timer">00:00</div>
+                </div>
+            </div>
+            <div class="notes-content" id="speakerNotes">
+                Cargando notas...
+            </div>
+            <div class="notes-preview-box">
+                <div class="notes-preview-title">Siguiente Diapositiva</div>
+                <div class="notes-preview-name" id="nextSlidePreview">Fin de la Presentación</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const totalSlides = 20;
+        let currentSlide = 1;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        function switchCameraFeed(btn, imgName) {
+            const img = document.getElementById('camera-feed-img');
+            if (!img) return;
+            img.style.opacity = 0;
+            
+            const tabs = btn.parentNode.getElementsByClassName('gallery-tab');
+            for (let tab of tabs) {
+                tab.style.background = 'transparent';
+                tab.style.color = 'var(--text-dark)';
+                tab.classList.remove('active');
+            }
+            btn.style.background = 'var(--orange)';
+            btn.style.color = 'white';
+            btn.classList.add('active');
+            
+            setTimeout(() => {
+                img.src = './images/' + imgName;
+                img.alt = btn.innerText;
+                img.style.opacity = 1;
+            }, 200);
+        }
+
+        function openCameraLightbox() {
+            const currentImg = document.getElementById('camera-feed-img');
+            const lightbox = document.getElementById('camera-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            if (!currentImg || !lightbox || !lightboxImg) return;
+            
+            lightboxImg.src = currentImg.src;
+            lightboxImg.alt = currentImg.alt;
+            lightbox.style.display = 'flex';
+            
+            // Sync lightbox active tab button
+            const activeTab = document.querySelector('.gallery-tabs:not(.lightbox-tabs) .gallery-tab.active');
+            if (activeTab) {
+                const tabs = document.querySelectorAll('.lightbox-tabs .lightbox-tab');
+                const activeIndex = Array.from(activeTab.parentNode.children).indexOf(activeTab);
+                
+                for (let i = 0; i < tabs.length; i++) {
+                    if (i === activeIndex) {
+                        tabs[i].style.background = 'var(--orange)';
+                        tabs[i].style.color = 'white';
+                        tabs[i].classList.add('active');
+                    } else {
+                        tabs[i].style.background = 'transparent';
+                        tabs[i].style.color = '#94a3b8';
+                        tabs[i].classList.remove('active');
+                    }
+                }
+            }
+        }
+        
+        function closeCameraLightbox() {
+            const lightbox = document.getElementById('camera-lightbox');
+            if (lightbox) {
+                lightbox.style.display = 'none';
+            }
+        }
+        
+        function switchLightboxFeed(btn, imgName) {
+            const lightboxImg = document.getElementById('lightbox-img');
+            if (!lightboxImg) return;
+            lightboxImg.style.opacity = 0;
+            
+            const tabs = btn.parentNode.getElementsByClassName('lightbox-tab');
+            for (let tab of tabs) {
+                tab.style.background = 'transparent';
+                tab.style.color = '#94a3b8';
+                tab.classList.remove('active');
+            }
+            btn.style.background = 'var(--orange)';
+            btn.style.color = 'white';
+            btn.classList.add('active');
+            
+            setTimeout(() => {
+                lightboxImg.src = './images/' + imgName;
+                lightboxImg.alt = btn.innerText;
+                lightboxImg.style.opacity = 1;
+                
+                // Sync back to main slide
+                const mainImg = document.getElementById('camera-feed-img');
+                if (mainImg) {
+                    mainImg.src = './images/' + imgName;
+                    mainImg.alt = btn.innerText;
+                }
+                
+                const activeIndex = Array.from(btn.parentNode.children).indexOf(btn);
+                const mainTabs = document.querySelectorAll('.gallery-tabs:not(.lightbox-tabs) .gallery-tab');
+                if (mainTabs && mainTabs[activeIndex]) {
+                    for (let tab of mainTabs) {
+                        tab.style.background = 'transparent';
+                        tab.style.color = 'var(--text-dark)';
+                        tab.classList.remove('active');
+                    }
+                    mainTabs[activeIndex].style.background = 'var(--orange)';
+                    mainTabs[activeIndex].style.color = 'white';
+                    mainTabs[activeIndex].classList.add('active');
+                }
+            }, 200);
+        }
+
+        function navigateLightboxTabs(direction) {
+            const tabs = Array.from(document.querySelectorAll('.lightbox-tabs .lightbox-tab'));
+            const activeTab = document.querySelector('.lightbox-tabs .lightbox-tab.active');
+            if (!activeTab || tabs.length === 0) return;
+            
+            let index = tabs.indexOf(activeTab);
+            index = (index + direction + tabs.length) % tabs.length;
+            tabs[index].click();
+        }
+
+        // Initialize slideshow
+        document.addEventListener("DOMContentLoaded", () => {
+            showSlide(currentSlide);
+            setupKeyboardNav();
+            startTimer();
+            adjustScale(); // Calculate scale on load
+        });
+        
+        window.addEventListener('resize', adjustScale);
+        document.addEventListener('fullscreenchange', () => {
+            setTimeout(adjustScale, 50);
+        });
+        
+        function adjustScale() {
+            const container = document.getElementById('slideContainer');
+            if (!container) return;
+            
+            const baseWidth = 1100;
+            const baseHeight = 618.75;
+            let scaleFactor = 1;
+            
+            if (document.fullscreenElement) {
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                const scaleX = screenWidth / baseWidth;
+                const scaleY = screenHeight / baseHeight;
+                
+                scaleFactor = Math.min(scaleX, scaleY);
+                
+                container.style.setProperty('--fs-width', `${baseWidth * scaleFactor}px`);
+                container.style.setProperty('--fs-height', `${baseHeight * scaleFactor}px`);
+            } else {
+                const width = container.offsetWidth;
+                scaleFactor = width / baseWidth;
+                container.style.removeProperty('--fs-width');
+                container.style.removeProperty('--fs-height');
+            }
+            
+            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+        }
+
+        function showSlide(index) {
+            if (index < 1) index = 1;
+            if (index > totalSlides) index = totalSlides;
+            currentSlide = index;
+
+            // Update active state in slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (slide) {
+                    if (i === index) {
+                        slide.classList.add("active");
+                    } else {
+                        slide.classList.remove("active");
+                    }
+                }
+            }
+
+            // Update bottom indicator HUD
+            document.getElementById("slideIndicator").innerText = `${currentSlide} / ${totalSlides}`;
+
+            // Update notes and preview in Presenter Mode
+            const activeSlide = document.getElementById(`slide-${currentSlide}`);
+            if (activeSlide) {
+                const notes = activeSlide.getAttribute("data-notes") || "No hay notas para esta diapositiva.";
+                document.getElementById("speakerNotes").innerHTML = `<p>${notes}</p>`;
+            }
+
+            // Next Slide Preview name
+            const nextSlideNum = currentSlide + 1;
+            const nextPreviewName = document.getElementById("nextSlidePreview");
+            if (nextSlideNum <= totalSlides) {
+                const nextSlide = document.getElementById(`slide-${nextSlideNum}`);
+                if (nextSlide) {
+                    const nextHeader = nextSlide.querySelector(".slide-title");
+                    const nextName = nextHeader ? nextHeader.innerText : `Diapositiva ${nextSlideNum}`;
+                    nextPreviewName.innerText = `${nextSlideNum}. ${nextName}`;
+                }
+            } else {
+                nextPreviewName.innerText = "Fin de la presentación";
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        function setupKeyboardNav() {
+            document.addEventListener("keydown", (e) => {
+                const lightbox = document.getElementById('camera-lightbox');
+                if (lightbox && lightbox.style.display === 'flex') {
+                    if (e.key === "Escape") {
+                        closeCameraLightbox();
+                        e.preventDefault();
+                    } else if (e.key === "ArrowRight") {
+                        navigateLightboxTabs(1);
+                        e.preventDefault();
+                    } else if (e.key === "ArrowLeft") {
+                        navigateLightboxTabs(-1);
+                        e.preventDefault();
+                    }
+                    return;
+                }
+
+                if (e.key === "ArrowRight" || e.key === "Space") {
+                    nextSlide();
+                    e.preventDefault();
+                } else if (e.key === "ArrowLeft") {
+                    prevSlide();
+                    e.preventDefault();
+                }
+            });
+        }
+
+        // Toggle Sidebar Presenter Mode
+        function toggleNotesSidebar() {
+            const sidebar = document.getElementById("notesSidebar");
+            const btn = document.getElementById("notesToggleBtn");
+            sidebar.classList.toggle("collapsed");
+            
+            if (sidebar.classList.contains("collapsed")) {
+                btn.style.borderColor = "";
+                btn.style.color = "";
+                btn.style.background = "";
+            } else {
+                btn.style.borderColor = "var(--orange)";
+                btn.style.color = "var(--orange)";
+                btn.style.background = "rgba(234, 88, 12, 0.08)";
+            }
+        }
+
+        // Stopwatch Timer for presenter screen
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, "0");
+                const secs = (secondsElapsed % 60).toString().padStart(2, "0");
+                document.getElementById("timer").innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function resetTimer() {
+            secondsElapsed = 0;
+            document.getElementById("timer").innerText = "00:00";
+        }
+
+        // Fullscreen API toggle
+        function toggleFullscreen() {
+            const container = document.getElementById("slideContainer");
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    alert(`Error intentando activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Expand/Collapse FAQ items
+        function toggleFaq(card) {
+            card.classList.toggle("expanded");
+        }
+
+        // Link triggers
+        function openPowerPoint() {
+            window.location.href = "./presentacion_vista_al_mar.pptx";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Competencia - Router Inteligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --router-blue: #2D328C;
+            --router-purple: #7c69f2;
+            --bg-dark: #05070a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f0f5;
+            --text-dim: #94a3b8;
+            --green: #00ff88;
+            --red: #ff4d4d;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+            background-image: radial-gradient(circle at 100% 0%, rgba(124, 105, 242, 0.1) 0%, transparent 40%);
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 30px;
+            margin-bottom: 50px;
+        }
+
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            color: var(--router-purple);
+            font-weight: 700;
+        }
+
+        h1 { font-size: 2.5rem; margin: 10px 0; letter-spacing: -1px; }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .comp-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .comp-card:hover { transform: translateY(-5px); border-color: var(--router-purple); }
+
+        .comp-card.router {
+            border: 2px solid var(--router-purple);
+            background: linear-gradient(145deg, rgba(124, 105, 242, 0.05), transparent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .router-badge {
+            background: var(--router-purple);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        h3 { font-size: 1.4rem; margin: 0 0 15px 0; }
+        .price { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
+        .sub-price { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 25px; }
+
+        .feature-list { list-style: none; padding: 0; margin: 0; }
+        .feature-list li {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: var(--text-dim);
+        }
+
+        .check { color: var(--green); font-weight: bold; }
+        .cross { color: var(--red); font-weight: bold; }
+
+        .total-3yr {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .total-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-dim); }
+        .total-amount { font-size: 1.2rem; font-weight: 700; display: block; }
+
+        /* Summary Table */
+        .summary-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+        }
+
+        .summary-box h2 { font-size: 1.5rem; margin-bottom: 30px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: var(--text-dim); font-size: 0.8rem; padding: 15px; border-bottom: 1px solid var(--border); }
+        td { padding: 20px 15px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+
+        .highlight { color: var(--green); font-weight: 600; }
+
+        .btn-back {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--router-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 40px;
+            transition: opacity 0.3s;
+        }
+        .btn-back:hover { opacity: 0.8; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="label">Inteligencia de Mercado</span>
+        <h1>Benchmarking de Competencia</h1>
+        <p style="color: var(--text-dim);">Análisis comparativo para el Proyecto: <b>Ferretería El Perro</b> (19 Cámaras IP)</p>
+    </header>
+
+    <div class="comparison-grid">
+        <!-- PEQUEÑA -->
+        <div class="comp-card">
+            <span class="label" style="color: var(--text-dim);">EMPRESA PEQUEÑA</span>
+            <h3>Instalador Local</h3>
+            <div class="price">$4.250.000</div>
+            <div class="sub-price">Estimado (Solo Equipos + Mano de Obra)</div>
+            
+            <ul class="feature-list">
+                <li><span class="cross">✕</span> Tecnología Análoga/HDCVI común</li>
+                <li><span class="cross">✕</span> Sin Inteligencia Facial</li>
+                <li><span class="cross">✕</span> Sin Rack o Gabinete de Red</li>
+                <li><span class="cross">✕</span> Garantía limitada al instalador</li>
+                <li><span class="check">✔</span> Sin mensualidad</li>
+            </ul>
+
+            <div class="total-3yr">
+                <span class="total-label">Costo Total a 3 Años</span>
+                <span class="total-amount">$4.250.000</span>
+            </div>
+        </div>
+
+        <!-- ROUTER -->
+        <div class="comp-card router">
+            <span class="router-badge">TU PROPUESTA</span>
+            <span class="label" style="color: var(--router-purple);">ROUTER INTELIGENTE</span>
+            <h3>Línea de Seguridad</h3>
+            <div class="price">$4.617.200</div>
+            <div class="sub-price">IVA Incluido (Llave en mano)</div>
+            
+            <ul class="feature-list">
+                <li><span class="check">✔</span> <b>Tecnología IP Pura</b> (Calidad 4K)</li>
+                <li><span class="check">✔</span> <b>I.A. de Reconocimiento Facial</b></li>
+                <li><span class="check">✔</span> <b>Segmentación por Piso (PoE)</b></li>
+                <li><span class="check">✔</span> <b>Rack de Seguridad Profesional</b></li>
+                <li><span class="check">✔</span> <b>CERO MENSUALIDAD</b></li>
+            </ul>
+
+            <div class="total-3yr">
+                <span class="total-label">Costo Total a 3 Años</span>
+                <span class="total-amount highlight" style="color: var(--green);">$4.617.200</span>
+            </div>
+        </div>
+
+        <!-- GRANDE -->
+        <div class="comp-card">
+            <span class="label" style="color: var(--text-dim);">EMPRESA GRANDE</span>
+            <h3>ADT / Verisure</h3>
+            <div class="price">$1.500.000*</div>
+            <div class="sub-price">Instalación inicial (Solo Alarma/Pocas Cams)</div>
+            
+            <ul class="feature-list">
+                <li><span class="check">✔</span> Monitoreo 24/7 Reactivo</li>
+                <li><span class="cross">✕</span> Plan mensual prohibitivo (19 cams)</li>
+                <li><span class="cross">✕</span> Equipos suelen ser comodato</li>
+                <li><span class="cross">✕</span> Dependencia total del servicio</li>
+                <li><span class="cross">✕</span> <b>$540.000 mensual</b> (Proyectado)</li>
+            </ul>
+
+            <div class="total-3yr">
+                <span class="total-label">Costo Total a 3 Años</span>
+                <span class="total-amount" style="color: var(--red);">$20.940.000+</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-box">
+        <h2>Diferenciadores Clave</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>CATEGORÍA</th>
+                    <th>COMPETENCIA</th>
+                    <th>ROUTER SEGURIDAD</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Costos Ocultos</b></td>
+                    <td>Mensualidades que suben con el IPC cada trimestre.</td>
+                    <td class="highlight">Un solo pago. Sin contratos de amarre.</td>
+                </tr>
+                <tr>
+                    <td><b>Tecnología</b></td>
+                    <td>Sistemas análogos económicos de baja resolución.</td>
+                    <td class="highlight">Infraestructura IP de grado industrial y 4K.</td>
+                </tr>
+                <tr>
+                    <td><b>Inteligencia</b></td>
+                    <td>Grabación por movimiento simple (muchas falsas alarmas).</td>
+                    <td class="highlight">Reconocimiento Facial y Detección de Humanos.</td>
+                </tr>
+                <tr>
+                    <td><b>Soporte</b></td>
+                    <td>Depende de una central saturada o un técnico solo.</td>
+                    <td class="highlight">Agente IA de monitoreo y soporte dedicado.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="../../dashboard.html" class="btn-back">Volver al Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

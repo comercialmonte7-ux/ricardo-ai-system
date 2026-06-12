@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Operaciones - Proyecto Lebu - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #020408;
+            --card-bg: #0b0e14;
+            --accent-blue: #00d2ff;
+            --accent-purple: #8e2de2;
+            --accent-green: #00f2fe;
+            --text-main: #e2e8f0;
+            --text-dim: #64748b;
+            --border: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .brand h1 { margin: 0; font-size: 20px; letter-spacing: 1px; color: var(--accent-blue); }
+        .badge { background: #1e293b; padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; border: 1px solid var(--border); }
+
+        .main-layout { display: grid; grid-template-columns: 1fr 400px; gap: 20px; margin-top: 20px; }
+
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .card h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .card h2::before { content: '⚡'; color: var(--accent-blue); }
+
+        /* --- Architecture Diagram --- */
+        .diagram-container {
+            height: 350px;
+            background: radial-gradient(circle at center, #0f172a 0%, #020408 100%);
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        /* --- Full Breakdown Table --- */
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { text-align: left; padding: 12px; color: var(--text-dim); border-bottom: 2px solid var(--border); font-size: 10px; text-transform: uppercase; }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: #cbd5e1; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        .category-row { background: rgba(0, 210, 255, 0.05) !important; color: var(--accent-blue); font-weight: 700; }
+        .price-col { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--accent-blue); }
+
+        /* --- Phase List --- */
+        .phase-list { list-style: none; padding: 0; }
+        .phase-item { 
+            padding: 15px; 
+            border-radius: 12px; 
+            background: rgba(255,255,255,0.02); 
+            margin-bottom: 10px; 
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+        }
+        .phase-num { width: 24px; height: 24px; background: var(--accent-blue); color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+        .phase-content h3 { font-size: 14px; margin: 0 0 5px 0; color: white; }
+        .phase-content p { font-size: 12px; color: var(--text-dim); margin: 0; line-height: 1.4; }
+
+        .profit-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--accent-blue);
+            text-align: center;
+            padding: 30px;
+        }
+        .profit-val { font-size: 36px; font-weight: 800; color: var(--accent-blue); margin: 10px 0; font-family: 'JetBrains Mono'; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <h1>BUSINESS INTELLIGENCE: LEBU 5X</h1>
+        </div>
+        <div class="badge">Estatus: Ingeniería de Ejecución</div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Technical Area -->
+        <div class="main-content">
+            <div class="card">
+                <h2>Diseño de Arquitectura de Red (Topolooía Pro)</h2>
+                <div class="diagram-container">
+                    <svg viewBox="0 0 800 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- CENTRAL DE MONITOREO -->
+                        <rect x="50" y="250" width="80" height="60" rx="4" fill="#1e293b" stroke="#00D2FF" stroke-width="2"/>
+                        <text x="90" y="330" text-anchor="middle" fill="#00D2FF" font-size="10" font-weight="bold">MONITOREO CENTR.</text>
+                        
+                        <!-- CERRO LA CRUZ (HUB) -->
+                        <path d="M400 200 L450 350 L350 350 Z" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                        <circle cx="400" cy="180" r="10" fill="#8e2de2" stroke="white" stroke-width="2"/>
+                        <text x="400" y="160" text-anchor="middle" fill="#8e2de2" font-size="11" font-weight="bold">HUB: CERRO LA CRUZ</text>
+                        <text x="400" y="145" text-anchor="middle" fill="#64748b" font-size="9">Rocket Prism + Sector 90°</text>
+
+                        <!-- PUNTO DE VIGILANCIA (LIBRARY) -->
+                        <rect x="670" y="250" width="10" height="100" fill="#64748b"/>
+                        <circle cx="675" cy="240" r="8" fill="#00f2fe" stroke="black"/>
+                        <text x="675" y="370" text-anchor="middle" fill="#00f2fe" font-size="11" font-weight="bold">NODO DE VIGILANCIA</text>
+                        <text x="675" y="225" text-anchor="middle" fill="#64748b" font-size="9">Antena PowerBeam G2</text>
+
+                        <!-- RADIO LINKS -->
+                        <path d="M410 180 Q550 200 660 240" stroke="#00f2fe" stroke-width="2" stroke-dasharray="10 5"/>
+                        <path d="M130 280 Q250 240 390 185" stroke="#8e2de2" stroke-width="3" stroke-dasharray="10 5"/>
+                        
+                        <!-- LABELS -->
+                        <text x="250" y="220" text-anchor="middle" fill="#8e2de2" font-size="10" transform="rotate(-15, 250, 220)">BACKHAUL AIRFIBER</text>
+                        <text x="550" y="200" text-anchor="middle" fill="#00f2fe" font-size="10" transform="rotate(15, 550, 200)">ENLACE PTMP (LTU/AC)</text>
+                        
+                        <!-- DEVICES ON POLE -->
+                        <circle cx="650" cy="270" r="4" fill="#00f2fe"/> <!-- PTZ -->
+                        <rect x="646" y="285" width="8" height="4" fill="#00f2fe"/> <!-- LPR -->
+                        <text x="635" y="275" text-anchor="end" fill="#64748b" font-size="8">Tridente Cámaras</text>
+                    </svg>
+                </div>
+
+                <h2>Desglose Completo de Materiales y Obra (Por Nodo)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item de Obra / Material</th>
+                                <th>Especificación Comprada</th>
+                                <th class="price-col">Cant</th>
+                                <th class="price-col">Valor Unit.</th>
+                                <th class="price-col" style="color: white">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="category-row"><td colspan="5">I. EQUIPAMIENTO ELECTRÓNICO (Captura y Radio)</td></tr>
+                            <tr><td>Cámara ANPR (LPR)</td><td>Dahua Global Shutter PT. 01</td><td class="price-col">1</td><td class="price-col">$1.450.000</td><td class="price-col">$1.450.000</td></tr>
+                            <tr><td>Cámara PTZ</td><td>Dahua 45X Zoom Óptico AI</td><td class="price-col">1</td><td class="price-col">$1.150.000</td><td class="price-col">$1.150.000</td></tr>
+                            <tr><td>Cámara Bullet Detail</td><td>Dahua 5MP Motorizada 35mm</td><td class="price-col">1</td><td class="price-col">$420.000</td><td class="price-col">$420.000</td></tr>
+                            <tr><td>Antena CPE Cliente</td><td>Ubiquiti PowerBeam 5AC Gen2</td><td class="price-col">1</td><td class="price-col">$135.000</td><td class="price-col">$135.000</td></tr>
+                            
+                            <tr class="category-row"><td colspan="5">II. INFRAESTRUCTURA DE PUNTO (Gabinete y Accesorios)</td></tr>
+                            <tr><td>Gabinete Metálico Estanco</td><td>40x30x20 IP66 + Placa Montaje</td><td class="price-col">1</td><td class="price-col">$46.200</td><td class="price-col">$46.200</td></tr>
+                            <tr><td>Switch Industrial PoE+</td><td>4 Port PoE + 2 SFP Dahua</td><td class="price-col">1</td><td class="price-col">$85.000</td><td class="price-col">$85.000</td></tr>
+                            <tr><td>Protectores Transientes</td><td>ETH-SP-G2 Ubiquiti (Cámara/Ant)</td><td class="price-col">2</td><td class="price-col">$17.000</td><td class="price-col">$34.000</td></tr>
+                            <tr><td>Cableado FTP Outdoor</td><td>Cat6 Blindado c/Malla y Tierra</td><td class="price-col">60m</td><td class="price-col">$900</td><td class="price-col">$54.000</td></tr>
+                            <tr><td>Fijaciones y Soportes</td><td>Brazos de Acero + Abrazaderas</td><td class="price-col">1 Kit</td><td class="price-col">$45.000</td><td class="price-col">$45.000</td></tr>
+                            
+                            <tr class="category-row"><td colspan="5">III. SERVICIOS Y LOGÍSTICA (Costo Ejecución)</td></tr>
+                            <tr><td>Arriendo Camión Capacho</td><td>12.5m Altura c/Operador</td><td class="price-col">0.8d</td><td class="price-col">$220.000</td><td class="price-col">$176.000</td></tr>
+                            <tr><td>Insumos de Consumo</td><td>Terminales, Tarugos, Tape, Sellos</td><td class="price-col">1 Kit</td><td class="price-col">$15.000</td><td class="price-col">$15.000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operational Sidebar -->
+        <div class="sidebar">
+            <div class="card profit-card">
+                <h2>Margen Proyectado (Neto)</h2>
+                <div class="profit-val">$7.440.000</div>
+                <div style="font-size: 11px; color: var(--accent-green);">RETORNO DE INVERSIÓN: INMEDIATO</div>
+            </div>
+
+            <div class="card">
+                <h2>Fases de Ejecución Técnica</h2>
+                <ul class="phase-list">
+                    <li class="phase-item">
+                        <div class="phase-num">1</div>
+                        <div class="phase-content">
+                            <h3>Obra en Soporte</h3>
+                            <p>Instalación de brazos de acero inoxidable y montaje mecánico de cámaras/antena.</p>
+                        </div>
+                    </li>
+                    <li class="phase-item">
+                        <div class="phase-num">2</div>
+                        <div class="phase-content">
+                            <h3>Electrificación</h3>
+                            <p>Cableado FTP blindado desde domo a gabinete. Conectorización y puesta a tierra.</p>
+                        </div>
+                    </li>
+                    <li class="phase-item">
+                        <div class="phase-num">3</div>
+                        <div class="phase-content">
+                            <h3>Alineación Radio</h3>
+                            <p>Enlace inalámbrico Cerro-Punto. Búsqueda de piso de ruido óptimo (-55 dBm).</p>
+                        </div>
+                    </li>
+                    <li class="phase-item">
+                        <div class="phase-num">4</div>
+                        <div class="phase-content">
+                            <h3>Calibración IA</h3>
+                            <p>Configuración de zonas de intrusión, reglas LPR y analíticas de metadatos.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--accent-purple);">
+                <h2>Central (Cerro La Cruz)</h2>
+                <div style="font-size: 12px; line-height: 1.6;">
+                    <p><b>Equipo:</b> Rocket 5AC Prism GenII</p>
+                    <p><b>Función:</b> Concentrador de señales (Punto-Multipunto).</p>
+                    <p><b>Backhaul:</b> AirFiber 5XHD hacia Sala de Monitoreo.</p>
+                    <p style="color: var(--accent-purple); font-weight: 700;">COSTO BASE CERRO: $800.000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

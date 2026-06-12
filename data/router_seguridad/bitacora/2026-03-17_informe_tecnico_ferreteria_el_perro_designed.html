@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Técnico - Ferretería El Perro - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #2D328C;
+            --accent-blue: #7c69f2; /* Pure Violet from Quotation header/table */
+            --light-blue: #5a86ff;
+            --text-dark: #1b1b4b;
+            --text-light: #666;
+            --bg-light: #f8faff;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f3f9;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20px auto;
+            background-color: var(--white);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media print {
+            body { background: none; }
+            .page-container { margin: 0; box-shadow: none; border: none; }
+            .no-print { display: none; }
+        }
+
+        /* HEADER - Matching Quotation Image */
+        header {
+            padding: 50px 70px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .header-bg-curved {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 160px;
+            background-color: var(--accent-blue);
+            border-bottom-left-radius: 100px;
+            z-index: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 40px;
+        }
+
+        .header-bg-curved h1 {
+            color: var(--white);
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            z-index: 1;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .shield-icon {
+            width: 50px;
+            height: 60px;
+            background: var(--primary-blue);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-icon::after {
+            content: '🔑';
+            font-size: 24px;
+        }
+
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 52px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* CONTACT BLOCK */
+        .client-info-section {
+            padding: 20px 70px 10px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .info-col h3 {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: black;
+            margin: 0 0 8px 0;
+        }
+
+        .info-col p {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* TABLE - Matching Quotation Table Style */
+        .content-table-container {
+            padding: 30px 70px;
+        }
+
+        .technical-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .technical-table thead tr {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            text-align: left;
+        }
+
+        .technical-table th {
+            padding: 12px 15px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: 1px solid var(--accent-blue);
+        }
+
+        .technical-table td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .technical-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* MAP/DIAGRAM SECTION */
+        .diagram-section {
+            padding: 0 70px 40px;
+        }
+
+        .diagram-title {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 15px;
+        }
+
+        .diagram-card {
+            background: var(--white);
+            border: 2px solid #f0f4ff;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .diagram-card img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+
+        /* STRATEGIC VALUE */
+        .strategic-grid {
+            padding: 0 70px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .strategic-item {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ebefff;
+        }
+
+        .strategic-item h4 {
+            color: var(--accent-blue);
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .strategic-item p {
+            font-size: 12px;
+            margin: 0;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* FOOTER - Matching Quotation Icons/Shape */
+        footer {
+            margin-top: auto;
+            padding: 40px 70px;
+            position: relative;
+        }
+
+        .footer-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 380px;
+            height: 180px;
+            background-color: var(--accent-blue);
+            border-top-right-radius: 200px;
+            z-index: 0;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .contact-info-box {
+            margin-bottom: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1b1b4b;
+        }
+
+        .contact-icon {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        /* CONTROL PANEL */
+        .no-print-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 250px;
+            z-index: 1000;
+        }
+
+        .btn-print {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-panel no-print">
+        <h2 style="font-size: 16px; margin-top: 0;">Panel de Control</h2>
+        <p style="font-size: 11px; color: #666;">Diseño optimizado para calzar con la <b>Cotización</b> de Router.</p>
+        <button onclick="window.print()" class="btn-print">Imprimir / Guardar PDF</button>
+    </div>
+
+    <div class="page-container">
+        
+        <header>
+            <div class="logo-box">
+                <div class="shield-icon"></div>
+                <div class="logo-text-group">
+                    <span class="logo-main">Router</span>
+                    <span class="logo-sub">SEGURIDAD Y TECNOLOGÍA</span>
+                </div>
+            </div>
+            <div class="header-bg-curved">
+                <h1>INFORME</h1>
+            </div>
+        </header>
+
+        <p style="text-align: right; padding-right: 70px; margin-top:-50px; color:white; position:relative; z-index:2; font-weight:700; letter-spacing:2px; font-size:14px;">TÉCNICO</p>
+
+        <div class="client-info-section">
+            <div class="info-col">
+                <h3>CONTACTO:</h3>
+                <p>FERRETERÍA EL PERRO (LEBU)</p>
+            </div>
+            <div class="info-col" style="text-align: right;">
+                <h3>INFORMACIÓN:</h3>
+                <p>FECHA: 17-03-2026</p>
+            </div>
+        </div>
+
+        <div class="content-table-container" style="padding-bottom: 0;">
+            <table class="technical-table">
+                <thead>
+                    <tr>
+                        <th width="40">NO</th>
+                        <th>EQUIPO / INFRAESTRUCTURA</th>
+                        <th width="100">CANTIDAD</th>
+                        <th>DETALLE TÉCNICO Y PROPÓSITO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>NVR CENTRAL 32 CANALES</td>
+                        <td>1 UNIDAD</td>
+                        <td>Cerebro del sistema. Capacidad total de 32 canales. Con 19 cámaras actuales, el sistema mantiene una reserva del 40% (13 canales libres) para futuras expansiones sin cambiar hardware.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>CÁMARAS EXTERIOR 4MP QHD</td>
+                        <td>5 UNIDADES</td>
+                        <td>Vigilancia perimetral disuasiva. Alta resolución para identificación de vehículos y peatones mediante zoom digital.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>CÁMARA ACCESO 5MP ULTRA HD</td>
+                        <td>1 UNIDAD</td>
+                        <td>Resolución máxima para <b>Detección de Rostros</b> mediante la I.A. nativa del NVR en el punto de ingreso.</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>CÁMARAS TÉCNICAS (4MP)</td>
+                        <td>2 UNIDADES</td>
+                        <td>Ubicación crítica en <b>Cajas</b>. Enfoque de alta fidelidad para supervisión de transacciones de dinero.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>CÁMARAS OPERATIVAS (2MP)</td>
+                        <td>11 UNIDADES</td>
+                        <td>Distribuidas en Pasillos, Oficinas y Bodegas para supervisión operativa y seguridad general.</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>SWITCHES PoE GIGABIT</td>
+                        <td>3 UNIDADES</td>
+                        <td>Segmentación por niveles (1 por piso). Permite una instalación limpia con un solo cable troncal por nivel.</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>GABINETE RACK 6U / 9U</td>
+                        <td>1 SISTEMA</td>
+                        <td>Centralización y protección del NVR y switches contra polvo y accesos no autorizados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="diagram-section" style="padding-top: 20px;">
+            <div class="diagram-title">Arquitectura de Red y Funcionamiento</div>
+            <p style="font-size: 13px; color: var(--text-light); margin-bottom: 20px;">
+                La propuesta utiliza tecnología <b>IP Pura</b>. Los switches PoE por nivel reducen el ductaje visible y mejoran la estética, concentrando los datos hacia el NVR central protegido en Rack.
+            </p>
+            <div class="diagram-card">
+                <img src="system_architecture_diagram_1773792332948.png" alt="Esquema Técnico">
+            </div>
+        </div>
+
+        <div class="strategic-grid" style="padding-bottom: 30px;">
+            <div class="strategic-item">
+                <h4>Escalabilidad Total</h4>
+                <p>El uso de un NVR de 32 canales garantiza que la inversión actual sea duradera, permitiendo agregar más cámaras en el futuro de forma instantánea.</p>
+            </div>
+            <div class="strategic-item">
+                <h4>Eficiencia Estética</h4>
+                <p>La segmentación por pisos asegura que la instalación sea minimalista, evitando el paso masivo de cables por las áreas visibles del local comercial.</p>
+            </div>
+            <div class="strategic-item">
+                <h4>IA y Detección</h4>
+                <p>No solo grabamos video: procesamos metadatos para reconocimiento facial y detección inteligente, reduciendo el tiempo de búsqueda ante incidentes.</p>
+            </div>
+        </div>
+
+        <div class="observaciones-section" style="padding: 0 70px 40px;">
+            <div class="diagram-title">Recomendación Crítica</div>
+            <div style="background: #fff4f4; border: 1px solid #ffebeb; padding: 20px; border-radius: 12px; font-size: 13px;">
+                <b>Respaldo Eléctrico (UPS):</b> Para asegurar la continuidad en cortes de energía, se propone definir el modelo de UPS adecuado una vez evaluada la carga real post-instalación. Esto elimina "puntos ciegos" durante fallas eléctricas.
+            </div>
+        </div>
+
+        <div class="footer-shape"></div>
+        <footer>
+            <div class="footer-content">
+                <div class="contact-info-box">
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>+56978589090</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span>mari.ricardo@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>PEREZ 672, LEBU</span>
+                    </div>
+                </div>
+                <div style="height: 2px; background: #eee; width: 100px; margin-bottom: 30px;"></div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

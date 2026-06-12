@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización Servicios de Seguridad - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1f71;
+            --secondary: #2a3eb1;
+            --accent: #00d4ff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* Glassmorphism Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .brand h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 2px;
+        }
+
+        .brand p {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .doc-info {
+            text-align: right;
+        }
+
+        .doc-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .doc-info p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Content Sections */
+        .content {
+            padding: 25px 40px;
+        }
+
+        .client-info {
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .client-info h3 {
+            font-size: 14px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .client-info p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Table Style */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .items-table th {
+            text-align: left;
+            padding: 15px;
+            background-color: #f9fafb;
+            border-bottom: 2px solid var(--border);
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            letter-spacing: 0.05em;
+        }
+
+        .items-table td {
+            padding: 8px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .item-desc {
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .item-subtext {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .price-col {
+            text-align: right;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .qty-col {
+            text-align: center;
+        }
+
+        /* Total Box */
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .totals-box {
+            width: 300px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .total-row.grand-total {
+            border-top: 2px solid var(--primary);
+            margin-top: 5px;
+            padding-top: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .footer {
+            padding: 15px 40px;
+            background: #f9fafb;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terms {
+            font-size: 11px;
+            color: var(--text-light);
+            max-width: 60%;
+        }
+
+        /* Buttons */
+        .actions {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(26, 31, 113, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            @page {
+                size: letter;
+                margin: 0.5cm;
+            }
+            .actions { display: none; }
+            body { 
+                padding: 0; 
+                background: white; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
+            .container { 
+                box-shadow: none; 
+                border: 1px solid #eee; 
+                max-width: 100%; 
+                margin: 0;
+                height: auto;
+            }
+            /* Garantizar que no salte de página */
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                background: #f9fafb !important;
+            }
+            .content {
+                padding: 20px 40px;
+            }
+            .header {
+                padding: 30px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="actions">
+    <button onclick="window.print()" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        IMPRIMIR / PDF
+    </button>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="header-top">
+            <div class="brand">
+                <h1>Router</h1>
+                <p>Ingeniería en Seguridad & Conectividad Inteligente</p>
+            </div>
+            <div class="doc-info">
+                <h2>Cotización de Servicios</h2>
+                <p>N° 2026-0424-01</p>
+                <p>Fecha: 24 de Abril, 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="client-info">
+            <div>
+                <h3>Cliente</h3>
+                <p>Unión Comunal de Adulto Mayor Lebu (UCAM)</p>
+                <p style="font-size: 14px; color: var(--text-light);">Directiva Regional</p>
+            </div>
+            <div style="text-align: right;">
+                <h3>Validez</h3>
+                <p>15 Días Corridos</p>
+            </div>
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Descripción del Servicio / Producto</th>
+                    <th class="qty-col">Cant.</th>
+                    <th class="price-col">Unitario</th>
+                    <th class="price-col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="item-desc">Mantenimiento Correctivo Cámara IP</span>
+                        <span class="item-subtext">Reparación técnica de hardware y restablecimiento de enlace.</span>
+                    </td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">$33.000</td>
+                    <td class="price-col">$33.000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="item-desc">Reparación y Configuración Cámara Interior</span>
+                        <span class="item-subtext">Ajuste de parámetros, enfoque y re-vinculación al sistema central.</span>
+                    </td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">$15.000</td>
+                    <td class="price-col">$15.000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="item-desc">Suministro e Instalación Cámara IP Exterior</span>
+                        <span class="item-subtext">Cámara IP Alta Definición, cableado UTP outdoor y montaje técnico.</span>
+                    </td>
+                    <td class="qty-col">2</td>
+                    <td class="price-col">$70.000</td>
+                    <td class="price-col">$140.000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="item-desc">Configuración de Sistema General (VMS)</span>
+                        <span class="item-subtext">Optimización de grabaciones, usuarios y acceso remoto móvil.</span>
+                    </td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">$30.000</td>
+                    <td class="price-col">$30.000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="item-desc">Limpieza Técnica y Mantenimiento Preventivo</span>
+                        <span class="item-subtext">Limpieza de lentes, revisión de conectores y estanqueidad en cámaras existentes.</span>
+                    </td>
+                    <td class="qty-col">1</td>
+                    <td class="price-col">$25.000</td>
+                    <td class="price-col">$25.000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="totals-section">
+            <div class="totals-box">
+                <div class="total-row">
+                    <span>Subtotal Neto</span>
+                    <span>$243.000</span>
+                </div>
+                <div class="total-row">
+                    <span>IVA (19%)</span>
+                    <span>$46.170</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total</span>
+                    <span>$289.170</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="terms">
+            <p><strong>Términos y Condiciones:</strong></p>
+            <p>• Los precios expresados son en Pesos Chilenos (CLP).</p>
+            <p>• Plazo de ejecución: 3 días hábiles tras aprobación.</p>
+            <p>• Garantía de instalación: 6 meses sobre mano de obra.</p>
+        </div>
+        <div style="text-align: right;">
+            <p style="font-weight: 700; color: var(--primary);">Router Seguridad</p>
+            <p style="font-size: 12px; color: var(--text-light);">Lebu, Región del Biobío</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

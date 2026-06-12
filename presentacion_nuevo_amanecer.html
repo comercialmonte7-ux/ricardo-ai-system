@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Interactiva: Cuidando Nuestra Sede | Club Adulto Mayor Nuevo Amanecer</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #12151b;
+            --bg-charcoal: #1c2129;
+            --bg-light: #f5f5f3;
+            --text-dark: #0f172a;
+            --text-light: #f8fafc;
+            --text-muted: #64748b;
+            --orange: #ea580c;
+            --terracotta: #9a3412;
+            --border-light: #e2e8f0;
+            --border-dark: rgba(255, 255, 255, 0.08);
+            --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+            --sidebar-width: 320px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: rgba(28, 33, 41, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-dark);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .project-title-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .badge-gore {
+            background-color: rgba(234, 88, 12, 0.15);
+            color: #ff9d6e;
+            border: 1px solid rgba(234, 88, 12, 0.3);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .top-bar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .top-bar-controls {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid var(--border-dark);
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--orange);
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--terracotta);
+            border-color: var(--terracotta);
+        }
+
+        /* Presentation Workspace Layout */
+        .workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 53px);
+            overflow: hidden;
+        }
+
+        /* Slide Viewport Frame */
+        .slide-viewport-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: var(--bg-dark);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-light);
+            font-size: calc(16px * var(--scale-factor, 1));
+            border-radius: 16px;
+            box-shadow: var(--shadow-premium);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #slideContainer:fullscreen {
+            width: var(--fs-width, 100vw) !important;
+            height: var(--fs-height, 100vh) !important;
+            max-width: none !important;
+            max-height: none !important;
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        /* Side notes Panel */
+        .notes-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-charcoal);
+            border-left: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            z-index: 50;
+        }
+
+        .notes-sidebar.collapsed {
+            width: 0;
+            border-left-width: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .notes-timer {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--orange);
+            background: rgba(234, 88, 12, 0.08);
+            border: 1px solid rgba(234, 88, 12, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        .notes-content {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #d1d5db;
+        }
+
+        .notes-preview-box {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border-dark);
+            background: rgba(0,0,0,0.15);
+        }
+
+        .notes-preview-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .notes-preview-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Floating Nav Controls Overlay */
+        .slide-nav-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 21, 27, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-dark);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 80;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .nav-info {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--orange);
+        }
+
+        .nav-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Slide Template Layouts */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 2.2em 3.5em 1.8em 3.5em;
+            flex-direction: column;
+            justify-content: flex-start;
+            transition: all 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Slide Theme Colors */
+        .slide.theme-dark {
+            background-color: var(--bg-charcoal);
+            color: var(--text-light);
+        }
+
+        .slide.theme-light {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Slide Header styles */
+        .slide-header {
+            margin-bottom: 1.25em;
+            position: relative;
+            padding-bottom: 0.8em;
+        }
+
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--terracotta);
+        }
+
+        .slide.theme-dark .slide-header::after {
+            background: var(--orange);
+        }
+
+        .slide-badge {
+            font-size: 0.95em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 0.25em;
+        }
+
+        .slide.theme-dark .slide-badge {
+            color: var(--orange);
+        }
+
+        .slide-title {
+            font-size: 2.75em;
+            font-weight: 800;
+        }
+
+        /* Layout Grids */
+        .slide-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5em;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .grid-2col {
+            grid-template-columns: 1.1fr 0.9fr;
+        }
+
+        .grid-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4col {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        /* Custom Visual Cards */
+        .slide-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 1.5em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-light);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slide-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--text-muted);
+        }
+
+        .slide-card.accent-terracotta::before { background-color: var(--terracotta); }
+        .slide-card.accent-orange::before { background-color: var(--orange); }
+        .slide-card.accent-charcoal::before { background-color: var(--bg-charcoal); }
+
+        .slide.theme-dark .slide-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-dark);
+            box-shadow: none;
+        }
+
+        .card-title {
+            font-size: 1.55em;
+            font-weight: 700;
+            margin-bottom: 0.75em;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .card-title {
+            color: var(--text-light);
+        }
+
+        .card-title.color-terracotta { color: var(--terracotta); }
+        .card-title.color-orange { color: var(--orange); }
+
+        .slide-card p, .slide-card ul {
+            font-size: 1.15em;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .slide-card p, .slide.theme-dark .slide-card ul {
+            color: #94a3b8;
+        }
+
+        .slide-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+        }
+
+        .slide-card ul li {
+            position: relative;
+            padding-left: 1.5em;
+        }
+
+        .slide-card ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* Image Display Layouts */
+        .photo-card {
+            border-radius: 12px;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background-color: #e2e8f0;
+        }
+
+        .photo-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--orange);
+            z-index: 10;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Animations & Entry States */
+        .slide-viewport-wrapper .slide-container * {
+            backface-visibility: hidden;
+        }
+
+        .animate-fade {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active .animate-fade {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* SVG Doughnut Chart */
+        .doughnut-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .doughnut-chart {
+            transform: rotate(-90deg);
+            width: 11.25em;
+            height: 11.25em;
+        }
+
+        .chart-segment {
+            transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1);
+            stroke-dashoffset: var(--dashoffset);
+        }
+
+        .slide.active .chart-segment {
+            stroke-dashoffset: 0;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75em;
+            justify-content: center;
+            padding-left: 1em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .legend-color {
+            width: 0.875em;
+            height: 0.875em;
+            border-radius: 0.25em;
+        }
+
+        /* Animated Bar Chart */
+        .bar-chart-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 11.25em;
+            width: 100%;
+            padding: 0 1em;
+            border-bottom: 0.125em solid var(--border-light);
+            margin-bottom: 1.5em;
+            margin-top: 1em;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+
+        .bar-fill {
+            width: 3.125em;
+            height: 0;
+            background-color: var(--text-muted);
+            border-radius: 0.375em 0.375em 0 0;
+            transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .bar-fill.bg-orange { background-color: var(--orange); }
+        .bar-fill.bg-terracotta { background-color: var(--terracotta); }
+
+        .slide.active .bar-fill {
+            height: var(--height);
+        }
+
+        .bar-value {
+            margin-bottom: 0.5em;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .bar-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 0.5em;
+            color: var(--text-muted);
+        }
+
+        /* Interactive FAQ Accordions */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25em;
+        }
+
+        .faq-item {
+            background-color: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5em;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 0.125em 0.5em rgba(0,0,0,0.02);
+        }
+
+        .faq-item:hover {
+            border-color: var(--orange);
+            transform: translateY(-1px);
+        }
+
+        .faq-q {
+            padding: 0.9em 1.25em;
+            font-weight: 700;
+            font-size: 1.2em;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.01);
+        }
+
+        .faq-q::after {
+            content: '+';
+            font-weight: bold;
+            color: var(--orange);
+            font-size: 1.3em;
+            transition: transform 0.2s;
+        }
+
+        .faq-item.expanded .faq-q::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s;
+            padding: 0 1.25em;
+            font-size: 1.05em;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .faq-item.expanded .faq-a {
+            max-height: 10em;
+            padding: 0.8em 1.25em 1.1em 1.25em;
+            border-top: 0.0625em solid var(--border-light);
+        }
+
+        /* Cover Slide Graphics */
+        .cover-visual {
+            border-left: 6px solid var(--terracotta);
+            padding-left: 2em;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+        }
+
+        .btn-notes-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+        }
+
+        /* Slide 18 Custom Socials and Promo styling */
+        .social-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6em;
+            margin-top: 0.8em;
+        }
+
+        .social-link-card {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.8em;
+            padding: 0.7em 1.2em;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--border-light);
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .slide.theme-dark .social-link-card {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        .social-link-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--orange);
+            background: rgba(234, 88, 12, 0.05);
+        }
+
+        .social-link-card svg {
+            width: 1.25em;
+            height: 1.25em;
+            fill: currentColor;
+        }
+
+        .promo-highlight-box {
+            background: rgba(234, 88, 12, 0.06);
+            border: 1px dashed var(--orange);
+            border-radius: 10px;
+            padding: 1em 1.2em;
+            margin-top: 1.2em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-tag {
+            background: var(--orange);
+            color: white;
+            font-size: 0.75em;
+            font-weight: 800;
+            padding: 0.25em 0.6em;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 0.4em;
+        }
+
+        .promo-title {
+            font-size: 1.15em;
+            font-weight: 800;
+            color: var(--terracotta);
+            margin-bottom: 0.25em;
+        }
+
+        .slide.theme-dark .promo-title {
+            color: var(--orange);
+        }
+
+        .promo-desc {
+            font-size: 0.95em;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+
+        .slide.theme-dark .promo-desc {
+            color: #cbd5e1;
+        }
+
+        .promo-contact {
+            margin-top: 0.6em;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-weight: 700;
+            font-size: 1em;
+            color: #16a34a; /* WhatsApp Green */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header bar -->
+    <div class="top-bar">
+        <div class="project-title-area">
+            <span class="badge-gore">FNDR 8% GORE Biobío</span>
+            <span class="top-bar-title">Cuidando Nuestra Sede (Código 2024SC0126)</span>
+        </div>
+        <div class="top-bar-controls">
+            <button class="btn btn-notes-toggle" id="notesToggleBtn" onclick="toggleNotesSidebar()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Modo Presentador
+            </button>
+            <button class="btn btn-primary" onclick="openPowerPoint()">
+                Descargar PPTX
+            </button>
+        </div>
+    </div>
+
+    <!-- Presentation Viewport Workspace -->
+    <div class="workspace">
+        <div class="slide-viewport-wrapper">
+            <div class="slide-container" id="slideContainer">
+                
+                <!-- SLIDE 1: Portada (Dark charcoal) -->
+                <div class="slide theme-dark" id="slide-1" data-notes="Muy buenas tardes a todos los socios y socias de nuestro Club de Adulto Mayor Nuevo Amanecer, a nuestra directiva y a los representantes del GORE Biobío. Es un orgullo presentarles de forma oficial y detallada el cierre del proyecto 'Cuidando Nuestra Sede', código 2024SC0126, financiado por el GORE Biobío y desarrollado por nuestra empresa Router.">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <div class="cover-visual animate-fade">
+                            <span style="font-size: 1.15em; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em;">Fondo Seguridad Ciudadana</span>
+                            <h1 style="font-size: 4.2em; font-weight: 800; line-height: 1.1; margin-bottom: 0.5em; letter-spacing: -0.02em;">CUIDANDO<br><span style="color: var(--orange);">NUESTRA SEDE</span></h1>
+                            <p style="font-size: 1.55em; color: #94a3b8; font-weight: 400; margin-bottom: 2em;">Club de Adulto Mayor Nuevo Amanecer</p>
+                            <div style="margin-top: 1em;">
+                                <p style="font-size: 1.2em; font-weight: 700; color: #ffffff;">ROUTER &bull; Seguridad y Conectividad</p>
+                                <p style="font-size: 1.05em; color: #64748b;">Presentan: Ricardo Mari & Ivan Santos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: El Camino Hacia la Seguridad (Light Background) -->
+                <div class="slide theme-light" id="slide-2" data-notes="Todo gran proyecto nace de una necesidad sentida por la comunidad. En nuestro Club de Adulto Mayor, la sede es nuestro segundo hogar. El anhelo de reunirnos con tranquilidad, de realizar talleres sin miedo a robos en la sede y de proteger nuestro equipamiento, fue el motor principal. Nos dimos cuenta de que podíamos marcar una gran diferencia utilizando la tecnología a nuestro favor de forma organizada.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Origen del Proyecto</div>
+                        <h2 class="slide-title">El Sueño de una Sede Más Segura</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">La Necesidad Comunitaria</h3>
+                            <ul style="margin-top: 1em;">
+                                <li>Proteger la sede social, punto de encuentro clave para nuestros adultos mayores.</li>
+                                <li>Implementar disuasión efectiva frente a robos e ingresos no autorizados.</li>
+                                <li>Consolidar la organización del club a través de la capacitación y tecnología de seguridad.</li>
+                                <li>Proveer un entorno seguro para talleres, reuniones y actividades recreativas.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_playground.jpg" alt="Sede Club Nuevo Amanecer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: La Postulación y la Larga Espera (Light Background) -->
+                <div class="slide theme-light" id="slide-3" data-notes="Postulamos en abril de 2024. La espera administrativa del Gobierno Regional fue bastante larga y generó inquietud. En todo momento, el equipo técnico y de ingeniería de Router estuvo al lado de la directiva y los socios, explicando los plazos administrativos y manteniendo la calma. Esto cimentó una tremenda confianza que nos permitió presentar documentación ágilmente cuando el GORE exigió nuevos requisitos de última hora. Los fondos se adjudicaron a fines de 2025 y se transfirieron en Enero de 2026.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Cronología de Adjudicación</div>
+                        <h2 class="slide-title">Crónica de un Logro: Postulación y Espera</h2>
+                    </div>
+                    <div class="slide-body grid-3col">
+                        <div class="slide-card accent-charcoal animate-fade delay-1">
+                            <h3 class="card-title">1. Postulación (2024)</h3>
+                            <p style="margin-top: 0.5em;">En Abril de 2024, el Club de Adulto Mayor Nuevo Amanecer formaliza la postulación al fondo de Seguridad Ciudadana FNDR 8%.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Comienza el largo proceso administrativo de revisión por el Gobierno Regional.</p>
+                        </div>
+                        <div class="slide-card accent-terracotta animate-fade delay-2">
+                            <h3 class="card-title color-terracotta">2. La Larga Espera</h3>
+                            <p style="margin-top: 0.5em;">Retrasos gubernamentales extienden la espera hasta fines de 2025.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Router actúa como soporte técnico constante, aclarando plazos y dando tranquilidad a la directiva.</p>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-3">
+                            <h3 class="card-title color-orange">3. Adjudicación y Éxito</h3>
+                            <p style="margin-top: 0.5em;">La confianza en Router permite aportar documentación ágilmente ante nuevos requisitos exigidos por el GORE a última hora.</p>
+                            <p style="margin-top: 0.5em; color: var(--text-muted);">Fondos aprobados a fines de 2025 y transferidos en Enero de 2026.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 4: Composición y Distribución del Fondo (Light Background) -->
+                <div class="slide theme-light" id="slide-4" data-notes="Este proyecto fue financiado con un monto total ejecutado de $3.900.000 pesos chilenos. Siguiendo las directrices del GORE Biobío, el presupuesto se dividió de manera óptima para maximizar el resguardo técnico de nuestra sede social. El 82.1%, correspondiente a $3.200.000, se destinó íntegramente a la adquisición de la tecnología de vigilancia e instalación física. El 10.3% financió los gastos generales del proyecto, que incluyen coffee breaks para nuestras charlas, materiales de librería y el letrero de difusión obligatorio. Finalmente, el 7.6% restante financió la capacitación técnica a cargo del experto Iván Santos.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Presupuesto FNDR</div>
+                        <h2 class="slide-title">¿Cómo se Invirtieron los Recursos del Fondo?</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Distribución del Fondo ($3.900.000)</h3>
+                            <ul style="margin-top: 0.5em;">
+                                <li><strong>EQUIPAMIENTO (82.1%):</strong> $3.200.000 CLP. Adquisición e instalación de las 8 cámaras IP, grabador NVR, disco duro y cableado.</li>
+                                <li><strong>GASTOS GENERALES (10.3%):</strong> $400.000 CLP. Coffee breaks/colaciones ($150.000), artículos de librería ($100.000) y letrero de difusión obligatorio ($150.000).</li>
+                                <li><strong>RECURSOS HUMANOS (7.6%):</strong> $300.000 CLP. Honorarios del profesional Iván Santos a cargo de la capacitación comunitaria.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="display: flex; flex-direction: row; gap: 1em; align-items: center;">
+                            <div class="doughnut-wrapper">
+                                <svg width="180" height="180" viewBox="0 0 36 36" class="doughnut-chart">
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e2e8f0" stroke-width="4"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--terracotta)" stroke-width="4" stroke-dasharray="82.1 17.9" stroke-dashoffset="25" class="chart-segment"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="10.3 89.7" stroke-dashoffset="-57.1" class="chart-segment"></circle>
+                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#64748b" stroke-width="4" stroke-dasharray="7.6 92.4" stroke-dashoffset="-67.4" class="chart-segment"></circle>
+                                </svg>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: var(--terracotta);"></span>
+                                    <span>Equipamiento (82.1%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: var(--orange);"></span>
+                                    <span>Gastos Generales (10.3%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #64748b;"></span>
+                                    <span>R. Humanos (7.6%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 5: Capacitación y Prevención (Talleres) (Light Background) -->
+                <div class="slide theme-light" id="slide-5" data-notes="Para asegurar que la tecnología sea realmente útil, se contempló la capacitación a los socios. Estas actividades estuvieron a cargo de don Iván Santos, ingeniero en informática y experto en seguridad ($300.000 CLP en total). Su rol fue educar a los adultos mayores en el autocuidado, prevención y uso legal y responsable de las grabaciones del sistema, acompañando las charlas con coffee breaks y materiales de librería financiados por el fondo.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Factor Humano y Social</div>
+                        <h2 class="slide-title">El Factor Humano: Capacitación y Prevención</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Charlas de Seguridad y Prevención</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Experto Técnico a Cargo:</strong> Ingeniero de Ejecución en Informática e instalador Iván Santos ($300.000 CLP en total).</li>
+                                <li><strong>Capacitación Comunitaria:</strong> Charlas formativas enfocadas en autocuidado, prevención del delito en el entorno de la sede y uso responsable del sistema de grabaciones.</li>
+                                <li><strong>Cohesión y Participación:</strong> Asistencia masiva de los socios, acompañada de coffee breaks y materiales de librería para las dinámicas grupales.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/vecinos_alessandri.png" alt="Socios del club en capacitación">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 6: Equipamiento Tecnológico Adquirido (Light Background) -->
+                <div class="slide theme-light" id="slide-6" data-notes="Seleccionamos cámaras IP Bullet de calidad profesional con una resolución de 4 Megapíxeles, que brindan imágenes de alta definición. Cuentan con visión nocturna inteligente Smart Hybrid Light, micrófonos integrados para audio de seguridad, y chasis metálico con certificación IP67 contra la intemperie. Todo el cableado es blindado de cobre puro Categoría 6, conectado a un grabador NVR con disco duro de 2TB especial para televigilancia continua, evitando pérdidas de rendimiento.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Ficha Técnica de Equipos</div>
+                        <h2 class="slide-title">Equipamiento Tecnológico de Alta Gama</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cámaras IP Bullet Professional</h3>
+                            <ul style="margin-top: 0.5em;">
+                                <li><strong>4 Megapíxeles:</strong> Imágenes de altísima definición y nitidez en salones y accesos.</li>
+                                <li><strong>Smart Hybrid Light:</strong> Visión nocturna inteligente con alcance infrarrojo.</li>
+                                <li><strong>Micrófono Incorporado:</strong> Captación de audio de seguridad en puntos clave.</li>
+                                <li><strong>Certificación IP67:</strong> Resistencia absoluta a humedad y climas severos.</li>
+                                <li><strong>NVR Profesional:</strong> Grabación local centralizada con disco duro de 2TB de alta resistencia.</li>
+                                <li><strong>Switch POE Gigabit:</strong> Alimentación estable y datos por un único cable físico CAT6.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_camera_red_wall.jpg" alt="Cámara de Seguridad Profesional">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 7: Una Instalación Única: Diseño Local Sin Streaming (Light Background) -->
+                <div class="slide theme-light" id="slide-7" data-notes="Una característica muy importante del proyecto es que la instalación es local. Al concentrar las 8 cámaras dentro y en el perímetro inmediato de la sede social, no tuvimos la necesidad de utilizar tecnología de streaming o radioenlaces inalámbricos a gran distancia como en otras poblaciones. Todo se conecta por cable físico de red de alta velocidad al NVR local, lo que hace al sistema mucho más robusto, inmune a las lluvias de Lebu y libre de cualquier cobro por enlaces de datos externos.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Infraestructura de Red</div>
+                        <h2 class="slide-title">Diseño Técnico Local: Cero Streaming</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Red e Infraestructura Local</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>8 Cámaras de Seguridad IP:</strong> Instalación física 100% concentrada en el edificio de la sede social.</li>
+                                <li><strong>Cero Radioenlaces / Streaming:</strong> Al estar todos los equipos dentro del mismo inmueble, no se requirió tecnología streaming de transmisión inalámbrica a grandes distancias.</li>
+                                <li><strong>Conectividad Directa y Segura:</strong> Enlaces digitales físicos vía cableado estructurado CAT6 al NVR central.</li>
+                                <li><strong>Mayor Robustez:</strong> Sistema inmune a interferencias climáticas externas y sin costos de enlaces ni suscripciones.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/red_streaming.png" alt="Esquema de Red Local Sede">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 8: Mapa de Ubicación: Cobertura Vecinal (Light Background) -->
+                <div class="slide theme-light" id="slide-8" data-notes="Este es el mapa oficial de distribución de nuestras 8 cámaras de seguridad en la sede social. Como pueden ver, se cubren de manera exhaustiva todos los puntos de interés: accesos, salones, áreas comunes, cocina y patio de luz. De esta forma, evitamos que queden zonas vulnerables y protegemos de manera eficiente el espacio donde se guardan los insumos de los talleres del club.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Mapa de Cobertura</div>
+                        <h2 class="slide-title">Distribución de Cámaras: Cobertura Interna</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Resguardo de la Sede Social</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>8 Cámaras de Seguridad IP:</strong> Distribuidas estratégicamente para cubrir los accesos principales de la sede social y perímetros vulnerables.</li>
+                                <li><strong>Sectores Protegidos:</strong> Monitoreo del salón de reuniones, accesos frontales, cocina, áreas comunes y patio interior.</li>
+                                <li><strong>Cero Puntos Ciegos en Sede:</strong> Permite a la directiva y socios tener un control integral del recinto para el cuidado de los insumos y la infraestructura.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/mapa_camaras.jpg" alt="Mapa de distribución de cámaras en sede">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 9: Visualización en Vivo: Áreas Comunes (Light Background) -->
+                <div class="slide theme-light" id="slide-9" data-notes="Para el monitoreo del sistema, instalamos una pantalla local de forma segura en la sede, y configuramos la aplicación en los teléfonos de la directiva y socios autorizados por la directiva. Esto les permite revisar las cámaras en vivo y grabaciones históricas de forma remota y segura, con tecnología P2P sin costos de servicio.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Visualización en Vivo</div>
+                        <h2 class="slide-title">Monitoreo en Tiempo Real: Áreas de la Sede</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Infraestructura Local Monitoreada</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Visualización en Sede:</strong> Pantalla local instalada de manera segura para monitoreo del recinto.</li>
+                                <li><strong>Calidad de Imagen HD:</strong> Imágenes diurnas y nocturnas con gran nitidez en pasillos y accesos.</li>
+                                <li><strong>Visualización Móvil P2P:</strong> Acceso configurado en los teléfonos inteligentes de la directiva autorizada.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2" style="display: flex; flex-direction: column; gap: 0.5em; align-items: stretch; justify-content: flex-start; height: 100%;">
+                            <!-- Dynamic Gallery Tabs -->
+                            <div class="gallery-tabs" style="display: flex; gap: 0.25em; background: var(--border-light); padding: 0.25em; border-radius: 8px;">
+                                <button class="gallery-tab active" onclick="switchCameraFeed(this, 'vista_parque.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: var(--orange); color: white; transition: all 0.2s ease;">Acceso</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_1.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">Salón</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_2.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">Cocina</button>
+                                <button class="gallery-tab" onclick="switchCameraFeed(this, 'vista_camaras_3.jpg')" style="flex: 1; padding: 0.4em 0.25em; border: none; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-dark); transition: all 0.2s ease;">Perímetro</button>
+                            </div>
+                            <div onclick="openCameraLightbox()" style="flex: 1; border-radius: 8px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative; min-height: 250px; cursor: pointer;" title="Hacer clic para pantalla completa">
+                                <img id="camera-feed-img" src="./images/vista_parque.jpg" alt="Acceso Sede" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s ease;">
+                                <!-- Hover Zoom Overlay -->
+                                <div style="position: absolute; bottom: 0.75em; right: 0.75em; background: rgba(0,0,0,0.65); padding: 0.4em 0.6em; border-radius: 6px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15); color: white; font-size: 0.9em; font-weight: 600; gap: 0.35em; pointer-events: none;">
+                                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" style="vertical-align: middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    Ampliar Vista
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 10: Claridad Tecnológica: ¿Por qué No Leen Patentes? (Light Background) -->
+                <div class="slide theme-light" id="slide-10" data-notes="Queremos hacer una aclaración técnica para ser 100% transparentes: estas cámaras NO tienen lector de patentes automático. Un lector de patentes homologado (tecnología LPR) cuesta hasta 10 veces más que una cámara IP Bullet estándar. Si hubiésemos elegido LPR, el presupuesto solo nos habría alcanzado para vigilar el portón de la sede social, dejando el salón de reuniones, la cocina y los perímetros desprotegidos. Al elegir cámaras estándar de 4MP de alta definición, pudimos colocar 8 cámaras y proteger la sede completa.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Límites Técnicos del Proyecto</div>
+                        <h2 class="slide-title">Transparencia: Límites Técnicos del Equipamiento</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cámaras 4 Megapíxeles Adquiridas</h3>
+                            <p style="margin-bottom: 1em; font-weight: 600;">Cobertura local completa para el resguardo de la sede.</p>
+                            <ul>
+                                <li>Registran imagen general y movimiento 24/7 en alta definición.</li>
+                                <li>Alta resolución permite discernir modelos de autos, colores y rostros.</li>
+                                <li>Priorizan proteger todo el recinto social del club.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Lector de Patentes (Tecnología LPR)</h3>
+                            <p style="margin-bottom: 1em; font-weight: 600; color: var(--orange)">NO incluido en este proyecto.</p>
+                            <ul>
+                                <li>Un solo sistema LPR real y homologado de lectura automatizada cuesta 10 veces más.</li>
+                                <li>Elegir LPR habría limitado la vigilancia a una sola zona exterior del recinto.</li>
+                                <li>Dejando el interior y accesos clave sin resguardo técnico.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 11: Grabación y Almacenamiento Optimizado (Light Background) -->
+                <div class="slide theme-light" id="slide-11" data-notes="¿Cómo funciona el almacenamiento de las grabaciones? El grabador NVR cuenta con un disco duro de 2 Terabytes de alta resistencia. Técnicamente, las cámaras podrían grabar hasta 15 días continuos en baja calidad comprimida. Decidimos configurarlas para almacenar exactamente 5 días de historial. Esto nos permite grabar en la máxima definición de los lentes sin ralentizaciones, garantizando que el video sirva como evidencia nítida e indiscutible si ocurre algún hecho en la sede social.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Estrategia de Almacenamiento</div>
+                        <h2 class="slide-title">Estrategia de Grabación para Máxima Utilidad</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Calidad sobre Cantidad de Días</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Disco de Televigilancia (2TB):</strong> Unidad local redundante 24/7 instalada en NVR.</li>
+                                <li><strong>Ajuste de Router:</strong> Grabar exactamente los últimos 5 días históricos de video.</li>
+                                <li><strong>Máxima Nitidez:</strong> Priorizar los FPS (Fotogramas) y la alta tasa de bits del sensor para que el video sirva como evidencia real ante incidentes.</li>
+                                <li><strong>Evidencia Útil:</strong> Pruebas de grabación y almacenamiento local completadas con éxito.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="display: flex; flex-direction: column; justify-content: center;">
+                            <div class="bar-chart-container">
+                                <div class="bar-group">
+                                    <div class="bar-value" style="color: var(--orange)">95%</div>
+                                    <div class="bar-fill bg-orange" style="--height: 120px;"></div>
+                                    <div class="bar-label">Configurado: 5 Días</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar-value" style="color: var(--text-muted)">30%</div>
+                                    <div class="bar-fill bg-terracotta" style="--height: 38px;"></div>
+                                    <div class="bar-label">Comprimido: 15 Días</div>
+                                </div>
+                            </div>
+                            <p style="text-align: center; font-size: 0.8em; color: var(--text-muted); font-weight: 600;">Índice de Nitidez y Utilidad del Video</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 12: Responsabilidad Local: Encargado de Cámaras (Light Background) -->
+                <div class="slide theme-light" id="slide-12" data-notes="Un sistema de seguridad en una sede comunitaria requiere una administración muy cuidadosa de los equipos. El grabador y la pantalla se resguardan en un gabinete bajo llave dentro de la sede social. La directiva del club, encabezada por nuestra Presidenta Isolda Camaño, ejerce la custodia física de los equipos, garantizando que nadie manipule la central y que se respete de forma estricta la privacidad de todas las personas.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Administración del Sistema</div>
+                        <h2 class="slide-title">Custodia de la Sede y Resguardo del Sistema</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Custodia de la Directiva</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Resguardo en Sede:</strong> La pantalla y grabador local NVR se ubican bajo llave en la sede.</li>
+                                <li><strong>Acceso Restringido:</strong> Solo la directiva y personas designadas tienen autorización de acceso físico al sistema.</li>
+                                <li><strong>Privacidad Garantizada:</strong> Custodia de las grabaciones con total confidencialidad, respetando a los socios y colindantes.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/real_neighbors.jpg" alt="Directiva del Club Nuevo Amanecer en Terreno">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 13: Protocolo de Seguridad y Privacidad (Light Background) -->
+                <div class="slide theme-light" id="slide-13" data-notes="Para resguardar el derecho a la privacidad de todos los hogares vecinos y de nuestros socios, diseñamos un protocolo transparente de acceso a las grabaciones. Las cámaras están hechas para proteger. Si un vecino o socio necesita revisar una grabación debido a un robo o daño, debe hacer una solicitud formal a la Directiva de la Junta. La directiva analizará el caso de forma confidencial y coordinará la extracción del clip para que sea enviado vía WhatsApp al afectado o entregado directamente a las policías como medio de prueba legal.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Protocolo de Privacidad</div>
+                        <h2 class="slide-title">Protocolo de Seguridad y Privacidad</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">¿Cuándo se Activa el Protocolo?</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Incidentes en Sede:</strong> Sospecha fundada o comisión de ilícitos (robos, ingresos no autorizados).</li>
+                                <li><strong>Daños a la Infraestructura:</strong> Vandalismo sobre fachadas, rejas u otras áreas de la sede.</li>
+                                <li><strong>Apoyo Legal a Vecinos:</strong> Colisiones o hechos graves en el entorno inmediato de la sede.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Límites y Reglas de Privacidad</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.8em;">
+                                <li><strong>Orientación Específica:</strong> Lentes enfocadas exclusivamente en accesos y áreas de la sede social.</li>
+                                <li><strong>Resguardo Hogareño:</strong> Calibración para evitar enfocar patios y ventanas de viviendas colindantes.</li>
+                                <li><strong>Uso Restringido:</strong> Prohibido usar grabaciones para fines recreativos, comerciales o no autorizados.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 14: Pasos Formales de Solicitud (Protocolo) (Light Background) -->
+                <div class="slide theme-light" id="slide-14" data-notes="Un detalle muy importante que debemos memorizar: el plazo máximo para solicitar una grabación es de 5 días. Debido a que el sistema sobrescribe las grabaciones antiguas para mantener la mejor calidad y fotogramas de video, si un incidente ocurre un lunes, la directiva debe recibir la solicitud antes del viernes de esa misma semana para asegurar que el video no se pierda.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Protocolo Formal</div>
+                        <h2 class="slide-title">Pasos Formales de Solicitud (Protocolo)</h2>
+                    </div>
+                    <div class="slide-body grid-4col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--terracotta);">1. Solicitud</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">El socio o vecino afectado realiza la solicitud formal a la Directiva por escrito o WhatsApp.</p>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--orange);">2. Datos</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">Especificar fecha exacta, rango de hora aproximado y la zona o cámara de interés.</p>
+                        </div>
+                        <div class="slide-card accent-charcoal animate-fade delay-3" style="padding: 1em 0.8em;">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--text-muted);">3. WhatsApp</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: var(--text-dark);">La directiva aprueba y el encargado extrae el fragmento de video, enviándolo vía WhatsApp o pendrive.</p>
+                        </div>
+                        <div class="slide-card accent-charcoal animate-fade delay-4" style="padding: 1em 0.8em; background-color: var(--bg-charcoal); border-color: var(--orange);">
+                            <h4 style="font-size: 1.25em; font-weight: 700; color: var(--orange);">Límite: 5 Días</h4>
+                            <p style="font-size: 0.95em; margin-top: 0.5em; color: #94a3b8;"><strong>IMPORTANTE:</strong> Realizar el requerimiento antes de cumplirse 5 días, o el sistema sobrescribirá el video.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 15: Aclarando Dudas Comunitarias (FAQ) (Light Background) -->
+                <div class="slide theme-light" id="slide-15" data-notes="En estas asambleas siempre surgen inquietudes lógicas. El gasto eléctrico es mínimo, y al estar conectadas al medidor de la sede social, se incorpora como parte del consumo operacional normal de luz. El sistema es propio y está pagado en su totalidad, por lo que no hay cobros mensuales ocultos ni cuotas para los socios. Los datos están resguardados físicamente en el NVR y no se suben a internet. Para garantizar la vida útil de los equipos, recomendamos una limpieza y mantención cada 3 meses.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Preguntas Frecuentes</div>
+                        <h2 class="slide-title">Aclarando Dudas Frecuentes (FAQ)</h2>
+                    </div>
+                    <div class="slide-body" style="grid-template-columns: 1fr;">
+                        <div class="faq-grid">
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Quién financia el costo eléctrico?</div>
+                                <div class="faq-a">Costo mensual aproximado de $1.200 de electricidad por cámara. Este consumo es sumamente bajo y se incorpora como parte del consumo operacional normal de luz de la sede social.</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Se transmiten por Internet pública?</div>
+                                <div class="faq-a">No. El sistema es completamente local y físico dentro de la sede social. El almacenamiento de las grabaciones es local y no se suben clips de video a nubes públicas ni redes de libre acceso.</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Tiene costo mensual para el socio?</div>
+                                <div class="faq-a">No. El fondo FNDR financió la instalación y los equipos. Se entrega en propiedad de la Junta del Club libre de cuotas fijas mensuales ($0 de mantención obligatoria).</div>
+                            </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-q">¿Cada cuánto tiempo es la mantención?</div>
+                                <div class="faq-a">Recomendamos mantenciones preventivas cada 3 meses para limpiar las ópticas de las cámaras, revisar soportes físicos, cableados y verificar el correcto funcionamiento del disco de almacenamiento.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 16: Garantía Oficial del Sistema (Light Background) -->
+                <div class="slide theme-light" id="slide-16" data-notes="Nuestra empresa Router entrega una garantía técnica oficial de 6 meses desde el acta de entrega firmada el 12 de Mayo de 2026. Cubre defectos de fábrica o de montaje. No cubre, por supuesto, la manipulación de personas externas o modificaciones no autorizadas, ni daños por robos, vandalismo, alzas de voltaje externas de la red o desastres naturales. Debemos coordinarnos como club para cuidar el sistema.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Garantía del Proyecto</div>
+                        <h2 class="slide-title">Garantía Oficial del Sistema</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta">Cobertura de Garantía Router</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Vigencia:</strong> Cobertura por 6 meses a partir del 12 de Mayo de 2026.</li>
+                                <li><strong>Fallas Cubiertas:</strong> Contempla cualquier defecto técnico de fábrica o fallas en el montaje e instalación del equipamiento.</li>
+                                <li><strong>Soporte Técnico:</strong> Coordinado a través de la directiva para visitas de revisión y servicio técnico.</li>
+                            </ul>
+                        </div>
+                        <div class="slide-card accent-orange animate-fade delay-2">
+                            <h3 class="card-title color-orange">Exclusiones Importantes</h3>
+                            <ul style="margin-top: 1em; gap: 1em;">
+                                <li><strong>Manipulación de Terceros:</strong> La garantía queda sin efecto si personas no autorizadas modifican físicamente o configuran los equipos.</li>
+                                <li><strong>Siniestros y Vandalismo:</strong> No cubre daños por vandalismo, robos del equipamiento o condiciones de sobretensión eléctrica externa de la red.</li>
+                                <li><strong>Mantención Básica:</strong> Limpieza y mantenimiento general preventivo no califican como garantía.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 17: Espacio de Consultas y Diálogo (Light Background) -->
+                <div class="slide theme-light" id="slide-17" data-notes="Ahora abrimos la palabra para todos ustedes. Queremos escuchar sus inquietudes, dudas o sugerencias respecto al sistema. Toda pregunta es bienvenida para que todos nos vayamos a casa con absoluta claridad sobre el uso y beneficio de nuestro sistema de seguridad.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Asamblea Comunitaria</div>
+                        <h2 class="slide-title">Foro Abierto: Preguntas y Diálogo Vecinal</h2>
+                    </div>
+                    <div class="slide-body" style="grid-template-columns: 1fr;">
+                        <div class="slide-card accent-terracotta animate-fade delay-1" style="align-items: center; justify-content: center; text-align: center; padding: 3em;">
+                            <div style="width: 5em; height: 5em; border-radius: 50%; background: rgba(154, 52, 18, 0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5em;">
+                                <svg style="width: 2.25em; height: 2.25em;" fill="none" stroke="var(--terracotta)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            </div>
+                            <h3 style="font-size: 1.8em; font-weight: 800; color: var(--terracotta);">Espacio de Consultas para la Asamblea</h3>
+                            <p style="font-size: 1.1em; color: var(--text-dark); max-width: 500px; margin-top: 1em; line-height: 1.6;">Su opinión y sus dudas son muy importantes para nosotros.</p>
+                            <p style="font-size: 0.95em; color: var(--text-muted); max-width: 550px; margin-top: 0.5em;">Por favor, levanten la mano y compartan sus inquietudes con la Directiva del Club de Adulto Mayor Nuevo Amanecer y el Equipo Técnico de Router.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 18: Difusión Oficial (Light Background) -->
+                <div class="slide theme-light" id="slide-18" data-notes="Una parte muy relevante del financiamiento del GORE Biobío es la difusión del proyecto. Destinamos $150.000 pesos a la fabricación e instalación de la placa acrílica exterior obligatoria y a los folletos e invitaciones de difusión. La placa exterior ya está colocada en la fachada y cuenta con el logotipo oficial del Gobierno Regional del Biobío al costado izquierdo, certificando el origen público del financiamiento.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Difusión del Proyecto</div>
+                        <h2 class="slide-title">Placa Oficial GORE Biobío y Difusión</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-terracotta animate-fade delay-1">
+                            <h3 class="card-title color-terracotta" style="margin-bottom: 0.5em;">La Seguridad se Construye Comunicando</h3>
+                            <ul style="margin-top: 0.5em; gap: 0.6em; font-size: 1.05em;">
+                                <li><strong>Placa Exterior Obligatoria:</strong> Placa acrílica visible instalada en la fachada exterior de la sede social con logotipo del GORE Biobío.</li>
+                                <li><strong>Insumos de Charlas:</strong> Volantes explicativos impresos con consejos de seguridad del proyecto ($150.000 del ítem de difusión).</li>
+                                <li><strong>Imagen del Gobierno Regional:</strong> Letrero exterior obligatorio con logo del GORE al costado izquierdo de la placa.</li>
+                            </ul>
+                        </div>
+                        <div class="photo-card animate-fade delay-2">
+                            <img src="./images/video_promo.png" alt="Placa exterior e Insumos de Difusión">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 19: Promoción Especial Vecinos (Light Background) -->
+                <div class="slide theme-light" id="slide-19" data-notes="Como beneficio adicional para todos los socios de nuestro Club de Adulto Mayor, desde Router queremos apoyarlos con su seguridad familiar en el hogar. Ofrecemos una promoción especial para instalar una cámara domiciliaria particular Full HD, con visión nocturna, audio y tarjeta de 64GB por un pago único preferencial de $90.000 pesos, que incluye la instalación técnica y la garantía oficial de Router. Pueden agendarla al WhatsApp que aparece en pantalla.">
+                    <div class="slide-header">
+                        <div class="slide-badge">Beneficio Comunitario</div>
+                        <h2 class="slide-title">Promoción Especial para tu Hogar</h2>
+                    </div>
+                    <div class="slide-body grid-2col">
+                        <div class="slide-card accent-orange animate-fade delay-1" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2em;">
+                            <div>
+                                <span class="promo-tag" style="font-size: 0.9em; padding: 0.3em 0.8em; margin-bottom: 0.8em;">Exclusivo Socios del Club</span>
+                                <h3 class="card-title color-orange" style="font-size: 1.85em; margin-bottom: 0.4em;">Instalación de 1 Cámara Domiciliaria</h3>
+                                <p style="font-size: 1.25em; font-weight: 700; color: var(--terracotta); margin-bottom: 0.8em;">Precio Preferencial: $90.000 CLP (Pago Único)</p>
+                                
+                                <ul style="margin-top: 0.5em; gap: 0.6em; font-size: 1.05em;">
+                                    <li><strong>Cámara de Alta Gama:</strong> Resolución Full HD con visión nocturna y audio de doble vía.</li>
+                                    <li><strong>Almacenamiento Local:</strong> Tarjeta Micro SD de 64GB de alta velocidad incluida.</li>
+                                    <li><strong>Todo Incluido:</strong> Instalación técnica profesional, configuración y garantía oficial Router.</li>
+                                    <li><strong>Descuento Especial:</strong> Apoyo exclusivo para la seguridad en hogares de adultos mayores.</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- WhatsApp Highlight Contact -->
+                            <div class="promo-highlight-box" style="margin-top: 1em; background: rgba(22, 163, 74, 0.05); border: 2px dashed #16a34a; border-radius: 12px; padding: 1.2em; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                                <span style="font-size: 0.9em; font-weight: 800; color: #16a34a; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3em;">¡Reserva tu instalación hoy!</span>
+                                <a href="https://wa.me/56978589090" target="_blank" style="text-decoration: none; font-size: 1.85em; font-weight: 800; color: #16a34a; display: flex; align-items: center; gap: 0.4em; justify-content: center;">
+                                    <svg viewBox="0 0 24 24" style="width: 1.25em; height: 1.25em; fill: currentColor;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.458L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.863-9.864.001-2.637-1.03-5.116-2.905-6.994C16.556 1.867 14.075.83 11.439.83c-5.44 0-9.863 4.42-9.866 9.865-.001 1.902.5 3.753 1.458 5.378L2.016 22.1l6.23-1.63a9.78 9.78 0 0 0-1.599-1.316zm11.517-5.698c-.318-.159-1.88-.928-2.18-.1.038-.3-.159-.44-.45-.63-.318-.19-.63-.38-.95-.57a.38.38 0 0 0-.57 0c-.22.22-.44.44-.66.66-.19.19-.38.19-.63 0a7.48 7.48 0 0 1-2.45-2.45c-.19-.25-.19-.44 0-.63.22-.22.44-.44.66-.66a.38.38 0 0 0 0-.57c-.19-.32-.38-.63-.57-.95-.19-.29-.33-.48-.63-.3-.3.18-.54.4-.7.68-.38.64-.53 1.39-.3 2.12.33 1.06.9 2.03 1.63 2.76A10.15 10.15 0 0 0 12.5 17.5c.82.35 1.7.5 2.58.33.68-.13 1.28-.5 1.63-1.12.16-.3.1-.63-.12-.85-.14-.14-.28-.28-.42-.42z"/></svg>
+                                    +56 9 7858 9090
+                                </a>
+                            </div>
+                        </div>
+                        <div class="photo-card animate-fade delay-2" style="background-color: #ffffff;">
+                            <img src="./images/camera_alessandri.png" alt="Cámara Domiciliaria Particular" style="object-fit: contain; padding: 1.5em;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 20: Conclusión y Agradecimientos (Dark charcoal background) -->
+                <div class="slide theme-dark" id="slide-20" data-notes="Llegamos al final de esta presentación, pero esto es el inicio de una etapa mucho más segura para nuestro Club. Queremos reiterar nuestro más sincero agradecimiento al Gobierno Regional del Biobío por los fondos y su apoyo; a nuestra directiva por el trabajo constante en terreno; y a cada uno de ustedes, socios y socias, por su compromiso y participación. Como dice nuestro lema: la tecnología vigila, pero la solidaridad y organización es lo que realmente nos protege. ¡Muchas gracias a todos!">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <div class="cover-visual animate-fade" style="border-left-color: var(--orange);">
+                            <h2 style="font-size: 3.2em; font-weight: 800; line-height: 1.1; margin-bottom: 1em; color: #ffffff;">¡JUNTOS CUIDAMOS<br><span style="color: var(--orange);">NUESTRA SEDE!</span></h2>
+                            <p style="font-size: 1.65em; color: var(--orange); font-weight: 600; font-style: italic; margin-bottom: 2em;">"La tecnología vigila, pero la comunidad organizada protege."</p>
+                            <div style="margin-top: 1em; border-top: 1px solid var(--border-dark); padding-top: 1.5em; max-width: 650px; display: flex; justify-content: space-between; gap: 2em;">
+                                <div>
+                                    <p style="font-size: 1.05em; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5em;">Agradecimientos Especiales:</p>
+                                    <p style="font-size: 1.05em; color: #64748b; line-height: 1.5;">&bull; Gobierno Regional del Biobío (GORE Biobío)<br>&bull; Directiva Club Adulto Mayor Nuevo Amanecer<br>&bull; Presidenta doña Isolda Camaño Lavín</p>
+                                </div>
+                                <div style="border-left: 1px solid var(--border-dark); padding-left: 2em; display: flex; flex-direction: column; justify-content: center;">
+                                    <p style="font-size: 1.05em; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5em;">Contacto Router:</p>
+                                    <p style="font-size: 1.35em; color: #16a34a; font-weight: 800; display: flex; align-items: center; gap: 0.4em; white-space: nowrap;">
+                                        WhatsApp: +56 9 7858 9090
+                                    </p>
+                                    <p style="font-size: 0.9em; color: #64748b; margin-top: 0.25em;">Router Soluciones Tecnológicas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Lightbox Modal for camera gallery -->
+            <div id="camera-lightbox" class="lightbox-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;">
+                <button class="lightbox-close" onclick="closeCameraLightbox()" style="position: absolute; top: 1.5em; right: 1.5em; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: white; width: 3em; height: 3em; font-size: 1.8em; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">&times;</button>
+                
+                <!-- Main Large Image -->
+                <div class="lightbox-content" style="width: 90%; height: 75%; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <img id="lightbox-img" src="./images/vista_parque.jpg" alt="Vista Ampliada" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transition: opacity 0.2s ease;">
+                </div>
+                
+                <!-- Lightbox Controls -->
+                <div class="lightbox-controls" style="margin-top: 1.5em; display: flex; flex-direction: column; align-items: center; gap: 0.75em;">
+                    <div class="gallery-tabs lightbox-tabs" style="display: flex; gap: 0.5em; background: rgba(255,255,255,0.08); padding: 0.4em; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                        <button class="gallery-tab active lightbox-tab" onclick="switchLightboxFeed(this, 'vista_parque.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: var(--orange); color: white; transition: all 0.2s ease;">Acceso</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_1.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">Salón</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_2.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">Cocina</button>
+                        <button class="gallery-tab lightbox-tab" onclick="switchLightboxFeed(this, 'vista_camaras_3.jpg')" style="padding: 0.6em 1.2em; border: none; border-radius: 8px; font-size: 0.85em; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s ease;">Perímetro</button>
+                    </div>
+                    <p style="color: #64748b; font-size: 0.8em; margin: 0; font-family: sans-serif;">Presiona <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">ESC</kbd> para salir • Usa las flechas <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">&larr;</kbd> <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">&rarr;</kbd> para cambiar</p>
+                </div>
+            </div>
+
+            <!-- Slide Navigation HUD Overlay -->
+            <div class="slide-nav-overlay">
+                <button class="nav-btn" onclick="prevSlide()" title="Anterior">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <div class="nav-info" id="slideIndicator">1 / 20</div>
+                <button class="nav-btn" onclick="nextSlide()" title="Siguiente">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="nav-btn" onclick="toggleFullscreen()" title="Pantalla Completa">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Presenter Side notes (Modo Presentador) -->
+        <div class="notes-sidebar collapsed" id="notesSidebar">
+            <div class="sidebar-header">
+                <h3>Notas del Expositor</h3>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn" style="padding: 0.25rem 0.5rem;" onclick="resetTimer()" title="Reiniciar Cronómetro">⏱️</button>
+                    <div class="notes-timer" id="timer">00:00</div>
+                </div>
+            </div>
+            <div class="notes-content" id="speakerNotes">
+                Cargando notas...
+            </div>
+            <div class="notes-preview-box">
+                <div class="notes-preview-title">Siguiente Diapositiva</div>
+                <div class="notes-preview-name" id="nextSlidePreview">Fin de la Presentación</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const totalSlides = 20;
+        let currentSlide = 1;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        function switchCameraFeed(btn, imgName) {
+            const img = document.getElementById('camera-feed-img');
+            if (!img) return;
+            img.style.opacity = 0;
+            
+            const tabs = btn.parentNode.getElementsByClassName('gallery-tab');
+            for (let tab of tabs) {
+                tab.style.background = 'transparent';
+                tab.style.color = 'var(--text-dark)';
+                tab.classList.remove('active');
+            }
+            btn.style.background = 'var(--orange)';
+            btn.style.color = 'white';
+            btn.classList.add('active');
+            
+            setTimeout(() => {
+                img.src = './images/' + imgName;
+                img.alt = btn.innerText;
+                img.style.opacity = 1;
+            }, 200);
+        }
+
+        function openCameraLightbox() {
+            const currentImg = document.getElementById('camera-feed-img');
+            const lightbox = document.getElementById('camera-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            if (!currentImg || !lightbox || !lightboxImg) return;
+            
+            lightboxImg.src = currentImg.src;
+            lightboxImg.alt = currentImg.alt;
+            lightbox.style.display = 'flex';
+            
+            // Sync lightbox active tab button
+            const activeTab = document.querySelector('.gallery-tabs:not(.lightbox-tabs) .gallery-tab.active');
+            if (activeTab) {
+                const tabs = document.querySelectorAll('.lightbox-tabs .lightbox-tab');
+                const activeIndex = Array.from(activeTab.parentNode.children).indexOf(activeTab);
+                
+                for (let i = 0; i < tabs.length; i++) {
+                    if (i === activeIndex) {
+                        tabs[i].style.background = 'var(--orange)';
+                        tabs[i].style.color = 'white';
+                        tabs[i].classList.add('active');
+                    } else {
+                        tabs[i].style.background = 'transparent';
+                        tabs[i].style.color = '#94a3b8';
+                        tabs[i].classList.remove('active');
+                    }
+                }
+            }
+        }
+        
+        function closeCameraLightbox() {
+            const lightbox = document.getElementById('camera-lightbox');
+            if (lightbox) {
+                lightbox.style.display = 'none';
+            }
+        }
+        
+        function switchLightboxFeed(btn, imgName) {
+            const lightboxImg = document.getElementById('lightbox-img');
+            if (!lightboxImg) return;
+            lightboxImg.style.opacity = 0;
+            
+            const tabs = btn.parentNode.getElementsByClassName('lightbox-tab');
+            for (let tab of tabs) {
+                tab.style.background = 'transparent';
+                tab.style.color = '#94a3b8';
+                tab.classList.remove('active');
+            }
+            btn.style.background = 'var(--orange)';
+            btn.style.color = 'white';
+            btn.classList.add('active');
+            
+            setTimeout(() => {
+                lightboxImg.src = './images/' + imgName;
+                lightboxImg.alt = btn.innerText;
+                lightboxImg.style.opacity = 1;
+                
+                // Sync back to main slide
+                const mainImg = document.getElementById('camera-feed-img');
+                if (mainImg) {
+                    mainImg.src = './images/' + imgName;
+                    mainImg.alt = btn.innerText;
+                }
+                
+                const activeIndex = Array.from(btn.parentNode.children).indexOf(btn);
+                const mainTabs = document.querySelectorAll('.gallery-tabs:not(.lightbox-tabs) .gallery-tab');
+                if (mainTabs && mainTabs[activeIndex]) {
+                    for (let tab of mainTabs) {
+                        tab.style.background = 'transparent';
+                        tab.style.color = 'var(--text-dark)';
+                        tab.classList.remove('active');
+                    }
+                    mainTabs[activeIndex].style.background = 'var(--orange)';
+                    mainTabs[activeIndex].style.color = 'white';
+                    mainTabs[activeIndex].classList.add('active');
+                }
+            }, 200);
+        }
+
+        function navigateLightboxTabs(direction) {
+            const tabs = Array.from(document.querySelectorAll('.lightbox-tabs .lightbox-tab'));
+            const activeTab = document.querySelector('.lightbox-tabs .lightbox-tab.active');
+            if (!activeTab || tabs.length === 0) return;
+            
+            let index = tabs.indexOf(activeTab);
+            index = (index + direction + tabs.length) % tabs.length;
+            tabs[index].click();
+        }
+
+        // Initialize slideshow
+        document.addEventListener("DOMContentLoaded", () => {
+            showSlide(currentSlide);
+            setupKeyboardNav();
+            startTimer();
+            adjustScale(); // Calculate scale on load
+        });
+        
+        window.addEventListener('resize', adjustScale);
+        document.addEventListener('fullscreenchange', () => {
+            setTimeout(adjustScale, 50);
+        });
+        
+        function adjustScale() {
+            const container = document.getElementById('slideContainer');
+            if (!container) return;
+            
+            const baseWidth = 1100;
+            const baseHeight = 618.75;
+            let scaleFactor = 1;
+            
+            if (document.fullscreenElement) {
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                const scaleX = screenWidth / baseWidth;
+                const scaleY = screenHeight / baseHeight;
+                
+                scaleFactor = Math.min(scaleX, scaleY);
+                
+                container.style.setProperty('--fs-width', `${baseWidth * scaleFactor}px`);
+                container.style.setProperty('--fs-height', `${baseHeight * scaleFactor}px`);
+            } else {
+                const width = container.offsetWidth;
+                scaleFactor = width / baseWidth;
+                container.style.removeProperty('--fs-width');
+                container.style.removeProperty('--fs-height');
+            }
+            
+            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+        }
+
+        function showSlide(index) {
+            if (index < 1) index = 1;
+            if (index > totalSlides) index = totalSlides;
+            currentSlide = index;
+
+            // Update active state in slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                if (slide) {
+                    if (i === index) {
+                        slide.classList.add("active");
+                    } else {
+                        slide.classList.remove("active");
+                    }
+                }
+            }
+
+            // Update bottom indicator HUD
+            document.getElementById("slideIndicator").innerText = `${currentSlide} / ${totalSlides}`;
+
+            // Update notes and preview in Presenter Mode
+            const activeSlide = document.getElementById(`slide-${currentSlide}`);
+            if (activeSlide) {
+                const notes = activeSlide.getAttribute("data-notes") || "No hay notas para esta diapositiva.";
+                document.getElementById("speakerNotes").innerHTML = `<p>${notes}</p>`;
+            }
+
+            // Next Slide Preview name
+            const nextSlideNum = currentSlide + 1;
+            const nextPreviewName = document.getElementById("nextSlidePreview");
+            if (nextSlideNum <= totalSlides) {
+                const nextSlide = document.getElementById(`slide-${nextSlideNum}`);
+                if (nextSlide) {
+                    const nextHeader = nextSlide.querySelector(".slide-title");
+                    const nextName = nextHeader ? nextHeader.innerText : `Diapositiva ${nextSlideNum}`;
+                    nextPreviewName.innerText = `${nextSlideNum}. ${nextName}`;
+                }
+            } else {
+                nextPreviewName.innerText = "Fin de la presentación";
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        function setupKeyboardNav() {
+            document.addEventListener("keydown", (e) => {
+                const lightbox = document.getElementById('camera-lightbox');
+                if (lightbox && lightbox.style.display === 'flex') {
+                    if (e.key === "Escape") {
+                        closeCameraLightbox();
+                        e.preventDefault();
+                    } else if (e.key === "ArrowRight") {
+                        navigateLightboxTabs(1);
+                        e.preventDefault();
+                    } else if (e.key === "ArrowLeft") {
+                        navigateLightboxTabs(-1);
+                        e.preventDefault();
+                    }
+                    return;
+                }
+
+                if (e.key === "ArrowRight" || e.key === "Space") {
+                    nextSlide();
+                    e.preventDefault();
+                } else if (e.key === "ArrowLeft") {
+                    prevSlide();
+                    e.preventDefault();
+                }
+            });
+        }
+
+        // Toggle Sidebar Presenter Mode
+        function toggleNotesSidebar() {
+            const sidebar = document.getElementById("notesSidebar");
+            const btn = document.getElementById("notesToggleBtn");
+            sidebar.classList.toggle("collapsed");
+            
+            if (sidebar.classList.contains("collapsed")) {
+                btn.style.borderColor = "";
+                btn.style.color = "";
+                btn.style.background = "";
+            } else {
+                btn.style.borderColor = "var(--orange)";
+                btn.style.color = "var(--orange)";
+                btn.style.background = "rgba(234, 88, 12, 0.08)";
+            }
+        }
+
+        // Stopwatch Timer for presenter screen
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, "0");
+                const secs = (secondsElapsed % 60).toString().padStart(2, "0");
+                document.getElementById("timer").innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function resetTimer() {
+            secondsElapsed = 0;
+            document.getElementById("timer").innerText = "00:00";
+        }
+
+        // Fullscreen API toggle
+        function toggleFullscreen() {
+            const container = document.getElementById("slideContainer");
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    alert(`Error intentando activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Expand/Collapse FAQ items
+        function toggleFaq(card) {
+            card.classList.toggle("expanded");
+        }
+
+        // Link triggers
+        function openPowerPoint() {
+            window.location.href = "./presentacion_nuevo_amanecer.pptx";
+        }
+    </script>
+</body>
+</html>

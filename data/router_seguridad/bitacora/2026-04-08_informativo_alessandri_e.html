@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informativo Técnico | Junta de Vecinos Jorge Alessandri E</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1f71;
+            --accent: #00d2ff;
+            --text: #2d3436;
+            --bg: #f8fbff;
+            --card-bg: #ffffff;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        header { 
+            background: linear-gradient(135deg, var(--primary) 0%, #2a3bad 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(26, 31, 113, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .header-content { position: relative; z-index: 1; }
+        .badge { background: var(--accent); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px; display: inline-block; }
+        h1 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 10px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; font-weight: 300; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 40px; }
+
+        .card { 
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        
+        .spec-list { list-style: none; }
+        .spec-list li { margin-bottom: 10px; padding-left: 20px; position: relative; font-size: 0.95rem; }
+        .spec-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+
+        .important-box {
+            background: #fff9e6;
+            border-left: 5px solid var(--warning);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .important-box h4 { color: #856404; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+
+        .protocol-title { font-size: 1.5rem; color: var(--primary); margin-bottom: 25px; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 5px; }
+
+        .rule-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px dashed #dcdde1;
+        }
+
+        .rule-card strong { color: var(--primary); }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+            color: #7f8c8d;
+        }
+
+        .btn-print {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-print:hover { background: var(--accent); color: var(--primary); transform: scale(1.05); }
+
+        @media print {
+            .btn-print { display: none; }
+            body { background: white; }
+            .container { padding: 0; max-width: 100%; }
+            header { border-radius: 0; box-shadow: none; background: white !important; color: black !important; border-bottom: 2px solid var(--primary); }
+            .card { box-shadow: none; border: 1px solid #eee; }
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-content">
+            <span class="badge">Ecosistema de Seguridad</span>
+            <h1>Proyecto Alessandri E</h1>
+            <p class="subtitle">Manual de uso, protocolos y corresponsabilidad vecinal</p>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h3>🔍 Especificaciones técnicas</h3>
+            <ul class="spec-list">
+                <li><strong>Cámaras:</strong> 16 Unidades IP de 4MP (Alta Resolución).</li>
+                <li><strong>Respaldo:</strong> Memoria interna de 64GB por cámara.</li>
+                <li><strong>Grabación:</strong> Almacenamiento local directo en cada propiedad.</li>
+                <li><strong>Acceso:</strong> Visualización mediante Streaming P2P (Aplicación móvil).</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🏢 Responsabilidad Técnica</h3>
+            <ul class="spec-list">
+                <li><strong>Hardware:</strong> Garantía de cámaras y soportes instalados.</li>
+                <li><strong>Configuración:</strong> Ajuste del flujo de video y alertas.</li>
+                <li><strong>Soporte:</strong> Asistencia en caso de falla crítica del sistema.</li>
+                <li><strong>Mantenimiento:</strong> Revisión de integridad física de los puntos.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="protocol-title">Protocolo de Operación Correcta</h2>
+    
+    <div class="rule-card">
+        <strong>1. Centralización de la Revisión:</strong>
+        Se sugiere que solo <strong>1 o 2 personas</strong> de la directiva o vecinos encargados revisen las cámaras de manera habitual. El streaming consume ancho de banda y la saturación de accesos simultáneos puede ralentizar la visualización para todos.
+    </div>
+
+    <div class="rule-card">
+        <strong>2. Uso del Almacenamiento:</strong>
+        Las cámaras graban en tarjetas de 64GB. Las grabaciones se sobrescriben automáticamente cuando se llenan. Ante un incidente, se debe exportar el fragmento de video de inmediato.
+    </div>
+
+    <div class="rule-card">
+        <strong>3. Cuándo solicitar soporte a ROUTER:</strong>
+        Llamar exclusivamente cuando una cámara no entregue imagen de forma persistente o existan fallas físicas en los equipos.
+    </div>
+
+    <div class="important-box">
+        <h4>⚠️ ADVERTENCIA SOBRE SOPORTE TÉCNICO</h4>
+        <p>Es importante comprender que el sistema de cámaras <strong>depende del suministro eléctrico y la conexión a internet</strong> de cada punto de instalación.</p>
+        <p style="margin-top: 15px; font-weight: 600; color: #c0392b;">Si se solicita una visita técnica y se comprueba que el sistema no funciona debido a:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Corte de energía eléctrica en la propiedad.</li>
+            <li>Fallas en el router de internet o falta de pago del servicio.</li>
+            <li>Problemas ajenos a la instalación de ROUTER.</li>
+        </ul>
+        <p style="margin-top: 15px; font-weight: 700;">Dicha visita tendrá un costo asociado que será facturado a la Junta de Vecinos.</p>
+    </div>
+
+    <h2 class="protocol-title">Seguridad es Corresponsabilidad</h2>
+    <p style="margin-bottom: 20px;">La tecnología es una herramienta poderosa, pero la seguridad real la construyen los vecinos organizados. Este sistema ha sido diseñado para otorgarles soberanía total sobre sus datos, sin cobros mensuales infinitos.</p>
+
+    <footer>
+        <p><strong>ROUTER Seguridad | Ingeniería en Conectividad</strong></p>
+        <p>Provincia de Arauco, Chile - 2026</p>
+    </footer>
+</div>
+
+<button onclick="window.print()" class="btn-print">Descargar / Imprimir Informativo</button>
+
+</body>
+</html>

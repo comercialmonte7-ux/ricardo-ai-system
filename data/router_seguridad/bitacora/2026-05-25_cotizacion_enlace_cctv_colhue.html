@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización Enlace PTP CCTV Colhue - Interenergy - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a1f71;
+            --accent-blue: #00d2ff;
+            --gradient: linear-gradient(135deg, #1a1f71 0%, #2D328C 100%);
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --success: #059669;
+            --warning: #f59e0b;
+        }
+
+        * { box-sizing: border-box; }
+        @page { size: 216mm 330mm; margin: 0; }
+        body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; background-color: #e2e8f0; color: var(--text-dark); line-height: 1.5; }
+
+        .page-container {
+            width: 216mm;
+            min-height: 330mm;
+            margin: 20px auto;
+            background-color: var(--white);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            padding-bottom: 20px;
+        }
+        .page-container:last-child { page-break-after: auto; }
+
+        @media print {
+            @page { size: 216mm 330mm; margin: 0; }
+            body { background: none; margin: 0; padding: 0; }
+            .page-container {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+                height: 330mm;
+                width: 216mm;
+                overflow: hidden;
+            }
+            .no-print { display: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+
+        .page-container::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        header {
+            padding: 25px 55px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+            z-index: 1;
+        }
+        .header-bg-shape {
+            position: absolute; top: 0; right: 0;
+            width: 340px; height: 100%;
+            background: var(--gradient);
+            border-bottom-left-radius: 80px;
+            z-index: -1;
+            display: flex; align-items: center;
+            justify-content: flex-end;
+            padding-right: 45px;
+        }
+        .header-bg-shape h1 { color: #fff; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
+        .logo-box { display: flex; align-items: center; }
+        .shield-icon {
+            width: 50px; height: 60px;
+            background: var(--gradient);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            margin-right: 15px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .shield-icon::after { content: '⚡'; font-size: 24px; }
+        .logo-text-group { display: flex; flex-direction: column; }
+        .logo-main { font-size: 42px; font-weight: 700; color: var(--primary-blue); line-height: 0.9; letter-spacing: -2px; }
+        .logo-sub { font-size: 9px; font-weight: 700; color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase; margin-top: 3px; }
+
+        .info-grid {
+            padding: 15px 55px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            background: #f8fafc;
+        }
+        .info-item h3 { font-size: 9px; color: var(--text-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 3px 0; }
+        .info-item p { font-size: 12px; font-weight: 700; color: var(--text-dark); margin: 0; }
+
+        .content { padding: 20px 55px; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .section-header {
+            display: flex; align-items: center; gap: 15px;
+            margin-bottom: 12px;
+        }
+        .section-header h2 { font-size: 14px; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .section-header .line { height: 2px; flex-grow: 1; background: #e2e8f0; }
+
+        .install-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .install-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .install-card-header {
+            background: var(--gradient);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .install-card-header .icon { font-size: 18px; }
+        .install-card-header h3 { color: white; font-size: 12px; font-weight: 700; margin: 0; }
+        .install-card-header p { color: rgba(255,255,255,0.8); font-size: 9px; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .install-card-body { padding: 12px 15px; background: white; font-size: 11px; }
+        .install-item {
+            display: flex; align-items: flex-start; gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .install-item:last-child { border-bottom: none; }
+        .install-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-blue); margin-top: 5px; flex-shrink: 0; }
+        .install-item b { color: var(--primary-blue); }
+
+        .table-container {
+            border-radius: 10px; overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .table th { background: #f1f5f9; color: var(--text-light); padding: 8px 12px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 9px; letter-spacing: 1px; }
+        .table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); background: #fff; }
+        .table tr:last-child td { border-bottom: none; }
+        .table b { color: var(--primary-blue); font-size: 11px; }
+
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 11px;
+            color: #92400e;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .warning-box b { color: #78350f; }
+
+        .totals-section { margin-top: auto; border-top: 2px solid var(--primary-blue); padding-top: 10px; }
+        .total-row { display: flex; justify-content: flex-end; gap: 30px; margin-bottom: 4px; align-items: center; }
+        .total-label { font-size: 9px; color: var(--text-light); text-transform: uppercase; font-weight: 600; }
+        .total-value { font-size: 13px; font-weight: 700; color: var(--text-dark); min-width: 100px; text-align: right; }
+        .grand-total { background: var(--gradient); color: white; padding: 10px 20px; border-radius: 8px; margin-top: 4px; }
+        .grand-total .total-label { color: rgba(255,255,255,0.8); }
+        .grand-total .total-value { color: white; font-size: 18px; }
+
+        footer {
+            padding: 10px 55px;
+            background: #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 15px;
+        }
+        .footer-logo { font-weight: 700; color: var(--primary-blue); font-size: 16px; }
+
+        .no-print { position: fixed; top: 30px; left: 30px; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); z-index: 100; border: 1px solid var(--border-color); }
+        .btn { display: inline-block; background: var(--gradient); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; text-align: center; cursor: pointer; transition: transform 0.2s; border: none; }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <p style="font-size: 11px; margin-bottom: 15px; color: var(--text-light); text-transform: uppercase; font-weight: 700;">Panel de Control</p>
+        <button onclick="window.print()" class="btn">DESCARGAR COTIZACIÓN PDF</button>
+    </div>
+
+    <!-- PÁGINA ÚNICA: COTIZACIÓN SIMPLIFICADA -->
+    <div class="page-container">
+        <header>
+            <div class="logo-box">
+                <div class="shield-icon"></div>
+                <div class="logo-text-group">
+                    <span class="logo-main">Router</span>
+                    <span class="logo-sub">Conectividad Estratégica</span>
+                </div>
+            </div>
+            <div class="header-bg-shape">
+                <h1>COTIZACIÓN</h1>
+            </div>
+        </header>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <h3>Cliente:</h3>
+                <p>INTERENERGY / COMUNIDAD</p>
+            </div>
+            <div class="info-item">
+                <h3>Proyecto:</h3>
+                <p>EXPANSIÓN MONITOREO COLHUE</p>
+            </div>
+            <div class="info-item" style="text-align:right;">
+                <h3>Fecha:</h3>
+                <p>Junio 2026</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section-header">
+                <h2>Alcance del Trabajo</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="install-grid">
+                <!-- Punto Base -->
+                <div class="install-card">
+                    <div class="install-card-header">
+                        <div class="icon">🏢</div>
+                        <div>
+                            <h3>Nodo Central Base</h3>
+                            <p>Lado de Recepción NVR</p>
+                        </div>
+                    </div>
+                    <div class="install-card-body">
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Instalación de antena receptora CPE 5GHz en mástil.</span>
+                        </div>
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Tendido de cable blindado exterior SFTP.</span>
+                        </div>
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Enrutamiento de señal al grabador NVR principal.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Punto Extendido -->
+                <div class="install-card">
+                    <div class="install-card-header">
+                        <div class="icon">📹</div>
+                        <div>
+                            <h3>Punto de Monitoreo Extendido</h3>
+                            <p>Lado de Cámaras y Enlace</p>
+                        </div>
+                    </div>
+                    <div class="install-card-body">
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Instalación de antena emisora CPE 5GHz en mástil.</span>
+                        </div>
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Montaje de gabinete metálico estanco de exterior IP66.</span>
+                        </div>
+                        <div class="install-item">
+                            <div class="dot"></div>
+                            <span>Instalación de Switch PoE+ para alimentación de cámaras.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charla y Protocolo (Adicional) -->
+                <div class="install-card" style="grid-column: span 2;">
+                    <div class="install-card-header" style="background: linear-gradient(135deg, #059669 0%, #10B981 100%);">
+                        <div class="icon">👥</div>
+                        <div>
+                            <h3>Charla de Capacitación y Protocolo</h3>
+                            <p>Convivencia y Continuidad Operativa</p>
+                        </div>
+                    </div>
+                    <div class="install-card-body" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="install-item" style="border-bottom: none; padding: 2px 0;">
+                            <div class="dot" style="background: #10B981;"></div>
+                            <span><b>Funcionamiento:</b> Inducción sobre el uso correcto del enlace y cámaras.</span>
+                        </div>
+                        <div class="install-item" style="border-bottom: none; padding: 2px 0;">
+                            <div class="dot" style="background: #10B981;"></div>
+                            <span><b>Protocolo ante Fallas:</b> Procedimiento de reporte y reinicio básico de equipos.</span>
+                        </div>
+                        <div class="install-item" style="border-bottom: none; padding: 2px 0;">
+                            <div class="dot" style="background: #10B981;"></div>
+                            <span><b>Buen Uso Comunitario:</b> Resguardo de la privacidad e infraestructura.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Insumos y Equipamiento Incluidos</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="35%">Insumo / Concepto</th>
+                            <th width="15%">Cantidad</th>
+                            <th width="50%">Descripción Breve</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Antena de Enlace Inalámbrico</b></td>
+                            <td>2 Unidades</td>
+                            <td>Equipos CPE 5GHz para puente de red a distancia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mástiles de Soporte</b></td>
+                            <td>2 Unidades</td>
+                            <td>Soportes metálicos de fijación para exterior.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Switch PoE+ Activo</b></td>
+                            <td>1 Unidad</td>
+                            <td>Switch de datos para alimentar cámaras y antena por cable de red.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Gabinete Metálico Estanco</b></td>
+                            <td>1 Unidad</td>
+                            <td>Tablero de acero protector (300x200x150mm) con cerradura.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cableado SFTP & Montaje</b></td>
+                            <td>Completo</td>
+                            <td>Cable Cat6 exterior, conectores e ingeniería de red.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Charla y Protocolo Comunitario</b></td>
+                            <td>1 Sesión</td>
+                            <td>Capacitación presencial sobre funcionamiento, fallas y convivencia.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ADVERTENCIA DE POSTES SOLICITADA POR EL USUARIO -->
+            <div class="warning-box">
+                <b>⚠️ EXCLUSIÓN IMPORTANTE:</b> Este presupuesto **NO INCLUYE el suministro ni la instalación de postes de elevación**. En caso de que se requieran postes en terreno para garantizar la línea de vista directa de las antenas o para el posicionamiento de las cámaras, estos **deberán cotizarse de forma adicional y agregarse al presupuesto**.
+            </div>
+
+            <div class="totals-section">
+                <div class="total-row">
+                    <span class="total-label">Subtotal Neto:</span>
+                    <span class="total-value">$806.097</span>
+                </div>
+                <div class="total-row">
+                    <span class="total-label">IVA (19%):</span>
+                    <span class="total-value">$153.158</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span class="total-label">VALOR TOTAL DEL PROYECTO:</span>
+                    <span class="total-value">$959.255</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-logo">Router</div>
+            <div style="text-align: right;">
+                <p><b>Ingeniero de Redes:</b> Ricardo Mari</p>
+                <p><b>Página:</b> 1 / 1</p>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

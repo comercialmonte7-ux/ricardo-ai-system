@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Ingeniería v5.0 - Lebu - Router</title>
+    <style>
+        /* Estilos optimizados para impresión y copia a Word */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+        }
+
+        h1, h2, h3 { color: #1a1f71; }
+        
+        .header-doc {
+            border-bottom: 3px solid #1a1f71;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .summary-table, .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+
+        .summary-table th, .detail-table th {
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .summary-table td, .detail-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .price-highlight {
+            font-weight: bold;
+            color: #1a1f71;
+            text-align: right;
+            font-size: 15px;
+        }
+
+        .section-title {
+            background: #1a1f71;
+            color: white;
+            padding: 8px 15px;
+            margin-top: 40px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .investment-node {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: right;
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+
+        .final-box {
+            border: 2px solid #1a1f71;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: right;
+            page-break-inside: avoid;
+        }
+
+        .no-print {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a1f71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Fuerza a que los bloques de cada nodo no se corten entre hojas */
+        .node-block {
+            page-break-inside: avoid;
+            margin-bottom: 30px;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { margin: 0; padding: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="window.print()" class="no-print">IMPRIMIR / GUARDAR PDF</button>
+
+<div class="header-doc">
+    <div>
+        <h1 style="margin:0;">Router</h1>
+        <p style="margin:0; font-size: 14px; color: #666;">Ingeniería en Seguridad y Conconectividad</p>
+    </div>
+    <div style="text-align: right;">
+        <h3 style="margin:0;">REPORTE TÉCNICO v5.0</h3>
+        <p style="margin:0; font-size: 12px;">Comuna de Lebu - Proyecto Municipal</p>
+    </div>
+</div>
+
+<h2>1. Resumen Ejecutivo de Inversión</h2>
+<p>Inversión desglosada por nodo operativo para facilitar la gestión presupuestaria municipal.</p>
+
+<table class="summary-table">
+    <thead>
+        <tr>
+            <th>Ubicación del Punto / Nodo</th>
+            <th style="text-align: right;">Inversión Neto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>📍 01: Biblioteca Municipal</td><td class="price-highlight">$5.200.000</td></tr>
+        <tr><td>📍 02: Base 2 (Centro de Seguridad)</td><td class="price-highlight">$4.200.000</td></tr>
+        <tr><td>📍 03: Cementerio Parroquial (Zona Crítica)</td><td class="price-highlight">$7.800.000</td></tr>
+        <tr><td>📍 04: Estadio Municipal (4 Repetidores)</td><td class="price-highlight">$5.600.000</td></tr>
+        <tr><td>📍 05: Gimnasio Municipal (3 Repetidores)</td><td class="price-highlight">$3.800.000</td></tr>
+        <tr><td>📍 06: Liceo Politécnico</td><td class="price-highlight">$2.500.000</td></tr>
+        <tr><td>📍 07: DAEM</td><td class="price-highlight">$3.200.000</td></tr>
+        <tr><td>📍 08: Consistorial</td><td class="price-highlight">$2.600.000</td></tr>
+        <tr><td>📍 09: Escuela Rebeca Castro</td><td class="price-highlight">$3.200.000</td></tr>
+        <tr><td>📡 10: Hub de Concentración Cerro La Cruz (UPS Online)</td><td class="price-highlight">$3.400.000</td></tr>
+        <tr style="background: #eee;">
+            <td><strong>TOTAL INVERSIÓN PROYECTO (NETO)</strong></td>
+            <td class="price-highlight">$41.500.000</td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="page-break-after: always;"></div>
+
+<h2>2. Ingeniería de Detalle por Ubicación</h2>
+
+<!-- BLOQUE NODO 01 -->
+<div class="node-block">
+    <div class="section-title">📍 01: BIBLIOTECA MUNICIPAL</div>
+    <table class="detail-table">
+        <thead><tr><th>Equipamiento y Materiales</th><th style="text-align:center; width: 80px;">Cant.</th></tr></thead>
+        <tbody>
+            <tr><td>Cámara Reconocimiento de Patentes (LPR) ITC352 Global Shutter</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Cámara PTZ IA 45X Zoom Óptico (Seguimiento Inteligente)</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Cámara Bullet 5MP Lente Motorizado (Enfoque Profundo)</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Antena de Enlace Ubiquiti G2 + Switch Industrial PoE+</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Kit de Instalación Fina (Gabinete IP66, Cable Outdoor FTP, Eléctrica)</td><td style="text-align:center;">1</td></tr>
+        </tbody>
+    </table>
+    <div class="investment-node">
+        <span>Inversión Nodo Integral (Instalado y Operativo):</span>
+        <span style="font-size: 18px; font-weight: bold; color: #1a1f71; display: block;">$5.200.000 + IVA</span>
+    </div>
+</div>
+
+<!-- BLOQUE NODO 02 -->
+<div class="node-block">
+    <div class="section-title">📍 02: BASE 2 (Centro de Seguridad)</div>
+    <table class="detail-table">
+        <thead><tr><th>Equipamiento y Materiales</th><th style="text-align:center; width: 80px;">Cant.</th></tr></thead>
+        <tbody>
+            <tr><td>Cámara Reconocimiento de Patentes (LPR) ITC352</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Cámara Bullet 5MP Motorizada (Fijas de Detalle)</td><td style="text-align:center;">2</td></tr>
+            <tr><td>Infraestructura de Punto (Antena, Switch Industrial, Gabinete IP66)</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Kit de Conectividad y Eléctrica de Punto</td><td style="text-align:center;">1</td></tr>
+        </tbody>
+    </table>
+    <div class="investment-node">
+        <span>Inversión Nodo Integral (Instalado y Operativo):</span>
+        <span style="font-size: 18px; font-weight: bold; color: #1a1f71; display: block;">$4.200.000 + IVA</span>
+    </div>
+</div>
+
+<!-- BLOQUE NODO 03 -->
+<div class="node-block">
+    <div class="section-title">📍 03: CEMENTERIO PARROQUIAL</div>
+    <table class="detail-table">
+        <thead><tr><th>Equipamiento y Materiales</th><th style="text-align:center; width: 80px;">Cant.</th></tr></thead>
+        <tbody>
+            <tr><td>Cámara PTZ IA 45X Zoom Óptico</td><td style="text-align:center;">2</td></tr>
+            <tr><td>Cámara Bullet 5MP Motorizada</td><td style="text-align:center;">4</td></tr>
+            <tr><td>Repetidores Locales NanoStation Loco 5AC (Red Distribución)</td><td style="text-align:center;">5</td></tr>
+            <tr><td>Switch Industrial de 8 Puertos PoE+</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Gabinete IP66 + Kit Antena HUB + Material Montaje Inox.</td><td style="text-align:center;">1</td></tr>
+        </tbody>
+    </table>
+    <div class="investment-node">
+        <span>Inversión Nodo Integral (Instalado y Operativo):</span>
+        <span style="font-size: 18px; font-weight: bold; color: #1a1f71; display: block;">$7.800.000 + IVA</span>
+    </div>
+</div>
+
+<!-- BLOQUE NODO 04 -->
+<div class="node-block">
+    <div class="section-title">📍 04: ESTADIO MUNICIPAL</div>
+    <table class="detail-table">
+        <thead><tr><th>Equipamiento y Materiales</th><th style="text-align:center; width: 80px;">Cant.</th></tr></thead>
+        <tbody>
+            <tr><td>Cámara PTZ IA 45X Zoom Óptico</td><td style="text-align:center;">1</td></tr>
+            <tr><td>Cámara Bullet 5MP Motorizada</td><td style="text-align:center;">4</td></tr>
+            <tr><td>Repetidores Locales NanoStation Loco 5AC</td><td style="text-align:center;">4</td></tr>
+            <tr><td>Infraestructura de Punto Completa (Switch/Gabinete/Antena)</td><td style="text-align:center;">1</td></tr>
+        </tbody>
+    </table>
+    <div class="investment-node">
+        <span>Inversión Nodo Integral (Instalado y Operativo):</span>
+        <span style="font-size: 18px; font-weight: bold; color: #1a1f71; display: block;">$5.600.000 + IVA</span>
+    </div>
+</div>
+
+<!-- BLOQUE OTROS PUNTOS (COMPACTO PERO CLARO) -->
+<div class="node-block">
+    <div class="section-title">📍 05 - 09: OTROS PUNTOS E INFRAESTRUCTURA HUB</div>
+    <table class="detail-table">
+        <thead><tr><th>Punto / Ubicación</th><th>Equipamiento Principal</th><th style="text-align:right;">Inversión Nodo</th></tr></thead>
+        <tbody>
+            <tr><td>Gimnasio Municipal</td><td>4 Bullet + 3 Repetidores + Infra</td><td style="text-align:right; font-weight:bold;">$3.800.000 + IVA</td></tr>
+            <tr><td>DAEM</td><td>1 PTZ + 1 Bullet + Enlace + Infra</td><td style="text-align:right; font-weight:bold;">$3.200.000 + IVA</td></tr>
+            <tr><td>Escuela Rebeca Castro</td><td>1 PTZ + 1 Bullet + Enlace + Infra</td><td style="text-align:right; font-weight:bold;">$3.200.000 + IVA</td></tr>
+            <tr><td>Liceo Politécnico</td><td>2 Bullet + Enlace + Infra</td><td style="text-align:right; font-weight:bold;">$2.500.000 + IVA</td></tr>
+            <tr><td>Consistorial</td><td>1 PTZ + Enlace + Infra</td><td style="text-align:right; font-weight:bold;">$2.600.000 + IVA</td></tr>
+            <tr><td>Hub Cerro La Cruz</td><td>2 Rocket Prism + Antena 120 + <b>UPS Online 2kVA</b></td><td style="text-align:right; font-weight:bold;">$3.400.000 + IVA</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="final-box">
+    <h3 style="margin-top:0;">CONSOLIDADO FINAL PROYECTO LEBU</h3>
+    <p style="font-size: 24px; margin: 5px 0;">Valor Neto: <strong>$41.500.000</strong></p>
+    <p style="font-size: 18px; margin: 5px 0;">IVA (19%): $7.885.000</p>
+    <hr style="border: 1px solid #1a1f71;">
+    <p style="font-size: 32px; margin: 10px 0; color: #1a1f71;">TOTAL: <strong>$49.385.000</strong></p>
+</div>
+
+<div style="margin-top: 30px; font-size: 11px; color: #666;">
+    <p>* Se garantiza el correcto funcionamiento de los 28 flujos de video IA propuestos bajo condiciones óptimas de visibilidad.<br>
+    * Plazo de ejecución estimado: 15 días hábiles desde la firma de la orden de compra.</p>
+</div>
+
+</body>
+</html>

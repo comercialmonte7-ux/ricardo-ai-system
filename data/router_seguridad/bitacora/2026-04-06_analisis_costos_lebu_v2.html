@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Costos PRO v3.5 - Lebu - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a1f71;
+            --accent-blue: #00d2ff;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --bg-gray: #f8fafc;
+        }
+
+        @page { size: A4; margin: 0; }
+        body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; background-color: #e2e8f0; color: var(--text-dark); }
+
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20px auto;
+            background-color: var(--white);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
+
+        @media print {
+            body { background: none; }
+            .page-container { margin: 0; box-shadow: none; }
+            .no-print { display: none !important; }
+        }
+
+        header { 
+            padding: 30px 50px; 
+            border-bottom: 2px solid var(--primary-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 { font-size: 28px; font-weight: 700; color: var(--primary-blue); margin: 0; }
+        .document-title { 
+            background: var(--primary-blue); 
+            color: white; 
+            padding: 6px 15px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+        }
+
+        .content { padding: 30px 50px; flex-grow: 1; }
+
+        .section-header { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 20px;
+        }
+        .section-header h2 { font-size: 16px; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; margin: 0; }
+        .section-header .line { height: 1px; flex-grow: 1; background: var(--border-color); }
+
+        /* --- Tables --- */
+        .table-container { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        th { background: var(--bg-gray); padding: 8px; text-align: left; font-size: 8px; text-transform: uppercase; color: var(--text-light); border-bottom: 1px solid var(--border-color); }
+        td { padding: 6px 8px; border-bottom: 1px solid #f1f5f9; }
+        .price { text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .total-row { background: #f1f5f9; font-weight: 700; color: var(--primary-blue); }
+
+        .profit-highlight { 
+            background: var(--primary-blue); 
+            color: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            text-align: center;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <button onclick="window.print()" class="btn">DESCARGAR COSTOS COMPLETOS (PDF)</button>
+</div>
+
+<!-- PAGINA 1: DASHBOARD COMPARATIVO -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Control de Costos vs Venta v3.5</div></header>
+    <div class="content">
+        <div class="section-header"><h2>Comparativa Inversión x Nodo</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th width="50%">Punto Operativo</th><th class="price">Costo Hardware</th><th class="price">Precio Venta (Sugerido)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>📍 01: Biblioteca Municipal</td><td class="price">$3.371.200</td><td class="price">$5.200.000</td></tr>
+                    <tr><td>📍 02: Base 2 (Seguridad)</td><td class="price">$2.668.000</td><td class="price">$4.200.000</td></tr>
+                    <tr><td>📍 03: Cementerio Parroquial</td><td class="price">$4.600.000</td><td class="price">$7.800.000</td></tr>
+                    <tr><td>📍 04: Estadio Municipal</td><td class="price">$3.225.000</td><td class="price">$5.600.000</td></tr>
+                    <tr><td>📍 05: Gimnasio Municipal</td><td class="price">$2.010.000</td><td class="price">$3.800.000</td></tr>
+                    <tr><td>📍 06: Liceo Politécnico</td><td class="price">$1.205.000</td><td class="price">$2.500.000</td></tr>
+                    <tr><td>📍 07: DAEM</td><td class="price">$1.935.000</td><td class="price">$3.200.000</td></tr>
+                    <tr><td>📍 08: Consistorial</td><td class="price">$1.495.000</td><td class="price">$2.600.000</td></tr>
+                    <tr><td>📍 09: Escuela Rebeca Castro</td><td class="price">$1.935.000</td><td class="price">$3.200.000</td></tr>
+                    <tr><td>📡 10: Hub Cerro La Cruz</td><td class="price">$1.922.000</td><td class="price">$3.400.000</td></tr>
+                    <tr class="total-row"><td>TOTAL CONSOLIDADO</td><td class="price">$24.366.200</td><td class="price">$41.500.000</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="profit-highlight">
+            <span style="font-size: 10px; text-transform: uppercase;">Margen Operativo Bruto (Descontando Logística)</span>
+            <div style="font-size: 32px; font-weight: 800;">$12.145.000</div>
+        </div>
+    </div>
+    <footer><span>Confidencial | Router v3.5</span><span>Página 1 / 13</span></footer>
+</div>
+
+<!-- PAGINA 2: FICHA TECNICA -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Especificaciones de Hardware</div></header>
+    <div class="content">
+        <div class="section-header"><h2>Elicitación de Equipamiento</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table><thead><tr><th width="30%">Equipo</th><th width="70%">Descripción Técnica</th></tr></thead>
+                <tbody>
+                    <tr><td>Dahua LPR ITC352</td><td>Reconocimiento patentes. Sensor Global Shutter. >99% efectividad.</td></tr>
+                    <tr><td>Dahua PTZ 45X</td><td>Domo inteligente. 45X Zoom. 250m IR. Auto-tracking AI.</td></tr>
+                    <tr><td>Dahua Bullet 5MP</td><td>Lente motorizado 7-35mm. Ideal para detalle y profundidad.</td></tr>
+                    <tr><td>UPS Online 2kVA</td><td>Doble conversión. Cero tiempo de transferencia. </td></tr>
+                    <tr><td>Radio Ubiquiti AC</td><td>Tráfico Gigabit. Filtrado de ruido AirPrism.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer><span>Mantenimiento y Hardware</span><span>Página 2 / 13</span></footer>
+</div>
+
+<!-- PAGINA 3: BIBLIOTECA -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Costo Pto. 01</div></header>
+    <div class="content">
+        <div class="section-header"><h2>📍 01: BIBLIOTECA MUNICIPAL</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table><thead><tr><th>Insumo</th><th>Cant.</th><th class="price">Unit.</th><th class="price">Total</th></tr></thead>
+                <tbody>
+                    <tr><td>LPR ITC352 (Patentes)</td><td>1</td><td class="price">$1.450.000</td><td class="price">$1.450.000</td></tr>
+                    <tr><td>PTZ 45X AI</td><td>1</td><td class="price">$1.150.000</td><td class="price">$1.150.000</td></tr>
+                    <tr><td>Bullet 5MP Motorizada</td><td>1</td><td class="price">$420.000</td><td class="price">$420.000</td></tr>
+                    <tr><td>PowerBeam 5AC G2</td><td>1</td><td class="price">$135.000</td><td class="price">$135.000</td></tr>
+                    <tr><td>Switch Industrial PoE+ Dahua</td><td>1</td><td class="price">$131.200</td><td class="price">$131.200</td></tr>
+                    <tr><td>Gabinete Metálico IP66</td><td>1</td><td class="price">$46.000</td><td class="price">$46.000</td></tr>
+                    <tr><td>Kit de Insumos (Red/Elec/Montaje)</td><td>1</td><td class="price">$39.000</td><td class="price">$39.000</td></tr>
+                    <tr class="total-row"><td colspan="3">SUBTOTAL PTO 01</td><td class="price">$3.371.200</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer><span>Biblioteca</span><span>Página 3 / 13</span></footer>
+</div>
+
+<!-- PAGINA 11: ESCUELA REBECA CASTRO -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Costo Pto. 09</div></header>
+    <div class="content">
+        <div class="section-header"><h2>📍 09: ESCUELA REBECA CASTRO</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table><thead><tr><th>Insumo</th><th>Cant.</th><th class="price">Unit.</th><th class="price">Total</th></tr></thead>
+                <tbody>
+                    <tr><td>Dahua PTZ 45X AI</td><td>1</td><td class="price">$1.150.000</td><td class="price">$1.150.000</td></tr>
+                    <tr><td>Dahua Bullet 5MP Motorizada</td><td>1</td><td class="price">$420.000</td><td class="price">$420.000</td></tr>
+                    <tr><td>PowerBeam 5AC G2</td><td>1</td><td class="price">$135.000</td><td class="price">$135.000</td></tr>
+                    <tr><td>Infra (Gabinete/Switch/Fine)</td><td>1</td><td class="price">$230.000</td><td class="price">$230.000</td></tr>
+                    <tr class="total-row"><td colspan="3">SUBTOTAL ESCUELA</td><td class="price">$1.935.000</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer><span>Escuela Rebeca Castro</span><span>Página 11 / 13</span></footer>
+</div>
+
+<!-- PAGINA 12: HUB CERRO LA CRUZ -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Costo Hub Cerro</div></header>
+    <div class="content">
+        <div class="section-header"><h2>📡 HUB: CERRO LA CRUZ</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table><thead><tr><th>Insumo</th><th>Cant.</th><th class="price">Unit.</th><th class="price">Total</th></tr></thead>
+                <tbody>
+                    <tr><td>Rocket PRISM G2</td><td>2</td><td class="price">$310.000</td><td class="price">$620.000</td></tr>
+                    <tr><td>Antena Sectorial 120</td><td>1</td><td class="price">$260.000</td><td class="price">$260.000</td></tr>
+                    <tr><td>UPS Online 2kVA</td><td>1</td><td class="price">$950.000</td><td class="price">$950.000</td></tr>
+                    <tr><td>Gabinetes IP67 / Mástil</td><td>1</td><td class="price">$92.000</td><td class="price">$92.000</td></tr>
+                    <tr class="total-row"><td colspan="3">SUBTOTAL HUB</td><td class="price">$1.922.000</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer><span>Página 12 / 13</span></footer>
+</div>
+
+<!-- PAGINA 13: LOGÍSTICA Y FINAL -->
+<div class="page-container">
+    <header><div class="brand"><h1>Router</h1></div><div class="document-title">Logística y Cierre</div></header>
+    <div class="content">
+        <div class="section-header"><h2>Desglose de Logística (9 Días de Obra)</h2><div class="line"></div></div>
+        <div class="table-container">
+            <table><thead><tr><th>Ítem Logístico</th><th class="price">Costo</th></tr></thead>
+                <tbody>
+                    <tr><td>Arriendo Camión Alzahombre Diarios</td><td class="price">$1.620.000</td></tr>
+                    <tr><td>Mano de Obra Especializada (3 Técnicos)</td><td class="price">$2.025.000</td></tr>
+                    <tr><td>Viáticos, Combustible y Traslados</td><td class="price">$900.000</td></tr>
+                    <tr class="total-row"><td>TOTAL EJECUCIÓN</td><td class="price">$4.545.000</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 30px; padding: 25px; border: 2px solid var(--primary-blue); border-radius: 12px; background: #f8fafc;">
+            <p style="font-size: 11px; margin: 0; color: var(--text-light);">TOTAL COSTO OBRA: $29.355.000</p>
+            <p style="font-size: 18px; margin: 10px 0; color: var(--primary-blue); font-weight: 700;">VENTA PROYECTO NETO: $41.500.000</p>
+            <p style="font-size: 24px; margin: 5px 0; color: #059669; font-weight: 800;">UTILIDAD BRUTA: $12.145.000</p>
+        </div>
+    </div>
+    <footer><span>Confidencial | Router 2026</span><span>Página 13 / 13</span></footer>
+</div>
+
+</body>
+</html>

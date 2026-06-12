@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Prestación de Servicios - Iván Santos | GORE Biobío</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --border: #cbd5e1;
+            --text: #1e293b;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        .project-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid #bfdbfe;
+        }
+        .content {
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+        .intro-paragraph {
+            margin-bottom: 24px;
+            text-indent: 30px;
+        }
+        .clause {
+            margin-bottom: 24px;
+        }
+        .clause-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .signatures {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            text-align: center;
+        }
+        .sig-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sig-line {
+            width: 80%;
+            border-top: 1px solid var(--primary);
+            margin-bottom: 10px;
+            margin-top: 60px;
+        }
+        .sig-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .sig-title {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .actions {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        @media print {
+            .actions {
+                display: none;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="actions">
+    <button onclick="window.print()" class="btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Imprimir Contrato
+    </button>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Contrato de Prestación de Servicios</h1>
+        <p>SUBVENCIÓN DE SEGURIDAD CIUDADANA FNDR 2024 - GOBIERNO REGIONAL DEL BIOBÍO</p>
+        <span class="project-badge">CÓDIGO PROYECTO: 2024SC0126</span>
+    </div>
+
+    <div class="content">
+        <p class="intro-paragraph">
+            En <strong>Lebu</strong>, a <strong>12</strong> de <strong>Enero</strong> del <strong>2026</strong>, entre la Organización Comunitaria denominada: <strong>Club de Adulto Mayor Nuevo Amanecer</strong>, RUT Nº <strong>____________________</strong> con domicilio en <strong>Sede Social Club Nuevo Amanecer, Comuna de Lebu</strong>, representada legalmente por su Presidenta doña <strong>Isolda Camaño Lavín</strong>, RUN Nº <strong>5.904.132-0</strong> y el profesional don <strong>Iván Rodrigo Santos Burgos</strong>, RUN Nº <strong>12.710.150-7</strong>, de profesión <strong>Ingeniero de Ejecución en Informática / Experto en Seguridad</strong>, domiciliado en <strong>Manuel Bulnes 564</strong>, Comuna de <strong>Lebu</strong>, se ha convenido lo siguiente:
+        </p>
+
+        <div class="clause">
+            <p class="clause-title">PRIMERO: Objeto del Contrato e Insumos Técnicos</p>
+            <p>
+                Don <strong>Iván Rodrigo Santos Burgos</strong> se compromete a ejecutar un total de <strong>12 horas</strong> de trabajo profesional durante la vigencia del proyecto, con una dedicación promedio adaptada a los hitos de ejecución del plan de trabajo, desempeñando el rol y las funciones de <strong>Experto en Seguridad / Asesor Técnico de Proyecto</strong>.
+            </p>
+            <p style="margin-top: 8px;">
+                Estas funciones se enmarcan específicamente dentro del Proyecto denominado <strong>"CUIDANDO NUESTRA SEDE"</strong> (Código: <strong>2024SC0126</strong>), financiado a través de la Subvención de Actividades de Seguridad Ciudadana del FNDR 2024 del <strong>Gobierno Regional del Biobío</strong> y ejecutado directamente por la mencionada Organización Comunitaria. Las tareas específicas a desarrollar comprenderán:
+            </p>
+            <ul style="margin-left: 30px; margin-top: 8px; margin-bottom: 8px;">
+                <li>Levantamiento y diagnóstico inicial de vulnerabilidades en la sede del club social.</li>
+                <li>Asesoría técnica en la ubicación estratégica del equipamiento y cámaras de televigilancia (CCTV) instaladas por ROUTER Seguridad.</li>
+                <li>Diseño y ejecución de una jornada de capacitación técnica (taller de 8 horas) para la directiva y socios del Club respecto al uso del sistema de cámaras, resguardo local y aplicación móvil P2P.</li>
+                <li>Elaboración del informe técnico de cierre y conformidad del sistema de seguridad implementado.</li>
+            </ul>
+        </div>
+
+        <div class="clause">
+            <p class="clause-title">SEGUNDO: Honorarios y Forma de Pago</p>
+            <p>
+                La Organización se compromete a cancelar la suma total y única de <strong>$300.000.- (trescientos mil pesos chilenos)</strong> brutos, por concepto de la totalidad de horas comprometidas y servicios ejecutados en el presente contrato. El pago se hará efectivo en una única cuota al finalizar las actividades, previa presentación del respectivo Informe de Prestación de Servicios (Informe de Labores) y la emisión de la correspondiente Boleta de Honorarios Electrónica a nombre de la institución.
+            </p>
+            <p style="margin-top: 8px;">
+                Los impuestos o retenciones vigentes correspondientes a la Boleta de Honorarios emitida serán declarados y asumidos conforme a la legislación tributaria aplicable del Servicio de Impuestos Internos (SII).
+            </p>
+        </div>
+
+        <div class="clause">
+            <p class="clause-title">TERCERO: Duración del Contrato</p>
+            <p>
+                El presente contrato tendrá una duración de <strong>4 meses</strong> a contar desde la fecha de firma del mismo, rigiendo a contar del <strong>12 de Enero de 2026</strong> y extendiéndose en su ejecución hasta el <strong>12 de Mayo de 2026</strong>, fecha en que se cumple el término técnico y financiero de ejecución de las obras y servicios del proyecto aprobado por el Gobierno Regional.
+            </p>
+        </div>
+
+        <div class="clause">
+            <p class="clause-title">CUARTO: Ejemplares</p>
+            <p>
+                El presente contrato se firma en tres ejemplares del mismo tenor y fecha, quedando un ejemplar en poder del prestador del servicio y dos ejemplares en poder de la Organización Comunitaria para fines administrativos y su respectiva rendición ante el Gobierno Regional del Biobío.
+            </p>
+        </div>
+
+        <div class="signatures">
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <span class="sig-name">IVÁN RODRIGO SANTOS BURGOS</span>
+                <span class="sig-title">Prestador de Servicios / Asesor Técnico</span>
+                <span class="sig-title">RUN: 12.710.150-7</span>
+            </div>
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <span class="sig-name">ISOLDA CAMAÑO LAVÍN</span>
+                <span class="sig-title">Representante Legal</span>
+                <span class="sig-title">Club Adulto Mayor Nuevo Amanecer</span>
+                <span class="sig-title">RUN: 5.904.132-0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

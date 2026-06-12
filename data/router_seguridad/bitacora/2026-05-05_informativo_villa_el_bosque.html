@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informativo Técnico | Villa El Bosque - Los Álamos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #334155;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --white: #ffffff;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Style */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+            color: var(--white);
+            padding: 60px 40px;
+            border-radius: 32px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.2;
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-badge {
+            background: var(--accent);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        /* Grid Layout */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .spec-list {
+            list-style: none;
+        }
+
+        .spec-list li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.95rem;
+            color: var(--secondary);
+        }
+
+        .spec-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 900;
+        }
+
+        /* Sections */
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 40px 0 24px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        .protocol-item {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .protocol-item strong {
+            display: block;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .protocol-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: var(--warning-bg);
+            border: 2px solid var(--warning-border);
+            padding: 32px;
+            border-radius: 24px;
+            margin-top: 40px;
+        }
+
+        .warning-box h4 {
+            color: #92400e;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-list {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+
+        .warning-list li {
+            margin-bottom: 8px;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .danger-text {
+            color: var(--danger);
+            font-weight: 700;
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 32px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-logo {
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Print Button */
+        .no-print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .no-print-btn:hover {
+            transform: scale(1.05);
+            background: var(--accent);
+        }
+
+        /* Print Media Query */
+        @media print {
+            .no-print-btn { display: none; }
+            body { background: white; padding: 0; }
+            .container { max-width: 100%; padding: 0; }
+            header { 
+                background: white !important; 
+                color: black !important; 
+                border-radius: 0; 
+                border-bottom: 4px solid var(--primary); 
+                box-shadow: none;
+                padding: 30px 0;
+            }
+            .brand-badge { border: 1px solid var(--primary); color: var(--primary); background: none; }
+            .card { box-shadow: none; border: 1px solid #e2e8f0; break-inside: avoid; }
+            .protocol-item { box-shadow: none; border: 1px solid #e2e8f0; border-left: 4px solid var(--primary); break-inside: avoid; }
+            .warning-box { border: 2px solid black; background: white; break-inside: avoid; }
+            h1 { font-size: 2.2rem; color: black; }
+        }
+
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-content">
+            <span class="brand-badge">Ecosistema de Seguridad Barrial</span>
+            <h1>Villa El Bosque</h1>
+            <p class="subtitle">Los Álamos | Manual de Uso y Corresponsabilidad</p>
+        </div>
+    </header>
+
+    <div class="info-grid">
+        <div class="card">
+            <h3>⚙️ Ficha Técnica</h3>
+            <ul class="spec-list">
+                <li><strong>Cámaras:</strong> 16 Unidades IP de 4MP (Ultra HD).</li>
+                <li><strong>Grabación:</strong> 01 NVR Profesional de alta capacidad.</li>
+                <li><strong>Respaldo:</strong> Grabación continua 24/7 con disco duro dedicado.</li>
+                <li><strong>Acceso:</strong> Control total desde su Smartphone (App P2P).</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>🤝 Compromiso ROUTER</h3>
+            <ul class="spec-list">
+                <li><strong>Instalación:</strong> Nos hacemos cargo del 100% del despliegue.</li>
+                <li><strong>Gestión GORE:</strong> Apoyo técnico para la presentación del proyecto.</li>
+                <li><strong>Configuración:</strong> Optimización de ángulos y alertas.</li>
+                <li><strong>Propiedad:</strong> Los equipos son 100% de la comunidad.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 20px; margin-bottom: 40px;" class="no-print">
+        <img src="/Users/ricardomarimodinger/.gemini/antigravity/brain/7d926e1e-ccdb-4ff2-aef8-83c7729b758a/security_camera_neighborhood_1777991604988.png" style="width: 50%; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);" alt="Cámara de Seguridad">
+        <img src="/Users/ricardomarimodinger/.gemini/antigravity/brain/7d926e1e-ccdb-4ff2-aef8-83c7729b758a/nvr_system_dashboard_1777991637824.png" style="width: 50%; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);" alt="Sistema NVR">
+    </div>
+
+    <div class="card" style="margin-bottom: 40px; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);">
+        <h3 style="color: var(--primary);">💰 Inversión del Proyecto</h3>
+        <p style="font-size: 2.5rem; font-weight: 700; color: var(--accent); margin: 10px 0;">$5.600.000 <span style="font-size: 1rem; color: var(--text-muted); font-weight: 400;">(Valor Total Instalado)</span></p>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Este valor incluye equipamiento completo, materiales de instalación, mano de obra especializada y soporte en la gestión documental para financiamiento público.</p>
+    </div>
+
+    <h2 class="section-title">Acompañamiento Estratégico (GORE)</h2>
+    <div class="protocol-item" style="border-left-color: var(--accent-purple);">
+        <strong>Gestión de Proyectos Regionales</strong>
+        <p>En ROUTER no solo instalamos cámaras; somos sus socios estratégicos. Nos comprometemos a asesorar a la Junta de Vecinos en la elaboración técnica y presentación del proyecto ante el Gobierno Regional (GORE), facilitando los antecedentes necesarios para postular a fondos concursables.</p>
+    </div>
+
+    <h2 class="section-title">Protocolo Vecinal de Operación</h2>
+    
+    <div class="protocol-item">
+        <strong>1. Gestión del Internet y Energía</strong>
+        <p>Cada vecino es responsable de mantener su router encendido y con internet activo. Sin estos dos elementos, la cámara no podrá transmitir video en tiempo real.</p>
+    </div>
+
+    <div class="protocol-item">
+        <strong>2. Revisión de Incidentes</strong>
+        <p>En caso de un suceso, se recomienda que un encargado de la junta coordine la extracción del video para evitar saturar la conexión de la casa afectada.</p>
+    </div>
+
+    <div class="protocol-item">
+        <strong>3. Privacidad y Uso Ético</strong>
+        <p>El sistema es para protección comunitaria. Los ángulos han sido configurados para proteger espacios públicos y accesos, respetando la normativa de privacidad.</p>
+    </div>
+
+    <div class="warning-box">
+        <h4>⚠️ Nota Importante sobre Soporte Técnico</h4>
+        <p>Nuestra garantía cubre fallas de fábrica y errores de instalación. Sin embargo, no podemos responsabilizarnos por factores externos.</p>
+        <ul class="warning-list">
+            <li>Cortes de energía eléctrica o fusibles quemados.</li>
+            <li>Fallas en el servicio de Internet (proveedor externo).</li>
+            <li>Cambio de claves de Wi-Fi sin aviso técnico previo.</li>
+        </ul>
+        <p class="danger-text">Si se solicita una visita técnica y el problema es ajeno al sistema ROUTER, se cobrará el costo de logística y traslado.</p>
+    </div>
+
+    <h2 class="section-title">Seguridad es Comunidad</h2>
+    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px;">
+        Este sistema otorga soberanía total a Villa El Bosque. No existen mensualidades porque la tecnología ahora les pertenece. La clave del éxito es la comunicación entre vecinos y el cuidado de los equipos.
+    </p>
+
+    <footer>
+        <span class="footer-logo">ROUTER</span>
+        <p>Ingeniería en Conectividad y Seguridad</p>
+        <p>Provincia de Arauco, Chile | 2026</p>
+    </footer>
+</div>
+
+<button onclick="window.print()" class="no-print-btn">Imprimir Informativo</button>
+
+</body>
+</html>

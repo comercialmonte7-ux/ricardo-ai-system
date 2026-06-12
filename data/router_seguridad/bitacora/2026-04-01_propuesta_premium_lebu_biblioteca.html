@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Pro - Municipalidad Lebu - Router</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a1f71;
+            --accent-blue: #00d2ff;
+            --gradient: linear-gradient(135deg, #1a1f71 0%, #2D328C 100%);
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --success: #059669;
+        }
+
+        @page { size: A4; margin: 0; }
+        body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; background-color: #e2e8f0; color: var(--text-dark); line-height: 1.6; }
+
+        * { box-sizing: border-box; }
+
+        .page-container {
+            width: 210mm;
+            height: 297mm;
+            margin: 20px auto;
+            background-color: var(--white);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+            body { background: none; margin: 0; padding: 0; }
+            .page-container { 
+                margin: 0; 
+                box-shadow: none; 
+                page-break-after: always;
+                height: 297mm;
+                width: 210mm;
+                overflow: hidden;
+            }
+            .no-print { display: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+
+        header { 
+            padding: 40px 70px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-bg-shape { 
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            width: 450px; 
+            height: 140px; 
+            background: var(--gradient); 
+            border-bottom-left-radius: 100px; 
+            z-index: -1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            padding-right: 50px;
+        }
+
+        .header-bg-shape h1 { 
+            color: var(--white); 
+            font-size: 24px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            margin: 0;
+        }
+
+        .logo-box { display: flex; align-items: center; }
+        .shield-icon { 
+            width: 55px; 
+            height: 65px; 
+            background: var(--gradient); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); 
+            margin-right: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .shield-icon::after { content: '🛡️'; font-size: 28px; }
+        .logo-text-group { display: flex; flex-direction: column; }
+        .logo-main { font-size: 48px; font-weight: 700; color: var(--primary-blue); line-height: 0.9; letter-spacing: -2px; }
+        .logo-sub { font-size: 10px; font-weight: 700; color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase; margin-top: 5px; }
+
+        .info-grid { 
+            padding: 20px 70px; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px;
+            background: #f8fafc;
+        }
+        .info-item h3 { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 5px 0; }
+        .info-item p { font-size: 15px; font-weight: 700; color: var(--text-dark); margin: 0; }
+
+        .content { padding: 40px 70px; flex-grow: 1; }
+        .section-header { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            margin-bottom: 20px;
+        }
+        .section-header h2 { font-size: 18px; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; margin: 0; }
+        .section-header .line { height: 2px; flex-grow: 1; background: #e2e8f0; }
+
+        .table-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table th { background: #f1f5f9; color: var(--text-light); padding: 12px 15px; text-align: left; font-size: 11px; text-transform: uppercase; }
+        .table td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); }
+        .table b { color: var(--primary-blue); font-size: 14px; }
+
+        .totals-section {
+            border-top: 2px solid var(--primary-blue);
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .total-row { display: flex; gap: 40px; margin-bottom: 5px; align-items: center; }
+        .total-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; }
+        .total-value { font-size: 18px; font-weight: 700; min-width: 120px; text-align: right; }
+        .grand-total { background: var(--gradient); color: white; padding: 15px 30px; border-radius: 12px; margin-top: 10px; }
+        .grand-total .total-value { font-size: 28px; }
+
+        .blueprint-container {
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid #1e293b;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .service-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-blue);
+            font-size: 13px;
+        }
+
+        footer { 
+            padding: 20px 70px; 
+            background: #f1f5f9; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .no-print { position: fixed; top: 30px; left: 30px; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); z-index: 100; }
+        .btn { display: inline-block; background: var(--gradient); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button onclick="window.print()" class="btn">GENERAR PDF / IMPRIMIR</button>
+    </div>
+
+    <!--- PAGINA 1: PRESUPUESTO --->
+    <div class="page-container">
+        <header>
+            <div class="logo-box">
+                <div class="shield-icon"></div>
+                <div class="logo-text-group">
+                    <span class="logo-main">Router</span>
+                    <span class="logo-sub">Seguridad Inteligente</span>
+                </div>
+            </div>
+            <div class="header-bg-shape">
+                <h1>COTIZACIÓN PRO</h1>
+            </div>
+        </header>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <h3>Cliente:</h3>
+                <p>MUNICIPALIDAD DE LEBU</p>
+            </div>
+            <div class="info-item" style="text-align: right;">
+                <h3>Proyecto:</h3>
+                <p>SISTEMA TELEVIGILANCIA PT. 01</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section-header">
+                <h2>Equipamiento de Alta Gama (Punto Crítico)</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="35%">Componente</th>
+                            <th width="65%">Especificación Técnica Destacada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Cámara LPR (Patentes)</b></td>
+                            <td>Dahua ITC352 | Global Shutter | Reconocimiento 200 km/h.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cámara PTZ (Robótica)</b></td>
+                            <td>Dahua 4MP | **45x Zoom Óptico** | IR 250m | Auto-tracking.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cámara Bullet (Fija)</b></td>
+                            <td>Dahua 5MP | Lente Motorizado 7-35mm | **IR 120m**.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Enlace Ubiquiti Pro</b></td>
+                            <td>PowerBeam 5AC Gen2 | Plato Metálico | Anti-vibración.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Infraestructura de Punto</b></td>
+                            <td>Gabinete IP66 | Switch Industrial PoE+ | Protecciones SPD.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ingeniería y Config.</b></td>
+                            <td>Configuración de IA, Analítica LPR y Backhaul Cerro La Cruz.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="totals-section">
+                <div class="total-row">
+                    <span class="total-label">Subtotal Neto:</span>
+                    <span class="total-value">$23.109.243</span>
+                </div>
+                <div class="total-row">
+                    <span class="total-label">IVA (19%):</span>
+                    <span class="total-value">$4.390.757</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span class="total-label">VALOR TOTAL PROYECTO (5 PUNTOS):</span>
+                    <span class="total-value">$27.500.000</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px; padding: 15px; background: #fffbeb; border-radius: 10px; border-left: 4px solid #f59e0b; font-size: 11px;">
+                <b>NOTA:</b> No incluye obra civil (postes) ni empalmes eléctricos. Responsabilidad de la Municipalidad.
+            </div>
+        </div>
+
+        <footer>
+            <span>Router | Soluciones Municipales</span>
+            <span>Página 1 / 3</span>
+        </footer>
+    </div>
+
+    <!--- PAGINA 2: SERVICIOS --->
+    <div class="page-container">
+        <header>
+            <div class="logo-box">
+                <div class="shield-icon"></div>
+                <div class="logo-text-group">
+                    <span class="logo-main" style="font-size: 30px;">Router</span>
+                </div>
+            </div>
+            <div class="header-bg-shape">
+                <h1>SERVICIOS IA</h1>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="section-header">
+                <h2>Tecnología de Análisis Inteligente</h2>
+                <div class="line"></div>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-light); margin-bottom: 30px;">
+                Nuestra solución transforma las cámaras en sensores inteligentes capaces de asistir a la seguridad pública mediante algoritmos de Deep Learning.
+            </p>
+
+            <div class="service-grid">
+                <div class="service-item">
+                    <b>Base de Datos LPR:</b> Lista blanca/negra para alertas automáticas ante vehículos con encargo.
+                </div>
+                <div class="service-item">
+                    <b>Protección Perimetral:</b> Clasificación exacta de humanos y vehículos para evitar falsas alarmas.
+                </div>
+                <div class="service-item">
+                    <b>Metadatos de Video:</b> Búsqueda por color de ropa, dirección o uso de accesorios (mochila/casco).
+                </div>
+                <div class="service-item">
+                    <b>Seguimiento Inteligente:</b> La cámara PTZ sigue automáticamente a sospechosos en el área.
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 50px;">
+                <h2>Mantención y Continuidad Operativa</h2>
+                <div class="line"></div>
+            </div>
+
+            <p style="font-size: 14px; color: var(--text-light);">
+                Ofrecemos soporte técnico local con tiempos de respuesta en terreno inferiores a 24 horas, asegurando que la vigilancia de Lebu nunca se detenga.
+            </p>
+        </div>
+
+        <footer>
+            <span>Router | Ingeniería de Seguridad</span>
+            <span>Página 2 / 3</span>
+        </footer>
+    </div>
+
+    <!--- PAGINA 3: PLANO DE ELEVACION --->
+    <div class="page-container">
+        <header>
+            <div class="logo-box">
+                <div class="shield-icon"></div>
+                <div class="logo-text-group">
+                    <span class="logo-main" style="font-size: 30px;">Router</span>
+                </div>
+            </div>
+            <div class="header-bg-shape">
+                <h1>INGENIERÍA</h1>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="section-header">
+                <h2>Esquema de Elevación y Conectividad</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="blueprint-container">
+                <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- POLE STRUCTURE -->
+                    <rect x="380" y="50" width="15" height="400" fill="#cbd5e1" />
+                    <rect x="300" y="450" width="180" height="20" fill="#475569" /> <!-- Base -->
+
+                    <!-- ARMS -->
+                    <rect x="250" y="80" width="130" height="5" fill="#94a3b8" /> <!-- Arm PTZ -->
+                    <rect x="395" y="150" width="100" height="5" fill="#94a3b8" /> <!-- Arm Antenna -->
+                    <rect x="300" y="250" width="80" height="5" fill="#94a3b8" /> <!-- Arm LPR -->
+
+                    <!-- DEVICES -->
+                    <!-- PTZ -->
+                    <circle cx="240" cy="100" r="15" fill="#00d2ff" />
+                    <rect x="232" y="80" width="16" height="15" fill="#00d2ff" />
+                    <text x="140" y="105" fill="#00d2ff" font-size="12" font-weight="bold">PTZ 45X</text>
+
+                    <!-- ANTENNA -->
+                    <ellipse cx="505" cy="152" rx="20" ry="35" fill="#f8fafc" stroke="#00d2ff" stroke-width="2" />
+                    <rect x="495" y="145" width="5" height="15" fill="#00d2ff" />
+                    <text x="540" y="158" fill="#f8fafc" font-size="12">PowerBeam Gen2</text>
+                    <path d="M530 152 Q650 100 750 50" stroke="#00d2ff" stroke-dasharray="8 4" stroke-width="2" />
+                    <text x="680" y="70" fill="#00d2ff" font-size="10" transform="rotate(-15, 680, 70)">ENLACE CERRO LA CRUZ</text>
+
+                    <!-- LPR -->
+                    <rect x="260" y="240" width="40" height="20" rx="3" fill="#00d2ff" />
+                    <circle cx="265" cy="250" r="4" fill="white" />
+                    <text x="180" y="255" fill="#00d2ff" font-size="12" font-weight="bold">LPR TRAFFIC</text>
+
+                    <!-- BULLET (Below PTZ) -->
+                    <rect x="350" y="180" width="30" height="15" rx="2" fill="#00d2ff" transform="rotate(-20, 350, 180)" />
+                    <text x="250" y="200" fill="#00d2ff" font-size="12" font-weight="bold">BULLET 5MP</text>
+
+                    <!-- CABINET -->
+                    <rect x="367" y="320" width="40" height="60" fill="#1d4ed8" stroke="white" />
+                    <text x="420" y="355" fill="white" font-size="10">GABINETE IP66 / NVR / SWITCH</text>
+
+                    <!-- HEIGHT LINES -->
+                    <line x1="450" y1="50" x2="500" y2="50" stroke="#94a3b8" />
+                    <line x1="450" y1="450" x2="500" y2="450" stroke="#94a3b8" />
+                    <line x1="480" y1="50" x2="480" y2="450" stroke="#94a3b8" stroke-dasharray="4 4" />
+                    <text x="490" y="250" fill="#94a3b8" font-size="12" transform="rotate(90, 490, 250)">ALTURA: 9m - 12m</text>
+                </svg>
+            </div>
+
+            <div style="margin-top: 20px; font-size: 13px; color: var(--text-light); line-height: 1.8;">
+                <b>Arquitectura Técnica:</b><br>
+                Cada punto de vigilancia actúa como un nodo autónomo gestionado por un switch industrial PoE+. La transmisión se realiza mediante un enlace inalámbrico dedicado que garantiza el ancho de banda necesario para video 4K sin latencia.
+            </div>
+        </div>
+
+        <footer>
+            <span>Ricardo Mari | Proyectos Municipales</span>
+            <span>Página 3 / 3</span>
+        </footer>
+    </div>
+</body>
+</html>

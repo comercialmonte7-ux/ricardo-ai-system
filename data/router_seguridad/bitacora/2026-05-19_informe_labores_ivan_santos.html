@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Labores - Iván Santos | GORE Biobío</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --border: #cbd5e1;
+            --text: #1e293b;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .meta-table td {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .meta-label {
+            font-weight: 600;
+            background-color: #f8fafc;
+            color: var(--primary);
+            width: 30%;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+        }
+        .activity-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .activity-date {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .activity-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+        .activity-desc {
+            font-size: 0.92rem;
+            color: #475569;
+            text-align: justify;
+        }
+        .signatures {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            text-align: center;
+        }
+        .sig-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sig-line {
+            width: 80%;
+            border-top: 1px solid var(--primary);
+            margin-bottom: 10px;
+            margin-top: 60px;
+        }
+        .sig-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .sig-title {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .actions {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        @media print {
+            .actions {
+                display: none;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="actions">
+    <button onclick="window.print()" class="btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Imprimir Informe de Labores
+    </button>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Informe de Labores o Desempeño</h1>
+        <p>HONORARIOS PROYECTOS SUBVENCIONES - GOBIERNO REGIONAL DEL BIOBÍO</p>
+    </div>
+
+    <div class="content">
+        <table class="meta-table">
+            <tr>
+                <td class="meta-label">Código Proyecto</td>
+                <td><strong>2024SC0126</strong></td>
+            </tr>
+            <tr>
+                <td class="meta-label">Nombre del Proyecto</td>
+                <td>CUIDANDO NUESTRA SEDE</td>
+            </tr>
+            <tr>
+                <td class="meta-label">Institución Beneficiaria</td>
+                <td>Club de Adulto Mayor Nuevo Amanecer</td>
+            </tr>
+            <tr>
+                <td class="meta-label">Nombre del Consultor</td>
+                <td><strong>Iván Rodrigo Santos Burgos</strong></td>
+            </tr>
+            <tr>
+                <td class="meta-label">RUT del Consultor</td>
+                <td><strong>12.710.150-7</strong></td>
+            </tr>
+            <tr>
+                <td class="meta-label">Periodo del Informe</td>
+                <td>Enero - Mayo 2026 (Consolidado de Actividades)</td>
+            </tr>
+            <tr>
+                <td class="meta-label">Boleta de Honorarios</td>
+                <td>N° <strong>____________________</strong></td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Actividades Realizadas en el Periodo Indicado</h2>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px; text-align: justify; font-style: italic;">
+            Detalle de las actividades y servicios técnicos entregados conforme al plan de trabajo del proyecto financiado por las Subvenciones de Seguridad Ciudadana del Gobierno Regional del Biobío.
+        </p>
+
+        <div class="activity-item">
+            <div class="activity-date">Actividad 1 — Hito Inicial | Enero 2026</div>
+            <div class="activity-title">Levantamiento Técnico de Vulnerabilidades y Diagnóstico de Seguridad</div>
+            <div class="activity-desc">
+                Visita en terreno a la sede social del Club Adulto Mayor Nuevo Amanecer en Lebu. Realización de un análisis y levantamiento de puntos vulnerables en el perímetro físico de la infraestructura. Prestación de asesoría especializada respecto a la distribución técnica e instalación estratégica de los puntos de televigilancia (CCTV) a cargo de ROUTER, garantizando la cobertura de los accesos principales sin afectar la privacidad de las viviendas adyacentes.
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-date">Actividad 2 — Hito Educativo | Febrero 2026</div>
+            <div class="activity-title">Jornada de Inducción Comunitaria en Seguridad Vecinal Preventiva</div>
+            <div class="activity-desc">
+                Despliegue y coordinación de una charla educativa presencial dirigida a la directiva y socios del Club respecto al rol de la televigilancia en la prevención situacional de delitos. Sensibilización y entrega de pautas de corresponsabilidad comunitaria, uso ético de las grabaciones de seguridad, y articulación vecinal orientada a crear un entorno más seguro resguardando a los adultos mayores.
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-date">Actividad 3 — Hito de Capacitación Práctica | Marzo 2026</div>
+            <div class="activity-title">Taller Técnico Práctico de Operación de Sistema CCTV y Control Móvil P2P</div>
+            <div class="activity-desc">
+                Planificación e impartición de una jornada completa de capacitación técnica práctica (duración de 8 horas) para el correcto uso y administración autónoma del equipamiento CCTV instalado. Capacitación centrada en la administración del grabador digital NVR local, manejo de interfaces físicas, extracción segura de respaldos en video ante eventos de seguridad, y configuración del software cliente P2P en los smartphones de los directivos autorizados para monitoreo remoto en tiempo real (modelo sin costos de mensualidad).
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-date">Actividad 4 — Hito de Entrega Técnica | Abril 2026</div>
+            <div class="activity-title">Informe Final de Conformidad Técnica del Equipamiento CCTV</div>
+            <div class="activity-desc">
+                Elaboración y entrega del informe final de conformidad técnica que valida el correcto funcionamiento, configuración estable, nitidez de imagen de las cámaras IP instaladas, y la ausencia de contratos de servicios con cobros mensuales, empoderando tecnológicamente de manera íntegra y soberana a la organización comunitaria en su infraestructura de seguridad.
+            </div>
+        </div>
+
+        <div class="signatures">
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <span class="sig-name">IVÁN RODRIGO SANTOS BURGOS</span>
+                <span class="sig-title">Consultor Técnico / Experto en Seguridad</span>
+                <span class="sig-title">RUN: 12.710.150-7</span>
+            </div>
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                <span class="sig-name">ISOLDA CAMAÑO LAVÍN</span>
+                <span class="sig-title">Presidenta</span>
+                <span class="sig-title">Club Adulto Mayor Nuevo Amanecer</span>
+                <span class="sig-title">RUN: 5.904.132-0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

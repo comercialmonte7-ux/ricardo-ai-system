@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guion Audiovisual | Caso Villa Alessandri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0b1c3d; /* Azul Marino */
+            --accent: #e63946;  /* Rojo */
+            --bg-body: #f1f5f9;
+            --white: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .brand h2 {
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 1.5rem;
+        }
+
+        .project-meta {
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .title-block {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            background: var(--accent);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Script Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+            text-align: left;
+            padding: 15px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        .bloque-num {
+            font-weight: 700;
+            color: var(--primary);
+            width: 150px;
+        }
+
+        .desc-visual {
+            color: var(--text-muted);
+            background-color: #f8fafc;
+            width: 35%;
+        }
+
+        .audio-dialogo {
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .audio-dialogo strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Tech Notes */
+        .tech-notes {
+            margin-top: 50px;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .tech-notes h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .tech-notes ul {
+            list-style: none;
+        }
+
+        .tech-notes li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-circle {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Print Actions */
+        .actions {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-print {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-print:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(11, 28, 61, 0.2);
+        }
+
+        /* Media Queries */
+        @media print {
+            .actions, .no-print { display: none; }
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
+            th { background-color: #eee !important; color: black !important; border: 1px solid #ddd; }
+            td { border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <h2>ROUTER</h2>
+            <p>Seguridad y Tecnología</p>
+        </div>
+        <div class="project-meta">
+            <p><strong>Proyecto:</strong> Instalación 16 Cámaras Full HD (FNDR)</p>
+            <p><strong>Fecha:</strong> Mayo 2026</p>
+        </div>
+    </header>
+
+    <div class="title-block">
+        <span class="badge">Audiovisual Production</span>
+        <h1>Guion: Caso Villa Alessandri</h1>
+        <p style="color: var(--text-muted);">Estructura narrativa para video de 90 segundos</p>
+    </div>
+
+    <div class="no-print" style="margin-bottom: 30px;">
+        <img src="/Users/ricardomarimodinger/.gemini/antigravity/brain/c74cf253-4914-4cfc-88e0-9e0a05477d72/villa_alessandri_security_cover_1778686420311.png" alt="Villa Alessandri Project Cover" style="width: 100%; border-radius: 16px; object-fit: cover; max-height: 300px;">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Bloque</th>
+                <th>Descripción Visual</th>
+                <th>Audio / Diálogo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bloque-num">01. INTRODUCCIÓN</td>
+                <td class="desc-visual">Ricardo Mari frente a un punto icónico de Villa Alessandri. Plano medio.</td>
+                <td class="audio-dialogo">
+                    <strong>Ricardo:</strong>
+                    "Hola, soy Ricardo Mari de Router y me complace presentar este nuevo proyecto desarrollado para Villa Alessandri. Un desafío que asumimos con el compromiso de entregar no solo equipos, sino una solución definitiva para la seguridad de este sector."
+                </td>
+            </tr>
+            <tr>
+                <td class="bloque-num">02. EL PROYECTO (FNDR)</td>
+                <td class="desc-visual">Tomas de dron mostrando la extensión de la villa. Planos detalle de las cámaras de alta resolución.</td>
+                <td class="audio-dialogo">
+                    <strong>Ricardo (Off):</strong>
+                    "A través de un proyecto FNDR del Gobierno Regional, implementamos un sistema integral de 16 cámaras de alta resolución. Una red diseñada para cubrir puntos estratégicos, garantizando claridad absoluta tanto de día como de noche."
+                </td>
+            </tr>
+            <tr>
+                <td class="bloque-num">03. VALOR AGREGADO</td>
+                <td class="desc-visual">Tomas de Ricardo e Iván revisando planos con los vecinos o ajustando una cámara (trabajo en equipo).</td>
+                <td class="audio-dialogo">
+                    <strong>Ricardo (Off):</strong>
+                    "En Router no solo instalamos equipos; desarrollamos un trabajo conjunto con la Junta de Vecinos para guiarlos hacia la mejor solución técnica. Nuestro objetivo es que la tecnología se adapte a las necesidades reales de la comunidad, y no al revés."
+                </td>
+            </tr>
+            <tr>
+                <td class="bloque-num">04. TESTIMONIO COMUNITARIO</td>
+                <td class="desc-visual">La Presidenta en un entorno natural de la villa (plaza o calle principal).</td>
+                <td class="audio-dialogo">
+                    <strong>Presidenta:</strong>
+                    "Como vecinos, estamos muy contentos con el trabajo de don Ricardo e Iván. Ellos nos acompañaron desde el primer momento, desde el diseño del proyecto hasta su ejecución final. Hoy, esa cercanía se traduce en que podemos caminar por nuestro barrio con una tranquilidad que hace mucho no sentíamos."
+                </td>
+            </tr>
+            <tr>
+                <td class="bloque-num">05. EL IMPACTO REAL</td>
+                <td class="desc-visual">Primer plano de la Presidenta. De fondo se ve una cámara operando.</td>
+                <td class="audio-dialogo">
+                    <strong>Presidenta:</strong>
+                    "Se nota cuando una empresa no se limita a cumplir un contrato, sino que realmente se preocupa de que el sistema funcione para nosotros. Para la comunidad, eso es lo que marca la diferencia."
+                </td>
+            </tr>
+            <tr>
+                <td class="bloque-num">06. CIERRE Y COMPROMISO</td>
+                <td class="desc-visual">Ricardo en plano corto, con un gesto de confianza. Cierre con logo y contacto.</td>
+                <td class="audio-dialogo">
+                    <strong>Ricardo:</strong>
+                    "Nuestra meta en Router es clara: construir barrios donde la tecnología esté al servicio de las personas. Tu seguridad es nuestro motor para seguir innovando. Sigamos trabajando juntos por un Lebu más seguro."
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="tech-notes">
+        <h3>🎬 Notas Técnicas para Edición</h3>
+        <ul>
+            <li><strong>Paleta de Colores:</strong> 
+                <span class="color-circle" style="background: #0b1c3d;"></span> Azul Marino (#0b1c3d) y 
+                <span class="color-circle" style="background: #e63946;"></span> Rojo (#e63946).
+            </li>
+            <li><strong>Música:</strong> Evolutiva. Comienza sobria (profesionalismo) y termina inspiradora (comunidad).</li>
+            <li><strong>Gráficas:</strong> Incluir el logo de Router animado y los datos de contacto en el cierre.</li>
+            <li><strong>Duración Estimada:</strong> 90 segundos.</li>
+        </ul>
+    </div>
+
+    <div class="actions">
+        <button onclick="window.print()" class="btn btn-print">Imprimir Guion</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Conductora de Rendición - GORE Biobío</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --border: #cbd5e1;
+            --text: #1e293b;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            color: var(--text);
+            line-height: 1.8;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 80px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .date-line {
+            text-align: right;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        .recipient {
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+        .recipient h3 {
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .recipient p {
+            margin: 0;
+            font-weight: 500;
+        }
+        .subject {
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .body-text {
+            font-size: 1rem;
+            text-align: justify;
+            margin-bottom: 25px;
+            text-indent: 30px;
+        }
+        .closing {
+            margin-top: 50px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        .signature-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 80px;
+        }
+        .sig-line {
+            width: 50%;
+            border-top: 1px solid var(--primary);
+            margin-bottom: 10px;
+        }
+        .sig-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .sig-title {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .actions {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        @media print {
+            .actions {
+                display: none;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="actions">
+    <button onclick="window.print()" class="btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Imprimir Carta Conductora
+    </button>
+</div>
+
+<div class="container">
+    <div class="date-line">
+        Lebu, 12 de Mayo de 2026
+    </div>
+
+    <div class="recipient">
+        <h3>Señor</h3>
+        <p style="font-size: 1.1rem; font-weight: 700;">Sergio Giacaman García</p>
+        <p>Gobernador Regional del Biobío</p>
+        <p>Avda. Arturo Prat 525</p>
+        <p style="text-decoration: underline;">Concepción</p>
+    </div>
+
+    <div class="subject">
+        REF: CARTA CONDUCTORA - ENTREGA RENDICIÓN DE CUENTAS FINAL PROYECTO 2024SC0126
+    </div>
+
+    <div class="content">
+        <p class="body-text">
+            Junto con saludarle cordialmente y a través del presente instrumento, me dirijo a Ud. en mi calidad de Presidenta y Representante Legal de la organización comunitaria denominada <strong>Club de Adulto Mayor Nuevo Amanecer</strong> de la comuna de Lebu, con el propósito de informarle que nuestra organización fue beneficiada con el financiamiento del fondo de subvención <strong>SEGURIDAD CIUDADANA 2024</strong>.
+        </p>
+
+        <p class="body-text">
+            Dicho financiamiento fue destinado a la ejecución del Proyecto de adquisición e instalación de un sistema integrado de televigilancia local denominado <strong>"CUIDANDO NUESTRA SEDE"</strong>, Código de Proyecto: <strong>2024SC0126</strong>.
+        </p>
+
+        <p class="body-text">
+            Por lo anterior, y habiéndose concluido exitosamente las obras técnicas de instalación de cámaras CCTV por el proveedor ROUTER Seguridad y los talleres formativos del consultor a honorarios contratado, hago envío a Uds. de la carpeta física que contiene la **Rendición de Cuentas Final (Informe N°3 y consolidado financiero)**, cumpliendo rigurosamente de este modo con lo exigido en las bases de postulación e instructivo del Gobierno Regional.
+        </p>
+
+        <p class="body-text">
+            Agradeciendo desde ya el fundamental respaldo entregado por el Gobierno Regional del Biobío que permite dotar de seguridad y tranquilidad a nuestros adultos mayores y entorno vecinal, se despide atentamente de usted,
+        </p>
+
+        <div class="closing">
+            <div class="signature-block">
+                <div class="sig-line"></div>
+                <span class="sig-name">ISOLDA CAMAÑO LAVÍN</span>
+                <span class="sig-title">Presidenta y Representante Legal</span>
+                <span class="sig-title">Club de Adulto Mayor Nuevo Amanecer - Lebu</span>
+                <span class="sig-title">RUN: 5.904.132-0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

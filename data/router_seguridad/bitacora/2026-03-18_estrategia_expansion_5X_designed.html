@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia de Expansión 5X - Router Seguridad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --router-blue: #2D328C;
+            --router-purple: #7c69f2;
+            --accent-cyan: #00d2ff;
+            --bg-dark: #05070a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f0f5;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(0, 210, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(124, 105, 242, 0.05) 0%, transparent 50%);
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 50px;
+            margin-bottom: 60px;
+        }
+
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        h1 { font-size: 3.5rem; margin: 15px 0; letter-spacing: -2px; }
+        .subtitle { font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin: 0 auto; }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .pillar-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .pillar-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); box-shadow: 0 20px 40px rgba(0,210,255,0.1); }
+
+        .pillar-num {
+            font-size: 4rem;
+            font-weight: 800;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            opacity: 0.05;
+            color: var(--accent-cyan);
+        }
+
+        h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--accent-cyan); }
+        p { line-height: 1.6; color: var(--text-dim); margin-bottom: 20px; }
+
+        .tag-row { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tag {
+            padding: 5px 12px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-ready { background: rgba(0, 255, 136, 0.1); color: #00ff88; }
+        .status-pending { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); }
+
+        .btn-view {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--router-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .footer-cta {
+            text-align: center;
+            background: linear-gradient(135deg, var(--router-blue), var(--router-purple));
+            padding: 60px;
+            border-radius: 40px;
+            margin-top: 50px;
+        }
+
+        .footer-cta h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .footer-cta p { color: rgba(255,255,255,0.8); margin-bottom: 30px; }
+        .btn-main {
+            padding: 15px 40px;
+            background: white;
+            color: var(--router-blue);
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="label">Proyección Trimestral / Q2 2026</span>
+        <h1>Estrategia de Expansión 5X</h1>
+        <p class="subtitle">Despliegue territorial de la marca Router en las provincias de Arauco y Concepción mediante activos digitales de alto impacto.</p>
+    </header>
+
+    <div class="campaign-grid">
+        <!-- Pillar 1 -->
+        <div class="pillar-card">
+            <span class="pillar-num">01</span>
+            <span class="status-badge status-ready">Listo: Guion Hogar</span>
+            <h3>Hogar Seguro</h3>
+            <p>Enfoque en "Libertad y Ahorro". Eliminamos la barrera de las mensualidades para el mercado masivo.</p>
+            <div class="tag-row">
+                <span class="tag">B2C</span>
+                <span class="tag">Cero Mensualidad</span>
+            </div>
+            <a href="2026-03-17_guion_1_hogar.md" class="btn-view">Ver Guion</a>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="pillar-card">
+            <span class="pillar-num">02</span>
+            <span class="status-badge status-ready">Listo: Guion Empresa</span>
+            <h3>Empresa Local</h3>
+            <p>Posicionamiento de Router como el soporte técnico más rápido de la Provincia de Arauco (Lebu/Arauco/Curanilahue).</p>
+            <div class="tag-row">
+                <span class="tag">B2B</span>
+                <span class="tag">Soporte Regional</span>
+            </div>
+            <a href="2026-03-18_guion_2_empresa_arauco.md" class="btn-view">Ver Guion</a>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="pillar-card">
+            <span class="pillar-num">03</span>
+            <span class="status-badge status-pending">En Desarrollo</span>
+            <h3>Seguridad Integral</h3>
+            <p>Todo en tu bolsillo: Cámaras 4K + Alarmas conectadas a una sola App propietaria.</p>
+            <div class="tag-row">
+                <span class="tag">Ecosistema</span>
+                <span class="tag">App Control</span>
+            </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="pillar-card">
+            <span class="pillar-num">04</span>
+            <span class="status-badge status-pending">En Desarrollo</span>
+            <h3>Fondos Públicos</h3>
+            <p>Soporte técnico experto para juntas de vecinos y municipios que postulan a fondos de seguridad regional.</p>
+            <div class="tag-row">
+                <span class="tag">GORE / FNDR</span>
+                <span class="tag">Institucional</span>
+            </div>
+        </div>
+
+        <!-- Pillar 5 -->
+        <div class="pillar-card">
+            <span class="pillar-num">05</span>
+            <span class="status-badge status-pending">En Desarrollo</span>
+            <h3>Conectividad Rural</h3>
+            <p>"Seguridad donde no hay señal". Expertos en radioenlaces y energía solar para predios y zonas aisladas.</p>
+            <div class="tag-row">
+                <span class="tag">Rural Tech</span>
+                <span class="tag">Off-Grid</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-cta">
+        <h2>Impulsando el Crecimiento Regional</h2>
+        <p>Nuestro objetivo es alcanzar 500 nudos de seguridad activos para fines de 2026. <br>¿Listo para la siguiente fase de expansión?</p>
+        <a href="../../dashboard.html" class="btn-main">Volver al Centro de Mando</a>
+    </div>
+
+</div>
+
+</body>
+</html>

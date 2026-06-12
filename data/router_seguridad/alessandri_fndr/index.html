@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión FNDR - Protegiendo Villa Alessandri</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #05070a;
+            --card-bg: rgba(17, 25, 40, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-blue: #00d2ff;
+            --accent-green: #00ff88;
+            --accent-purple: #9d50bb;
+            --accent-pink: #ec4899;
+            --text-primary: #f0f0f5;
+            --text-secondary: #94a3b8;
+            --glow-color: rgba(0, 210, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(0, 210, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(157, 80, 187, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            padding: 2rem 1rem;
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Header Premium Design */
+        header {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-badge {
+            background: rgba(0, 210, 255, 0.15);
+            color: #b3f2ff;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            width: fit-content;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Countdown & Overall Progress */
+        .header-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        /* Glassmorphism Card Style */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 32px 0 var(--glow-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Budget Visualizer */
+        .budget-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .budget-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .budget-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .budget-label {
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .budget-value {
+            color: var(--text-primary);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 50px;
+            transition: width 1s ease-in-out;
+        }
+
+        .bar-cameras { background: linear-gradient(90deg, var(--accent-blue), #60a5fa); width: 80%; }
+        .bar-expenses { background: linear-gradient(90deg, var(--accent-purple), #a78bfa); width: 15.7%; }
+        .bar-hr { background: linear-gradient(90deg, var(--accent-green), #34d399); width: 4.3%; }
+
+        .budget-details {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Dynamic Checklists */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.35rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .checklist-group {
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .checklist-group.active {
+            display: flex;
+        }
+
+        .checklist-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.15rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checklist-item.completed .checklist-checkbox {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: var(--bg-color);
+        }
+
+        .checklist-item.completed .checklist-checkbox::after {
+            content: '✓';
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #05070a;
+        }
+
+        .checklist-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .checklist-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: color 0.2s ease;
+        }
+
+        .checklist-item.completed .checklist-title {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .checklist-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Timeline Hilos */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 5px;
+            height: 100%;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .timeline-item {
+            position: relative;
+        }
+
+        .timeline-badge {
+            position: absolute;
+            left: -20px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            border: 3px solid var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.completed .timeline-badge {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            padding: 1.25rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-content {
+            border-color: rgba(0, 210, 255, 0.3);
+            background: rgba(0, 210, 255, 0.03);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            background: rgba(0, 210, 255, 0.1);
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+        }
+
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Presentation Slides Grid */
+        .slides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .slide-thumb {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1.5;
+        }
+
+        .slide-thumb:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+
+        .slide-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-purple);
+        }
+
+        .slide-title-thumb {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        /* Quick Shortcuts Card */
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .shortcut-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            color: var(--text-primary);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .shortcut-btn:hover {
+            background: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 7, 12, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: #0f172a;
+            z-index: 10;
+        }
+
+        .modal-title-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-slide-num {
+            background: rgba(157, 80, 187, 0.15);
+            color: #d8b4fe;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .modal-section-title {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-visuals-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1.25rem;
+            border-radius: 16px;
+        }
+
+        .modal-visuals-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .modal-visuals-list li {
+            position: relative;
+            padding-left: 1.25rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .modal-visuals-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .modal-script-box {
+            background: rgba(0, 210, 255, 0.03);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.5rem;
+            border-radius: 0 16px 16px 0;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+            width: fit-content;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        /* Contacts Grid */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .contact-role-badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: #6ee7b7;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .contact-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .contact-email {
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+
+        /* Scrollbar custom style */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="header-info">
+            <div class="project-badge">FNDR GORE BIOBÍO • Código 2024SC0170</div>
+            <h1>Protegiendo Villa Alessandri</h1>
+            <p>Junta de Vecinos Población Jorge Alessandri • Módulo de Gestión FNDR de ROUTER</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-box" style="border-color: rgba(236, 72, 153, 0.3)">
+                <div class="stat-value" id="countdown-timer" style="color: #f472b6;">--d --h</div>
+                <div class="stat-label">Cierre de Proyecto</div>
+            </div>
+            <div class="stat-box" style="border-color: rgba(0, 255, 136, 0.3)">
+                <div class="stat-value" id="checklist-progress" style="color: #00ff88;">0%</div>
+                <div class="stat-label">Documentos Listos</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Section -->
+    <div class="dashboard-grid">
+        
+        <!-- Left Side: Interactive Checklist & Timeline -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            
+            <!-- Checklists -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+                        Lista de Control de Documentación
+                    </h2>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);" id="progress-summary">0 de 0 listos</span>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('cameras')">Equipamiento (Cámaras)</button>
+                    <button class="tab-btn" onclick="switchTab('hr')">Recursos Humanos</button>
+                    <button class="tab-btn" onclick="switchTab('expenses')">Gastos Generales</button>
+                    <button class="tab-btn" onclick="switchTab('closing')">Cierre Final</button>
+                </div>
+
+                <!-- Cameras Checklist -->
+                <div class="checklist-group active" id="checklist-cameras">
+                    <!-- Loaded dynamically by JS -->
+                </div>
+
+                <!-- HR Checklist -->
+                <div class="checklist-group" id="checklist-hr">
+                    <!-- Loaded dynamically by JS -->
+                </div>
+
+                <!-- Expenses Checklist -->
+                <div class="checklist-group" id="checklist-expenses">
+                    <!-- Loaded dynamically by JS -->
+                </div>
+
+                <!-- Closing Checklist -->
+                <div class="checklist-group" id="checklist-closing">
+                    <!-- Loaded dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Detailed Timeline -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1-1H4a1 1 0 00-1 1v1H2a2 2 0 00-2 2v3h18V5a2 2 0 00-2-2h-1V2a1 1 0 00-1-1h-1a1 1 0 00-1 1v1H6V2zM0 10v7a2 2 0 002 2h14a2 2 0 002-2v-7H0z" clip-rule="evenodd"/></svg>
+                        Línea de Tiempo FNDR y Hitos de Rendición
+                    </h2>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item active">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">Mes 1: Inicio de Proyecto y Contratos Base</span>
+                                <span class="timeline-date">11 Feb – 11 Mar 2026</span>
+                            </div>
+                            <p class="timeline-desc">Transferencia de fondos de $7M. Contratación de profesionales y diseño del sistema inalámbrico central vía streaming.</p>
+                            <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 600; margin-top: 0.5rem;">Límite Rendición 1: 13 de Marzo de 2026 ($0 o gastos menores)</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">Mes 2: Montaje Físico - Fase 1 (8 Cámaras)</span>
+                                <span class="timeline-date">11 Mar – 11 Abr 2026</span>
+                            </div>
+                            <p class="timeline-desc">Instalación y enlaces streaming de las primeras 8 cámaras IP Bullet (4MP). Primera charla de seguridad vecinal y coffee break.</p>
+                            <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 600; margin-top: 0.5rem;">Límite Rendición 2: 14 de Abril de 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">Mes 3: Montaje Físico - Fase 2 (8 Cámaras)</span>
+                                <span class="timeline-date">11 Abr – 11 May 2026</span>
+                            </div>
+                            <p class="timeline-desc">Montaje de las restantes 8 cámaras para completar las 16 comprometidas. Segunda charla de seguridad vecinal y entrega de volantes informativos.</p>
+                            <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 600; margin-top: 0.5rem;">Límite Rendición 3: 13 de Mayo de 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">Mes 4: Configuración de Grabación y Entrega</span>
+                                <span class="timeline-date">11 May – 11 Jun 2026</span>
+                            </div>
+                            <p class="timeline-desc">Pruebas del sistema. Configuración del almacenamiento a 5 días para máxima calidad de imagen. Traspaso y capacitación de Don Oscar Palma como encargado del sistema.</p>
+                            <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 600; margin-top: 0.5rem;">Límite Rendición 4: 12 de Junio de 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-badge"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">Mes 5: Cierre, Video Promocional e Informe Final</span>
+                                <span class="timeline-date">11 Jun – 11 Jul 2026</span>
+                            </div>
+                            <p class="timeline-desc">Evento de finalización comunitaria con catering oficial ($350K). Edición y difusión de video promocional y carga de Informe Final de Gestión.</p>
+                            <div style="font-size: 0.8rem; color: var(--accent-pink); font-weight: 600; margin-top: 0.5rem;">Cierre Técnico-Financiero Final: 10 de Julio de 2026</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Side: Budget and Presentation Slides Storyboard -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            
+            <!-- Quick Document Shortcuts -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/></svg>
+                        Archivos de Inteligencia Locales
+                    </h2>
+                </div>
+                <div class="shortcut-grid">
+                    <a href="./guion_presentacion.md" target="_blank" class="shortcut-btn">📄 Guion Presentación</a>
+                    <a href="./itinerario_proyecto.md" target="_blank" class="shortcut-btn">📅 Itinerario (.md)</a>
+                    <a href="./guia_rendicion.md" target="_blank" class="shortcut-btn">📜 Guía de Rendición</a>
+                    <a href="./contactos_y_gestion.md" target="_blank" class="shortcut-btn">📞 Directorio y Cartas</a>
+                </div>
+            </div>
+
+            <!-- Budget Visual Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.554-.589 1.448-.589 2.002 0l.207.22 1.206-1.207-.207-.218a3.708 3.708 0 00-5.204 0l-1.922 2.043a3.708 3.708 0 000 5.204l.208.218 1.206-1.207-.207-.219c-.554-.588-.554-1.503 0-2.092l1.922-2.042z"/><path d="M11.567 12.582c-.554.589-1.448.589-2.002 0l-.207-.22-1.206 1.207.207.218a3.708 3.708 0 005.204 0l1.922-2.043a3.708 3.708 0 000-5.204l-.208-.218-1.206 1.207.207.219c.554.588.554 1.503 0 2.092l-1.922 2.042z"/></svg>
+                        Distribución del Presupuesto
+                    </h2>
+                    <span style="font-weight: 700; color: var(--accent-blue); font-size: 1.1rem;">$7.000.000 CLP</span>
+                </div>
+                
+                <div class="budget-list">
+                    <div class="budget-item">
+                        <div class="budget-meta">
+                            <span class="budget-label"><span style="color: var(--accent-blue)">■</span> Equipamiento</span>
+                            <span class="budget-value">$5.600.000 CLP</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar bar-cameras"></div>
+                        </div>
+                        <div class="budget-details">
+                            <span>16 Cámaras IP Bullet 4MP, Red Streaming</span>
+                            <span>80.0%</span>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-meta">
+                            <span class="budget-label"><span style="color: var(--accent-purple)">■</span> Gastos Generales</span>
+                            <span class="budget-value">$1.100.000 CLP</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar bar-expenses"></div>
+                        </div>
+                        <div class="budget-details">
+                            <span>Difusión, Catering Cierre, Coffee Break, Higiene</span>
+                            <span>15.7%</span>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-meta">
+                            <span class="budget-label"><span style="color: var(--accent-green)">■</span> Recursos Humanos</span>
+                            <span class="budget-value">$300.000 CLP</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar bar-hr"></div>
+                        </div>
+                        <div class="budget-details">
+                            <span>Experto en Seguridad ($300K)</span>
+                            <span>4.3%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Presentation Slides Storyboard Panel -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2-2h1V5h-1v4zm-11 4H4v2h1v-2zm-1-2h1V5H4v4z" clip-rule="evenodd"/></svg>
+                        Storyboard de la Presentación
+                    </h2>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">19 Hojas • Haz clic para guion</span>
+                </div>
+                
+                <div class="slides-grid" id="slides-container">
+                    <!-- Generated Dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Contacts Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                        Contactos del Gobierno Regional
+                    </h2>
+                </div>
+                <div class="contacts-grid">
+                    <div class="contact-card">
+                        <div class="contact-role-badge">Auditora Financiera</div>
+                        <div class="contact-name">Polett Cofré</div>
+                        <a href="mailto:pcofre@gorebiobio.cl" class="contact-email">pcofre@gorebiobio.cl</a>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Revisión y observaciones de rendiciones mensuales</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-role-badge" style="background: rgba(0, 210, 255, 0.1); color: #93c5fd;">Pertinencia de Gastos</div>
+                        <div class="contact-name">Inés Acuña</div>
+                        <a href="mailto:iacuna@gorebiobio.cl" class="contact-email">iacuna@gorebiobio.cl</a>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Revisión técnica de equipamiento y capacitaciones</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Plataforma Interna de Gestión y Coordinación FNDR • Diseñado para la Junta de Vecinos Jorge Alessandri</p>
+    </footer>
+</div>
+
+<!-- Detailed Slide Script Modal -->
+<div class="modal" id="slide-modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title-box">
+                <span class="modal-slide-num" id="modal-slide-number">Diapositiva X</span>
+                <h3 class="modal-title" id="modal-slide-title">Título de Diapositiva</h3>
+            </div>
+            <button class="close-btn" onclick="document.getElementById('slide-modal').style.display='none'">×</button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div class="modal-section-title">Contenido Visual en Pantalla</div>
+                <div class="modal-visuals-box">
+                    <ul class="modal-visuals-list" id="modal-visuals">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="modal-section-title">Guion de Expositor (Qué decir)</div>
+                <div class="modal-script-box" id="modal-script">
+                    <!-- Loaded dynamically -->
+                </div>
+                <button class="copy-btn" id="copy-script-btn">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    Copiar Guion al Portapapeles
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Project End Date: July 11, 2026
+    const projectEndDate = new Date("2026-07-11T23:59:59").getTime();
+
+    // Countdown Timer
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = projectEndDate - now;
+
+        if (distance < 0) {
+            document.getElementById("countdown-timer").innerText = "Proyecto Finalizado";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        document.getElementById("countdown-timer").innerText = `${days}d ${hours}h`;
+    }
+    
+    setInterval(updateCountdown, 1000 * 60);
+    updateCountdown();
+
+    // Checklist Data
+    const checklistData = {
+        cameras: [
+            { id: "cam-1", title: "Factura Comercial de Compra", desc: "Factura a nombre de la Junta de Vecinos por un valor máximo de $5.600.000." },
+            { id: "cam-2", title: "Comprobante de Transferencia Bancaria", desc: "Acreditación del pago íntegro desde la cuenta del proyecto al proveedor." },
+            { id: "cam-3", title: "Acta de Inventario y Recepción Conforme", desc: "Firmada por la directiva y Don Oscar Palma certificando la recepción de los equipos." },
+            { id: "cam-4", title: "Fotografías del Stock Adquirido", desc: "Fotos de las 16 cámaras IP Bullet en sus cajas antes de la instalación." },
+            { id: "cam-5", title: "Fotografías de las 16 Cámaras Instaladas", desc: "Fotografías en terreno de cada una de las 16 cámaras montadas e interconectadas por streaming." }
+        ],
+        hr: [
+            { id: "hr-1", title: "Currículum Vitae (Experto en Seguridad)", desc: "Copia simple del CV del profesional a cargo de las charlas de seguridad." },
+            { id: "hr-2", title: "Certificado de Antecedentes (Experto en Seguridad)", desc: "Original para Fines Especiales con vigencia inferior a 180 días." },
+            { id: "hr-3", title: "Declaración Jurada Simple (Experto en Seguridad)", desc: "Declaración firmada de no inhabilidad y compatibilidad horaria." },
+            { id: "hr-4", title: "Contrato de Prestación de Servicios (Experto en Seguridad)", desc: "Contrato firmado que detalla las charlas de capacitación y honorario de $300.000." },
+            { id: "hr-5", title: "Boleta de Honorarios SII (Experto en Seguridad)", desc: "Emitida al RUT de la Junta de Vecinos." },
+            { id: "hr-6", title: "Comprobante de Transferencia (Experto en Seguridad)", desc: "Comprobante bancario del pago neto del honorario." },
+            { id: "hr-7", title: "Lista de Asistencia - Charla de Seguridad N°1", desc: "Planilla física original con nombres, RUT y firmas de los vecinos asistentes." },
+            { id: "hr-8", title: "Lista de Asistencia - Charla de Seguridad N°2", desc: "Planilla física original con firmas de asistencia a la jornada de capacitación." },
+            { id: "hr-9", title: "Fotografías de las Charlas", desc: "Fotos de los vecinos participando activamente en las jornadas de capacitación." }
+        ],
+        expenses: [
+            { id: "exp-1", title: "Factura de Compra - Artículos de Difusión", desc: "Factura comercial a nombre de la Junta de Vecinos por $250.000 (volantes y lienzos)." },
+            { id: "exp-2", title: "Fotografías de Artículos de Difusión", desc: "Fotografías de los folletos entregados y lienzos de seguridad instalados en la población." },
+            { id: "exp-3", title: "Facturas/Boletas - Coffee Breaks de Charlas", desc: "Compras de alimentos e insumos para los coffee breaks de las charlas de capacitación ($250.000)." },
+            { id: "exp-4", title: "Fotografías de Alimentación (Coffee Breaks)", desc: "Fotografías de los vecinos compartiendo el coffee break durante las charlas." },
+            { id: "exp-5", title: "Factura de Compra - Papelería y Oficina", desc: "Factura a nombre de la Junta de Vecinos por materiales de oficina ($150.000)." },
+            { id: "exp-6", title: "Factura de Compra - Útiles de Higiene", desc: "Factura de compra por insumos de sanitización y limpieza de la sede ($100.000)." },
+            { id: "exp-7", title: "Facturas/Boletas - Catering de Lanzamiento y Cierre", desc: "Insumos y servicios de banquetería para el evento de finalización del proyecto ($350.000)." },
+            { id: "exp-8", title: "Fotografías de Alimentación (Catering Cierre)", desc: "Fotos del cóctel/comida compartido en la asamblea de inauguración del cierre." }
+        ],
+        closing: [
+            { id: "cls-1", title: "Informe Final de Gestión", desc: "Documento oficial del GORE Biobío completado con los resultados técnicos." },
+            { id: "cls-2", title: "Video Promocional del Proyecto", desc: "Material audiovisual editado para disuasión y difusión vecinal cargado en redes." },
+            { id: "cls-3", title: "Comprobantes de Egreso Internos", desc: "Documentos internos que justifiquen cada cheque o salida de fondos bancarios." },
+            { id: "cls-4", title: "Expediente Físico Original Compilado", desc: "Compilación de todas las facturas, boletas, actas y fotos originales en una carpeta rotulada." }
+        ]
+    };
+
+    // Presentation Slides Data (16 Slides)
+    const slidesData = [
+        {
+            num: 1,
+            title: "Portada Oficial",
+            visuals: [
+                "Título destacado: Proyecto 'Protegiendo Villa Alessandri'",
+                "Identificación oficial: Código FNDR 2024SC0170",
+                "Logos oficiales GORE Biobío y Junta de Vecinos Población Jorge Alessandri",
+                "Subtítulo: Sistema de Seguridad y Vigilancia Comunitaria"
+            ],
+            script: "Muy buenas tardes a todos los vecinos y vecinas, a la directiva de nuestra Junta de Vecinos y a los representantes del Gobierno Regional que nos acompañan hoy. Es un orgullo y una inmensa alegría estar aquí reunidos para presentarles de forma oficial y detallada el cierre del proyecto 'Protegiendo Villa Alessandri'. Este es un hito largamente esperado por toda nuestra comunidad, y hoy queremos mostrarles con total transparencia el fruto del esfuerzo de todos: nuestro nuevo sistema de cámaras de seguridad de alta tecnología."
+        },
+        {
+            num: 2,
+            title: "El Sueño de un Barrio Más Seguro",
+            visuals: [
+                "La Necesidad: Recuperar espacios públicos e incrementar el resguardo vecinal",
+                "La Solución: Infraestructura tecnológica al servicio de las familias",
+                "El Compromiso: Coordinar el trabajo conjunto entre vecinos y ejecutores"
+            ],
+            script: "Todo gran proyecto nace de una necesidad sentida por la comunidad. En Villa Alessandri, el anhelo de tener calles transitadas con tranquilidad, donde nuestros hijos puedan jugar y nuestros adultos mayores caminen sin temor, fue el motor principal. Nos dimos cuenta de que la seguridad no es solo tarea de las policías, sino que nosotros, organizados y apoyados por la tecnología, podíamos marcar una gran diferencia."
+        },
+        {
+            num: 3,
+            title: "La Postulación y la Larga Espera",
+            visuals: [
+                "Abril 2024: Postulación al FNDR 8% de Seguridad Ciudadana",
+                "La Espera: Demoras administrativas a nivel gubernamental (hasta fines del 2025)",
+                "Trabajo de la Empresa: Comunicación constante con los vecinos para explicar plazos",
+                "Confianza Vecinal: Vecinos aportaron nueva documentación a tiempo al ver solidez técnica"
+            ],
+            script: "Queremos ser sumamente honestos con ustedes: el camino no fue fácil. Postulamos a este fondo concursable en abril del año 2024. La espera fue larga e inicialmente generó dudas y comprensible nerviosismo. Hubo retrasos administrativos ajenos a nosotros en el Gobierno Regional. Como empresa a cargo del diseño, estuvimos constantemente explicando los plazos y detalles técnicos para mantener la calma. Al principio la comunidad desconfiaba un poco por la demora, lo cual es normal. Sin embargo, a medida que les dábamos luces técnicas del avance y veían que sabíamos exactamente lo que hacíamos, se consolidó una confianza mutua. Cuando el GORE nos solicitó documentación nueva a última hora, la directiva y los vecinos respondieron de inmediato con gran eficiencia. La respuesta definitiva llegó a fines de 2025, concretando la transferencia en febrero de 2026."
+        },
+        {
+            num: 4,
+            title: "Distribución y Composición Financiera",
+            visuals: [
+                "Presupuesto Total Adjudicado: $7.000.000 CLP (FNDR 8%)",
+                "Item 1: Equipamiento (Cámaras) - $5.600.000 (80%)",
+                "Item 2: Gastos Generales (Difusión y Eventos) - $1.100.000 (15.7%)",
+                "Item 3: Recursos Humanos (Charlas) - $300.000 (4.3%)"
+            ],
+            script: "Este proyecto fue financiado con un monto total de 7 millones de pesos chilenos. Siguiendo las directrices del GORE Biobío, el presupuesto se dividió de manera óptima para maximizar el impacto en seguridad. El 80%, correspondiente a $5.600.000, se destinó íntegramente a la adquisición de la tecnología de vigilancia. El porcentaje restante financió las charlas de capacitación para la comunidad, los honorarios profesionales del experto en seguridad y los elementos de difusión para que todos en el sector sepan que Villa Alessandri es ahora un barrio protegido."
+        },
+        {
+            num: 5,
+            title: "Capacitación y Prevención Comunitaria",
+            visuals: [
+                "Charlas de Seguridad y Prevención Vecinal - Dirigidas por Experto en Seguridad ($300K)",
+                "Temáticas de Capacitación: Autocuidado vecinal, prevención del delito en espacios comunes y uso responsable del sistema",
+                "Cohesión Social: Actividades con listas de asistencia firmadas y coffee breaks para la integración de los vecinos"
+            ],
+            script: "Instalar cámaras no basta si los vecinos no están preparados y organizados. Por eso, contemplamos un ítem de Recursos Humanos de $300.000 para la realización de charlas de capacitación y prevención vecinal. Estas actividades están a cargo de un experto en seguridad (ingeniero en prevención de riesgos o ex-miembro de las Fuerzas Armadas). Su rol es educar a los vecinos en el autocuidado, la prevención del delito en espacios comunes y el uso responsable del sistema de vigilancia, acompañando los encuentros con coffee breaks para fortalecer la cohesión vecinal y la organización comunitaria."
+        },
+        {
+            num: 6,
+            title: "Equipamiento de Seguridad Adquirido",
+            visuals: [
+                "16 Cámaras IP Bullet profesionales de alta definición (4 Megapíxeles)",
+                "Smart Hybrid Light: Infrarrojo avanzado para visión nocturna de largo alcance (60m)",
+                "Certificación IP67: Equipos de alta resistencia a lluvia, sol e intemperie",
+                "Micrófonos incorporados para capturar audio ambiental en puntos estratégicos",
+                "Lentes Varifocales Motorizadas para regular zoom y enfoque de forma remota",
+                "Cable UTP Categoría 5 (100% Cobre) para evitar interferencias"
+            ],
+            script: "Hablemos de los equipos instalados. Seleccionamos cámaras IP Bullet de calidad profesional con una resolución de 4 Megapíxeles, que brindan imágenes sumamente nítidas para distinguir rostros y detalles. Tienen tecnología Smart Hybrid Light con un alcance infrarrojo de hasta 60 metros en oscuridad total. Además, cuentan con micrófonos incorporados para el registro acústico, lentes varifocales motorizadas que nos permiten regular el enfoque, y una certificación IP67 que garantiza su funcionamiento sin importar el clima o la lluvia. Todo el cableado es de cobre de la más alta calidad para garantizar que la red nunca sufra caídas de rendimiento."
+        },
+        {
+            num: 7,
+            title: "Instalación Innovadora Vía Streaming",
+            visuals: [
+                "Distribución: 16 cámaras ubicadas en puntos estratégicos de la población",
+                "Innovación Única: Conexión inalámbrica centralizada mediante Streaming de alta velocidad",
+                "Diferenciación Nacional: Precedente en la región para evitar roturas costosas de veredas y calles",
+                "Despliegue exitoso con excelente clima para el montaje"
+            ],
+            script: "Aquí viene lo más importante y de lo cual estamos sumamente orgullosos: este proyecto cuenta con una innovación tecnológica que marca un precedente a nivel regional e incluso nacional. En lugar de utilizar cableados tradicionales que habrían requerido romper calles y veredas, encareciendo el proyecto de manera prohibitiva, diseñamos una infraestructura de red vía streaming inalámbrico. Esto nos permitió distribuir estratégicamente 16 cámaras en diferentes puntos lejanos de la población y transmitir la señal en tiempo real sin interferencias. Además, la naturaleza nos acompañó con un clima excelente para realizar el montaje de forma rápida y segura."
+        },
+        {
+            num: 8,
+            title: "Mapa de Ubicación: Cobertura Vecinal",
+            visuals: [
+                "16 Cámaras IP Bullet: Distribuidas para maximizar la cobertura en accesos, pasajes y áreas comunes",
+                "Puntos Críticos de Vigilancia: Cobertura en Barros Arana, Francisco Bilbao, Rigoberto Iglesias, etc.",
+                "Visualización Vecinal: Plano con dirección de enfoque y conos de visión para la coordinación"
+            ],
+            script: "Este es el mapa oficial de distribución de nuestras 16 cámaras de seguridad en la población Jorge Alessandri. Como pueden observar en el plano, los puntos rojos con los conos de visión verdes y amarillos representan la ubicación exacta y la dirección de enfoque de cada cámara. Diseñamos este trazado de manera sumamente estratégica en conjunto con la directiva, priorizando los pasajes interiores, los accesos principales de la población y las esquinas clave como Barros Arana y Bilbao. De esta forma, no dejamos 'puntos ciegos' significativos en los recorridos más habituales de nuestros vecinos, garantizando una cobertura comunitaria y un fuerte efecto disuasivo en toda la zona."
+        },
+        {
+            num: 9,
+            title: "Visualización en Vivo: Áreas Comunes",
+            visuals: [
+                "Sector Juegos y Multicancha: Puntos clave de esparcimiento vecinal monitoreados",
+                "Calidad de Imagen Nocturna: Demostración real de la visión en la oscuridad",
+                "Tranquilidad Comunitaria: Registro constante en zonas concurridas por niños"
+            ],
+            script: "Como una imagen vale más que mil palabras, queremos mostrarles de forma muy concreta cómo se ven nuestras cámaras instaladas y operativas en plena noche. Esta captura que ven en pantalla corresponde al sector del parque, enfocando la zona de juegos infantiles y la multicancha. Como pueden notar, gracias a la tecnología de iluminación híbrida y la resolución de 4 Megapíxeles, la imagen nocturna es sumamente nítida, brillante y con un rango de visión muy amplio. De esta manera, garantizamos que los espacios públicos donde se reúnen nuestros niños y jóvenes estén constantemente monitoreados, trayendo tranquilidad a todas las familias que viven cerca del parque."
+        },
+        {
+            num: 10,
+            title: "Aclaración sobre Lectura de Patentes",
+            visuals: [
+                "Cámaras Adquiridas: Vigilancia general de alta resolución gran angular (4MP)",
+                "Diferencia Técnica: NO cuentan con software o sensor LPR (Lectura de Patentes)",
+                "Justificación de Costos: Un sistema lector de patentes cuesta hasta 10 veces más que uno estándar",
+                "Estrategia adoptada: Cubrir 16 esquinas de la población en vez de solo 1 acceso lector de patente"
+            ],
+            script: "Queremos hacer una aclaración técnica muy relevante para evitar falsas expectativas y ser 100% transparentes: estas cámaras NO leen patentes automáticas. ¿Por qué se tomó esta decisión? Un sistema lector de patentes real y homologado (tecnología LPR) cuesta hasta 10 veces más que una cámara de seguridad de alta calidad. Si hubiésemos optado por lectores de patentes, el presupuesto solo nos habría alcanzado para vigilar una o dos esquinas de la población, dejando al resto de los vecinos desprotegidos. Al elegir cámaras de alta resolución estándar de 4MP, pudimos proteger 16 puntos estratégicos. Si ocurre un incidente, igual podemos ver el auto, su color, modelo y dirección, pero la lectura automática de la placa de un vehículo en movimiento requiere otra gama de costos no viable en este tipo de fondos comunitarios."
+        },
+        {
+            num: 11,
+            title: "Grabación y Almacenamiento Optimizado",
+            visuals: [
+                "Capacidad SD interna: Tarjetas industriales de 64GB por cámara (capacidad hasta 15 días)",
+                "Decisión Estratégica: Almacenamiento configurado exactamente a 5 días",
+                "La Razón: Asegurar la máxima nitidez, resolución y fotogramas por segundo (FPS) en la grabación",
+                "Cumplimiento: Sistema verificado conforme a lo comprometido técnicamente"
+            ],
+            script: "¿Cómo funciona el almacenamiento de las grabaciones? Cada cámara cuenta con almacenamiento interno en tarjetas de memoria industrial de 64 Gigabytes. Técnicamente, las cámaras podrían grabar hasta 15 días en una calidad comprimida. Sin embargo, para que el sistema sea realmente útil, tomamos la decisión estratégica de configurarlas para grabar los últimos 5 días. Al acortar el rango, podemos configurarlas en la máxima resolución y calidad posible de imagen. Es mejor tener 5 días de video nítido e impecable donde se distingan bien las caras y detalles, que tener 15 días borrosos o pixelados que no sirvan como evidencia en tribunales. Las pruebas fueron exitosas y todo el sistema está rindiendo conforme a lo comprometido."
+        },
+        {
+            num: 12,
+            title: "Encargado de Cámaras: Don Oscar Palma",
+            visuals: [
+                "Encargado Asignado por la Asamblea: Don Oscar Palma",
+                "Responsabilidad Central: Custodia y resguardo de la central de monitoreo",
+                "Atribuciones: Nexo técnico directo con la Directiva y revisión técnica de enlace"
+            ],
+            script: "Un sistema de seguridad comunitario requiere una persona de absoluta confianza a cargo de los equipos para garantizar la privacidad y el uso responsable. La asamblea y la directiva han asignado formalmente esta importante labor a nuestro vecino, Don Oscar Palma. Don Oscar será el custodio técnico de la central de monitoreo, velando por que los equipos funcionen correctamente y actuando bajo un estricto principio de confidencialidad y respeto a la privacidad de todas las familias."
+        },
+        {
+            num: 13,
+            title: "Protocolo de Activación de Grabaciones",
+            visuals: [
+                "¿Cuándo se activa?: Delitos (robos, hurtos), daños a la propiedad o accidentes viales graves",
+                "Privacidad Absoluta: Queda prohibido espiar actividades normales o cotidianas del vecindario",
+                "Las cámaras están enfocadas exclusivamente a calles y espacios públicos"
+            ],
+            script: "Para resguardar el derecho a la privacidad de todos los hogares, hemos diseñado un protocolo formal y transparente de acceso a las grabaciones. Las cámaras no son para 'espiar' el día a día del barrio; son para proteger. Por lo tanto, si un vecino necesita revisar una grabación debido a un robo, choque, daño o cualquier ilícito, no debe acudir directamente a Don Oscar Palma. El canal correcto es presentar una solicitud formal ante la Directiva de la Junta de Vecinos. La directiva analizará el caso de forma reservada, autorizará la extracción del video de la fecha y hora indicadas, y Don Oscar procesará el clip para que sea enviado de manera rápida y segura vía WhatsApp al vecino o directamente a las policías como medio de prueba para la denuncia formal."
+        },
+        {
+            num: 14,
+            title: "Pasos Formales de Solicitud (Protocolo)",
+            visuals: [
+                "Paso 1: Solicitud formal de vecina/o por escrito o WhatsApp oficial de la Directiva",
+                "Requisitos de Solicitud: Fecha, rango de hora estimado del suceso y ubicación de la cámara",
+                "Paso 2: Aprobación rápida de la directiva y encargo a Don Oscar Palma",
+                "Paso 3: Extracción del clip de video y envío de forma segura vía WhatsApp",
+                "Plazo Crítico de Solicitud: Máximo 5 días posteriores al incidente (sobrescritura del disco)"
+            ],
+            script: "Este es un detalle fundamental que debemos memorizar: el plazo máximo para solicitar una grabación es de 5 días. Debido a que el sistema sobrescribe las grabaciones antiguas para mantener la mejor calidad del video, si un incidente ocurre un lunes, la directiva debe recibir la solicitud antes del viernes de esa misma semana. La solicitud debe indicar con la mayor precisión posible el día, la hora y el lugar del hecho. Con esto garantizamos un proceso ordenado, rápido y sobre todo legal ante cualquier requerimiento de los tribunales."
+        },
+        {
+            num: 15,
+            title: "Aclarando Dudas Comunitarias (FAQ)",
+            visuals: [
+                "Consumo Eléctrico: $1.200 pesos mensuales por cámara, asumido por los vecinos que apoyaron en el proyecto (quienes facilitaron la conexión eléctrica)",
+                "Costo de Mantención: $0 CLP mensual para vecinos (sistema cerrado totalmente financiado)",
+                "Transmisión: Red cerrada de streaming inalámbrico (no internet pública)",
+                "Mantenimiento: Recomendado realizar mantenciones preventivas cada 3 meses"
+            ],
+            script: "Es muy común que en estas reuniones surjan dudas. Por ejemplo, sobre el costo eléctrico: es de unos $1.200 pesos mensuales por cámara, costo que es asumido generosamente por los vecinos colaboradores que prestan la energía de sus hogares. Tampoco hay cuotas mensuales para los vecinos; el sistema es propio de la Junta. Además, las grabaciones ya no se extraen en pendrive, sino que viajan de forma segura por una red inalámbrica local y se envían rápidamente vía WhatsApp. Para que el sistema dure en el tiempo, se recomienda realizar mantenciones preventivas cada 3 meses."
+        },
+        {
+            num: 16,
+            title: "Garantía Oficial del Sistema",
+            visuals: [
+                "Cobertura de Garantía: Router se hace cargo por 6 meses a partir del primero de mayo",
+                "Alcance Técnico: Contempla cualquier falla técnica del producto o instalación del equipamiento",
+                "Exclusiones: No considera manipulación no autorizada, intervenciones de terceros o vandalismo, entre otros"
+            ],
+            script: "Nuestra empresa Router se hace cargo de una garantía oficial por 6 meses que comenzó a regir desde el primero de mayo de este año. Esto cubre fallas técnicas de fábrica o desperfectos en el montaje de los equipos. Es sumamente importante recalcar que esta garantía no contempla daños provocados por la manipulación no autorizada de terceros, ni actos de vandalismo o robos de las cámaras. Debemos comprometernos como comunidad a cuidar de este gran activo."
+        },
+        {
+            num: 17,
+            title: "Foro de Preguntas Abiertas",
+            visuals: [
+                "Espacio abierto para la conversación activa con la asamblea",
+                "Anotación de sugerencias comunitarias",
+                "Respuestas directas de la Directiva y la Empresa Instaladora"
+            ],
+            script: "Ahora abrimos la palabra para ustedes. Queremos escuchar sus consultas, sugerencias o impresiones. Ninguna pregunta es menos importante; al contrario, este es el momento para que todos nos vayamos a casa con total claridad sobre el funcionamiento de nuestra nueva red de seguridad comunitaria."
+        },
+        {
+            num: 18,
+            title: "Video Promocional y Difusión",
+            visuals: [
+                "Video Promocional Oficial: Muestra del proceso de instalación y unión vecinal",
+                "Objetivo en Redes: Fomentar el orgullo de la comunidad y disuadir a extraños",
+                "Llamado Vecinal: Compartir el video activamente en WhatsApp, Facebook e Instagram"
+            ],
+            script: "Parte integral del proyecto financiado por el GORE es la difusión. Creamos un video promocional de alta calidad que muestra el trabajo realizado, la instalación y la unión de nuestros vecinos. El poder de este video no es solo el orgullo de vernos en pantalla, sino su efecto disuasivo. Les pedimos que lo compartan activamente en sus redes sociales, Facebook, Instagram y grupos de WhatsApp vecinales. Mientras más personas sepan que en Villa Alessandri estamos organizados, coordinados y monitoreados con 16 cámaras de alta tecnología, menos delincuentes se atreverán a ingresar a nuestras calles. La seguridad la construimos también mostrando nuestra organización."
+        },
+        {
+            num: 19,
+            title: "Conclusión y Cierre",
+            visuals: [
+                "Agradecimientos Especiales: GORE Biobío, Directiva de la Junta de Vecinos y Comunidad",
+                "Frase de Clausura: 'La tecnología vigila, pero la comunidad organizada protege'",
+                "¡Felicidades Villa Alessandri por un barrio más protegido y seguro!"
+            ],
+            script: "Llegamos al final de esta presentación, pero esto es solo el comienzo de una etapa más segura para todos. Queremos reiterar nuestro más profundo agradecimiento al Gobierno Regional del Biobío por confiar en nosotros y proveer los recursos; a la directiva que no durmió recopilando papeles y empujando el proyecto; y a cada uno de ustedes por su paciencia durante la larga espera y su apoyo activo en la instalación. Como dice nuestro lema final: las cámaras vigilan, pero es la organización vecinal y la solidaridad entre nosotros lo que realmente protege a nuestras familias. ¡Muchas gracias a todos y a disfrutar de un barrio más seguro!"
+        }
+    ];
+
+    // Render Storyboard Slides
+    const slidesContainer = document.getElementById("slides-container");
+    slidesData.forEach(slide => {
+        const slideEl = document.createElement("div");
+        slideEl.className = "slide-thumb";
+        slideEl.onclick = () => openModal(slide);
+        slideEl.innerHTML = `
+            <div class="slide-number">#${slide.num}</div>
+            <div class="slide-title-thumb">${slide.title}</div>
+        `;
+        slidesContainer.appendChild(slideEl);
+    });
+
+    // Modal Control
+    let currentOpenSlide = null;
+    function openModal(slide) {
+        currentOpenSlide = slide;
+        document.getElementById("modal-slide-number").innerText = `Diapositiva #${slide.num}`;
+        document.getElementById("modal-slide-title").innerText = slide.title;
+        
+        const visualsList = document.getElementById("modal-visuals");
+        visualsList.innerHTML = "";
+        slide.visuals.forEach(v => {
+            const li = document.createElement("li");
+            li.innerText = v;
+            visualsList.appendChild(li);
+        });
+
+        document.getElementById("modal-script").innerText = `"${slide.script}"`;
+        document.getElementById("slide-modal").style.display = "flex";
+    }
+
+    function closeModal(event) {
+        if (event.target === document.getElementById("slide-modal")) {
+            document.getElementById("slide-modal").style.display = "none";
+        }
+    }
+
+    // Copy to Clipboard
+    document.getElementById("copy-script-btn").onclick = () => {
+        if (currentOpenSlide) {
+            navigator.clipboard.writeText(currentOpenSlide.script);
+            const btn = document.getElementById("copy-script-btn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "✓ ¡Copiado con éxito!";
+            btn.style.background = "var(--accent-green)";
+            btn.style.borderColor = "var(--accent-green)";
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+                btn.style.borderColor = "";
+            }, 2000);
+        }
+    };
+
+    // Checklist Logic
+    let completedItems = JSON.parse(localStorage.getItem("vAlessandriChecklist")) || {};
+
+    function switchTab(tabId) {
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".checklist-group").forEach(group => group.classList.remove("active"));
+        
+        event.currentTarget.classList.add("active");
+        document.getElementById(`checklist-${tabId}`).classList.add("active");
+    }
+
+    function toggleItem(id) {
+        completedItems[id] = !completedItems[id];
+        localStorage.setItem("vAlessandriChecklist", JSON.stringify(completedItems));
+        renderAllChecklists();
+        updateProgress();
+    }
+
+    // Render group helper
+    function renderGroup(groupId, items) {
+        const container = document.getElementById(`checklist-${groupId}`);
+        container.innerHTML = "";
+        items.forEach(item => {
+            const isCompleted = !!completedItems[item.id];
+            const div = document.createElement("div");
+            div.className = `checklist-item ${isCompleted ? 'completed' : ''}`;
+            div.onclick = () => toggleItem(item.id);
+            div.innerHTML = `
+                <div class="checklist-checkbox"></div>
+                <div class="checklist-text">
+                    <span class="checklist-title">${item.title}</span>
+                    <span class="checklist-desc">${item.desc}</span>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function renderAllChecklists() {
+        renderGroup("cameras", checklistData.cameras);
+        renderGroup("hr", checklistData.hr);
+        renderGroup("expenses", checklistData.expenses);
+        renderGroup("closing", checklistData.closing);
+    }
+
+    function updateProgress() {
+        let total = 0;
+        let completed = 0;
+        
+        Object.keys(checklistData).forEach(key => {
+            checklistData[key].forEach(item => {
+                total++;
+                if (!!completedItems[item.id]) {
+                    completed++;
+                }
+            });
+        });
+
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        document.getElementById("checklist-progress").innerText = `${percent}%`;
+        document.getElementById("progress-summary").innerText = `${completed} de ${total} listos`;
+        
+        // Sync timeline status
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        
+        // Simple heuristic: map checklist categories to timeline phases
+        const camerasProgress = getCategoryProgress("cameras");
+        const hrProgress = getCategoryProgress("hr");
+        const expensesProgress = getCategoryProgress("expenses");
+        const closingProgress = getCategoryProgress("closing");
+
+        if (camerasProgress >= 50) timelineItems[1].classList.add("completed"); else timelineItems[1].classList.remove("completed");
+        if (hrProgress >= 50) timelineItems[2].classList.add("completed"); else timelineItems[2].classList.remove("completed");
+        if (expensesProgress >= 50) timelineItems[3].classList.add("completed"); else timelineItems[3].classList.remove("completed");
+        if (closingProgress >= 50) timelineItems[4].classList.add("completed"); else timelineItems[4].classList.remove("completed");
+        
+        // Mark Month 1 (Base setup) complete if some items are checked
+        if (completed > 2) timelineItems[0].classList.add("completed"); else timelineItems[0].classList.remove("completed");
+    }
+
+    function getCategoryProgress(categoryKey) {
+        let total = checklistData[categoryKey].length;
+        let completed = 0;
+        checklistData[categoryKey].forEach(item => {
+            if (!!completedItems[item.id]) completed++;
+        });
+        return total > 0 ? (completed / total) * 100 : 0;
+    }
+
+    // Initialize Checklists and Progress
+    renderAllChecklists();
+    updateProgress();
+
+</script>
+</body>
+</html>

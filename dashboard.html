@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROUTER | Command Center v2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Clean Minimalist CSS System --- */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-drawer: #ffffff;
+            --bg-gray-light: #f1f5f9;
+            --border-light: #e2e8f0;
+            --border-hover: #93c5fd;
+            
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-dim: #64748b;
+            
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-purple: #7c3aed;
+            --accent-emerald: #10b981;
+            
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            --shadow-large: -10px 0 30px rgba(15, 23, 42, 0.04);
+            
+            --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* --- Global Reset & Baseline --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* --- Custom Minimalist Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 20px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* --- Executive Header Layout --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 20px;
+        }
+
+        .brand span {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .brand h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand h1 span.highlight {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand h1::after {
+            content: 'v2.0';
+            font-size: 0.72rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: var(--bg-gray-light);
+            color: var(--text-dim);
+            border: 1px solid var(--border-light);
+            letter-spacing: 0;
+            font-weight: 600;
+        }
+
+        .sys-status {
+            display: flex;
+            gap: 30px;
+        }
+
+        .status-metric {
+            text-align: right;
+        }
+
+        .status-label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .status-val {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .status-val.active {
+            color: var(--accent-emerald);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .status-val.active::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* --- Executive Hero Banner --- */
+        .hero-banner {
+            position: relative;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-soft);
+            background: url('./router_dashboard_hero.png') center/cover no-repeat;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 30%, rgba(37, 99, 235, 0.45) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            font-weight: 300;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* --- Layout Core Grid --- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 35px;
+        }
+
+        /* --- Minimalist Panels --- */
+        .white-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-base);
+        }
+
+        h2.section-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+        }
+
+        h2.section-label::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: var(--border-light);
+        }
+
+        /* --- Filters & Search Segment --- */
+        .control-row {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .search-bar-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 14px 20px 14px 50px;
+            color: var(--text-main);
+            font-size: 0.92rem;
+            transition: var(--transition-base);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            transition: var(--transition-base);
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--accent-blue);
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-pill {
+            background: var(--bg-gray-light);
+            border: 1px solid transparent;
+            padding: 6px 14px;
+            border-radius: 50px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition-base);
+        }
+
+        .filter-pill:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .filter-pill.active {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        /* --- Minimalist Cards Grid --- */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .file-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 22px;
+            transition: var(--transition-base);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 190px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .file-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .file-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .file-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.35;
+            color: var(--text-main);
+        }
+
+        .file-description {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- Refined Pastel Tags --- */
+        .file-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--bg-gray-light);
+            color: var(--text-dim);
+        }
+
+        /* Tag Styling by Category */
+        .file-tag.tag-cotización { background: #eff6ff; color: #1e40af; }
+        .file-tag.tag-gore { background: #f3e8ff; color: #6b21a8; }
+        .file-tag.tag-marketing { background: #fff7ed; color: #9a3412; }
+        .file-tag.tag-estrategia { background: #ecfdf5; color: #065f46; }
+        .file-tag.tag-comunidad { background: #fdf2f8; color: #9d174d; }
+
+        /* Premium Border Variant */
+        .file-card.premium-design {
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        /* --- Sidebar Panel --- */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .sidebar-card h3 {
+            font-size: 0.8rem;
+            margin-bottom: 18px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Minimalist Calculator --- */
+        .calc-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .calc-field {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            transition: var(--transition-base);
+        }
+
+        .calc-field:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: white;
+        }
+
+        .calc-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calc-field.name { flex-grow: 2; }
+        .calc-field.cost { width: 90px; font-family: 'JetBrains Mono', monospace; }
+
+        .btn-add {
+            background: #eff6ff;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            color: var(--accent-blue);
+            padding: 0 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .btn-add:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .calc-items-list {
+            max-height: 120px;
+            overflow-y: auto;
+            background: var(--bg-body);
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .calc-item-pill {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .calc-item-pill span.cost-val {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .btn-del-item {
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .multiplier-slider-wrapper {
+            margin: 10px 0 5px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .slider-header span.mult-val {
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .mult-slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 5px;
+            background: var(--border-light);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .mult-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .mult-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .calc-summary {
+            background: var(--bg-body);
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid var(--border-light);
+            font-size: 0.78rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid var(--border-light);
+            padding-top: 6px;
+            margin-top: 2px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .summary-row.total span.val {
+            color: var(--accent-blue);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .summary-row span.val {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .calc-action-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.78rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: var(--transition-base);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calc-action-btn.copy {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .calc-action-btn.copy:hover {
+            background: var(--accent-blue-hover);
+        }
+
+        /* --- Executive Team/Agent List --- */
+        .agent-pills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .agent-item-btn {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition-base);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .agent-item-btn:hover {
+            background: var(--bg-body);
+            border-color: #cbd5e1;
+        }
+
+        .agent-item-btn.active {
+            border-color: var(--accent-blue);
+            background: #eff6ff;
+            font-weight: 600;
+        }
+
+        .agent-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .agent-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--text-dim);
+        }
+
+        .agent-dot.online {
+            background-color: var(--accent-emerald);
+        }
+
+        .agent-tag {
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Executive Command Console */
+        .terminal-panel {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #f1f5f9;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .terminal-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .term-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            color: #38bdf8;
+            font-size: 0.65rem;
+        }
+
+        .term-logs {
+            max-height: 130px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .log-line {
+            line-height: 1.35;
+        }
+
+        .log-line.ok { color: var(--accent-emerald); }
+        .log-line.info { color: #38bdf8; }
+        .log-line.warn { color: var(--accent-purple); }
+
+        /* --- Document Visor Slide-Drawer --- */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.15);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drawer-container {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 650px;
+            height: 100vh;
+            background-color: var(--bg-drawer);
+            border-left: 1px solid var(--border-light);
+            box-shadow: var(--shadow-large);
+            z-index: 1001;
+            transform: translate3d(100%, 0, 0);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer-container.open {
+            transform: translate3d(0, 0, 0);
+        }
+
+        .drawer-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawer-title-group h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .drawer-title-group span.subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .drawer-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-drawer {
+            background: var(--bg-gray-light);
+            border: 1px solid var(--border-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-base);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-drawer:hover {
+            background: #cbd5e1;
+            color: var(--text-main);
+        }
+
+        .btn-drawer.close {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #b91c1c;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+        }
+
+        .btn-drawer.close:hover {
+            background: #fca5a5;
+        }
+
+        .drawer-content {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-body);
+        }
+
+        .drawer-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            flex-grow: 1;
+        }
+
+        .markdown-viewer {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-light);
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: var(--text-muted);
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .markdown-viewer h1, .markdown-viewer h2, .markdown-viewer h3 {
+            color: var(--text-main);
+            margin: 18px 0 8px 0;
+            font-weight: 700;
+        }
+
+        .markdown-viewer h1 { font-size: 1.25rem; border-bottom: 1px solid var(--border-light); padding-bottom: 6px; }
+        .markdown-viewer h2 { font-size: 1.05rem; }
+        .markdown-viewer ul, .markdown-viewer ol { margin-left: 18px; margin-bottom: 12px; }
+        .markdown-viewer li { margin-bottom: 4px; }
+        .markdown-viewer p { margin-bottom: 12px; }
+
+        /* --- Commands Shortcuts --- */
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-shortcut {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-base);
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-shortcut.primary {
+            background: var(--accent-blue);
+            border: 1px solid transparent;
+            color: white;
+        }
+
+        .btn-shortcut.primary:hover {
+            background: var(--accent-blue-hover);
+        }
+
+        .btn-shortcut.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-muted);
+        }
+
+        .btn-shortcut.secondary:hover {
+            border-color: #cbd5e1;
+            color: var(--text-main);
+        }
+
+        /* --- Empty state & Alerts --- */
+        #empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-dim);
+            font-size: 0.88rem;
+            display: none;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-card {
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        /* --- Responsive Stacking --- */
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .drawer-container {
+                width: 100%;
+                max-width: 100%;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Executive Header Section -->
+        <header>
+            <div class="brand">
+                <span>Artificial Intelligence Strategy</span>
+                <h1>ROUTER <span class="highlight">Command</span></h1>
+            </div>
+            <div class="sys-status">
+                <div class="status-metric">
+                    <span class="status-label">System Latency</span>
+                    <span class="status-val" style="color: var(--accent-blue);">12ms</span>
+                </div>
+                <div class="status-metric">
+                    <span class="status-label">Command Center</span>
+                    <span class="status-val active">Core Active</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Executive Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-overlay">
+                <h2 class="hero-title">Business Command Center</h2>
+                <p class="hero-subtitle">Bienvenido, Ricardo. Este es tu centro neurálgico táctico para la expansión de tu línea de seguridad. Diseña cotizaciones inteligentes, audita subagentes y controla tus activos estratégicos.</p>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- Central Column: Bitacora Explorer -->
+            <section class="explorer-area">
+                <h2 class="section-label">Bitácora & Inteligencia de Negocio</h2>
+                
+                <div class="white-panel">
+                    <div class="control-row">
+                        <!-- Search Bar -->
+                        <div class="search-bar-wrapper">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Busca cotizaciones, guiones de marketing, actas, fechas...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+
+                        <!-- Tag Filters -->
+                        <div class="filter-tags" id="filterTags">
+                            <button class="filter-pill active" onclick="filterByTag('ALL')">Todos</button>
+                            <button class="filter-pill" onclick="filterByTag('Cotización')">Cotizaciones</button>
+                            <button class="filter-pill" onclick="filterByTag('Gore')">GORE</button>
+                            <button class="filter-pill" onclick="filterByTag('Marketing')">Marketing</button>
+                            <button class="filter-pill" onclick="filterByTag('Estrategia')">Estrategia</button>
+                            <button class="filter-pill" onclick="filterByTag('Comunidad')">Comunidad</button>
+                        </div>
+                    </div>
+
+                    <!-- Files Grid -->
+                    <div class="files-grid" id="filesGrid">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div id="empty-state">
+                        <p>🛸 Ningún archivo coincide con los criterios de búsqueda.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sidebar Panel: Tools & Operations -->
+            <aside class="sidebar">
+                <!-- Executive 3.0x Quote Calculator -->
+                <div class="sidebar-card">
+                    <h3>📊 Calculadora de Propuestas</h3>
+                    <div class="calc-wrapper">
+                        <!-- Project Input -->
+                        <input type="text" id="calcProjectName" class="calc-field" placeholder="Nombre del Proyecto" style="width: 100%;">
+                        
+                        <!-- Add Item Row -->
+                        <div class="calc-input-group">
+                            <input type="text" id="calcItemName" class="calc-field name" placeholder="Equipo / Insumo">
+                            <input type="number" id="calcItemCost" class="calc-field cost" placeholder="$ Costo">
+                            <button class="btn-add" onclick="addCalculatorItem()">+</button>
+                        </div>
+
+                        <!-- Items list -->
+                        <div class="calc-items-list" id="calcItemsList">
+                            <p style="font-size: 0.7rem; color: var(--text-dim); text-align: center; margin-top: 40px;" id="calcEmptyListMsg">No hay insumos añadidos.</p>
+                        </div>
+
+                        <!-- Multiplier Slider -->
+                        <div class="multiplier-slider-wrapper">
+                            <div class="slider-header">
+                                <span>Multiplicador (Margen)</span>
+                                <span class="mult-val" id="multValLabel">3.0x</span>
+                            </div>
+                            <input type="range" id="multSlider" min="1.0" max="5.0" step="0.1" value="3.0" class="mult-slider" oninput="updateCalculator()">
+                        </div>
+
+                        <!-- Financial Summary -->
+                        <div class="calc-summary">
+                            <div class="summary-row">
+                                <span>Insumos Base:</span>
+                                <span class="val" id="summaryBase">$0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Valor Neto (Margen):</span>
+                                <span class="val" id="summaryNet">$0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>IVA (19%):</span>
+                                <span class="val" id="summaryIva">$0</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Presupuestado:</span>
+                                <span class="val" id="summaryTotal">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="calc-action-btn copy" onclick="copyFormattedQuote()">Copiar Propuesta 📋</button>
+                    </div>
+                </div>
+
+                <!-- Team/Subagents Panel -->
+                <div class="sidebar-card">
+                    <h3>👥 Ecosistema de Subagentes</h3>
+                    <div class="agent-pills-list">
+                        <!-- Core / Business Agent -->
+                        <div class="agent-item-btn" id="agent-business" onclick="selectAgent('business')">
+                            <div class="agent-meta">
+                                <span class="agent-dot online"></span>
+                                <span>Business Agent (ROUTER)</span>
+                            </div>
+                            <span class="agent-tag">Core</span>
+                        </div>
+
+                        <!-- Marketing Engine -->
+                        <div class="agent-item-btn" id="agent-marketing" onclick="selectAgent('marketing')">
+                            <div class="agent-meta">
+                                <span class="agent-dot online"></span>
+                                <span>Marketing Sub-Agent</span>
+                            </div>
+                            <span class="agent-tag">HeyGen / Ads</span>
+                        </div>
+
+                        <!-- Design Sub-agent -->
+                        <div class="agent-item-btn" id="agent-design" onclick="selectAgent('design')">
+                            <div class="agent-meta">
+                                <span class="agent-dot online"></span>
+                                <span>Design Sub-Agent</span>
+                            </div>
+                            <span class="agent-tag">Visor UI</span>
+                        </div>
+
+                        <!-- Analyst Sub-agent -->
+                        <div class="agent-item-btn" id="agent-analyst" onclick="selectAgent('analyst')">
+                            <div class="agent-meta">
+                                <span class="agent-dot online"></span>
+                                <span>Competition Analyst</span>
+                            </div>
+                            <span class="agent-tag">Costos / 3x</span>
+                        </div>
+                    </div>
+
+                    <!-- Styled Terminal Console -->
+                    <div class="terminal-panel" id="agentTerminal">
+                        <div class="term-header">
+                            <span id="termAgentName">AGENT TERMINAL</span>
+                            <span style="opacity: 0.4;">TTY: S001</span>
+                        </div>
+                        <div class="term-logs" id="termLogs">
+                            <!-- Logs injected dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shortcuts Actions -->
+                <div class="sidebar-card">
+                    <h3>⚡ Atajos de Comando</h3>
+                    <div class="shortcut-grid">
+                        <button class="btn-shortcut primary" onclick="openInternalFile('./data/router_seguridad/bitacora_negocio.md')">Ver Bitácora MD</button>
+                        <button class="btn-shortcut secondary" onclick="openInternalFile('./manifest.md')">Ver Manifiesto</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <footer style="margin-top: 80px; padding-top: 30px; border-top: 1px solid var(--border-light); text-align: center; color: var(--text-dim); font-size: 0.8rem;">
+            ROUTER Command System &copy; 2026 | Built by Antigravity IA
+        </footer>
+    </div>
+
+    <!-- VISOR DRAWER CONTAINER -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <div class="drawer-container" id="drawerContainer">
+        <div class="drawer-header">
+            <div class="drawer-title-group">
+                <h2 id="drawerTitle">Vista de Documento</h2>
+                <span class="subtitle" id="drawerSubtitle">ROUTER // SECURE CORE</span>
+            </div>
+            <div class="drawer-actions">
+                <a href="#" target="_blank" class="btn-drawer" id="btnDrawerExternal">Abrir Externo ↗</a>
+                <button class="btn-drawer close" onclick="closeDrawer()">×</button>
+            </div>
+        </div>
+        <div class="drawer-content" id="drawerContent">
+            <!-- Iframe or custom reader will be injected dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // System Data: Bitacora Records (preserved and sorted correctly)
+        const bitacoraData = [
+            {
+                id: 116,
+                date: "2026-06-11",
+                title: "🎬 Web: Presentación Nuevo Amanecer",
+                desc: "Presentación interactiva web en HTML/CSS con transiciones fluidas, Modo Presentador, gráfico de dona para el presupuesto de $3.9M y galería de monitoreo interno (8 cámaras sin streaming).",
+                tag: "Interactiva",
+                isPremium: true,
+                url: "./presentacion_nuevo_amanecer.html"
+            },
+            {
+                id: 115,
+                date: "2026-06-11",
+                title: "📊 PPTX: Presentación Nuevo Amanecer",
+                desc: "Presentación oficial de 20 diapositivas en formato PowerPoint (.pptx) para asamblea. Adaptada con la solución de 8 cámaras internas y sin streaming, notas del presentador y gráficos nativos editables.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./presentacion_nuevo_amanecer.pptx"
+            },
+            {
+                id: 114,
+                date: "2026-06-09",
+                title: "🎬 Web: Presentación Eduardo Frei Montalva",
+                desc: "Presentación interactiva web en HTML/CSS para la Junta de Vecinos Vista al Mar Eduardo Frei Montalva. Sin videos y con mayor énfasis en el soporte de Router y la calidad técnica del proyecto.",
+                tag: "Interactiva",
+                isPremium: true,
+                url: "./presentacion_vista_al_mar.html"
+            },
+            {
+                id: 113,
+                date: "2026-06-09",
+                title: "📊 PPTX: Presentación Eduardo Frei Montalva",
+                desc: "Presentación oficial de 20 diapositivas en formato PowerPoint (.pptx) para asamblea. Adaptada sin video y con énfasis comercial en el WhatsApp de Router.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./presentacion_vista_al_mar.pptx"
+            },
+            {
+                id: 112,
+                date: "2026-06-02",
+                title: "🎬 Web: Presentación Animada Villa Alessandri",
+                desc: "Presentación interactiva web en HTML/CSS con transiciones fluidas, gráficos animados de dona y de barra, preguntas FAQ expandibles y Modo Presentador integrado con notas y cronómetro.",
+                tag: "Interactiva",
+                isPremium: true,
+                url: "./presentacion_villa_alessandri.html"
+            },
+            {
+                id: 111,
+                date: "2026-06-02",
+                title: "📊 PPTX: Presentación Villa Alessandri",
+                desc: "Presentación oficial de 19 diapositivas en formato PowerPoint (.pptx) para asamblea. Creado por Router (Seguridad y Tecnología), presentado por Ricardo Mari e Ivan Santos. Incluye notas y gráficos nativos editables.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./presentacion_villa_alessandri.pptx"
+            },
+            {
+                id: 110,
+                date: "2026-06-01",
+                title: "🏆 FNDR 2024: Protegiendo Villa Alessandri",
+                desc: "Centro de control y dashboard interactivo de rendición GORE, hitos de ejecución y guion de 19 diapositivas para asamblea.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/alessandri_fndr/index.html"
+            },
+            {
+                id: 108,
+                date: "2026-05-28",
+                title: "💎 Cotización: CCTV Gimnasio Olimpus",
+                desc: "Propuesta de 5 alternativas (DVR vs NVR) con foco educativo sobre escalabilidad y limpieza de instalación. Valores Netos.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-28_cotizacion_gimnasio_olimpus.html"
+            },
+            {
+                id: 107,
+                date: "2026-05-27",
+                title: "💎 Cotización: Unificada Starlink & CCTV Colhue",
+                desc: "Solución consolidada de alta conectividad y monitoreo (no incluye postes de elevación). $2.982.256 IVA Inc.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-27_cotizacion_unificada_interenergy.html"
+            },
+            {
+                id: 106,
+                date: "2026-05-25",
+                title: "📡 Cotización: Enlace PTP CCTV Colhue (Cámaras)",
+                desc: "Enlace inalámbrico para extensión de monitoreo por cámaras (no incluye postes). Incluye charla y protocolo comunitario, switch PoE+, gabinete y mástiles. $959.255 IVA Inc.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-25_cotizacion_enlace_cctv_colhue.html"
+            },
+            {
+                id: 101,
+                date: "2026-05-19",
+                title: "🏛️ Dossier: Cierre Técnico Club Nuevo Amanecer",
+                desc: "Informe completo de rendición GORE Biobío, resumen financiero de $3.9M y solución CCTV ROUTER.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-19_presentacion_nuevo_amanecer.html"
+            },
+            {
+                id: 102,
+                date: "2026-05-19",
+                title: "✍️ Contrato: Honorarios Iván Santos (Pre-llenado)",
+                desc: "Contrato de prestación de servicios por $300.000 para rendición del ítem de Recursos Humanos.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-19_contrato_honorarios_ivan_santos.html"
+            },
+            {
+                id: 103,
+                date: "2026-05-19",
+                title: "📋 Informe: Labores Iván Santos (Pre-llenado)",
+                desc: "Reporte de labores mensual para justificación de honorarios técnicos del consultor de seguridad.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-19_informe_labores_ivan_santos.html"
+            },
+            {
+                id: 104,
+                date: "2026-05-19",
+                title: "📦 Acta: Recepción Conforme e Inventario ROUTER",
+                desc: "Acta oficial de entrega de cámaras IP y puesta en marcha sin mensualidades firmada por Presidenta.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-19_acta_recepcion_router.html"
+            },
+            {
+                id: 105,
+                date: "2026-05-19",
+                title: "✉️ Carta: Conductora GORE Gobernador (Pre-llenada)",
+                desc: "Carta conductora oficial dirigida a Sergio Giacaman García para presentación de la rendición final.",
+                tag: "Gore",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-19_carta_gore_rendicion.html"
+            },
+            {
+                id: 1,
+                date: "2026-03-14",
+                title: "⚙️ Configuración Inicial del Ecosistema",
+                desc: "Activación del Agente de Negocio, subagentes y definición de la línea de seguridad (Cero Mensualidades).",
+                tag: "Estructura",
+                url: "./data/router_seguridad/bitacora/2026-03-14_configuracion_inicial.md"
+            },
+            {
+                id: 2,
+                date: "2026-03-15",
+                title: "📢 Guion HeyGen Base (Video 60s)",
+                desc: "Script publicitario genérico para avatar clonado. Especial para hogares y empresas.",
+                tag: "Marketing",
+                url: "./data/router_seguridad/bitacora/2026-03-15_guion_heygen_base.md"
+            },
+            {
+                id: 3,
+                date: "2026-03-18",
+                title: "🚀 Estrategia de Expansión 5X",
+                desc: "Plan táctico regional (Arauco/Conce). Despliegue de 5 piezas de impacto para crecimiento acelerado.",
+                tag: "Estrategia",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-03-18_estrategia_expansion_5X_designed.html"
+            },
+            {
+                id: 4,
+                date: "2026-03-17",
+                title: "🎥 Script 1: Hogar Seguro",
+                desc: "Guion de 60s centrado en Libertad y Cero Mensualidades para el mercado masivo (HeyGen).",
+                tag: "Marketing",
+                url: "./data/router_seguridad/bitacora/2026-03-17_guion_1_hogar.md"
+            },
+            {
+                id: 7,
+                date: "2026-03-18",
+                title: "🎥 Script 2: Empresa & Soporte",
+                desc: "Guion enfocado en la cercanía técnica y soporte regional en la Provincia de Arauco.",
+                tag: "Marketing",
+                url: "./data/router_seguridad/bitacora/2026-03-18_guion_2_empresa_arauco.md"
+            },
+            {
+                id: 5,
+                date: "2026-03-17",
+                title: "💎 Propuesta: Ferretería El Perro",
+                desc: "Informe técnico premium con diseño especializado. Visualización de arquitectura, tabla de equipos y valor estratégico.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-03-17_informe_tecnico_ferreteria_el_perro_designed.html"
+            },
+            {
+                id: 6,
+                date: "2026-03-18",
+                title: "📊 Análisis: Competencia (Ferretería)",
+                desc: "Estudio comparativo contra empresas Pequeñas, Medianas y Grandes en Chile. Análisis de costos a 3 años.",
+                tag: "Analítica",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-03-18_analisis_competencia_ferreteria.html"
+            },
+            {
+                id: 8,
+                date: "2026-03-28",
+                title: "🎥 Script 4: Respuesta Directa",
+                desc: "Guion de 60s optimizado para conversión rápida. Enfoque en opciones y auditoría técnica gratuita.",
+                tag: "Marketing",
+                url: "./data/router_seguridad/bitacora/2026-03-28_guion_auditoria_directa.md"
+            },
+            {
+                id: 9,
+                date: "2026-03-30",
+                title: "💎 Propuesta A: Interenergy (Colhue)",
+                desc: "Solución de robustez industrial con UPS Online y respaldo blindado. Inversión Inicial: $2.1M+ (Neto).",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-03-30_propuesta_interenergy_colhue.html"
+            },
+            {
+                id: 10,
+                date: "2026-03-30",
+                title: "⚡ Cotización B: Interenergy (Estándar)",
+                desc: "Solución económica optimizada. $1.800.000 IVA Inc. y $150.000 IVA Inc. mensual. Sin UPS.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-03-30_propuesta_interenergy_colhue_estandar.html"
+            },
+            {
+                id: 11,
+                date: "2026-04-06",
+                title: "🏛️ Propuesta: Municipalidad de Lebu v3.0 - 9 Ptos",
+                desc: "Ingeniería avanzada para 9 nodos urbanos (incl. Escuela Rebeca Castro). 28 cámaras y Hub Central. $41.5M Neto.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-06_propuesta_premium_lebu_v2.html"
+            },
+            {
+                id: 12,
+                date: "2026-04-06",
+                title: "💶 Análisis: Costos Internos (Lebu) v3.0",
+                desc: "Desglose ultra-fino de 28 cámaras y 12 repetidores. 9 días de obra y utilidad de $12.1M.",
+                tag: "Interno",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-06_analisis_costos_lebu_v2.html"
+            },
+            {
+                id: 13,
+                date: "2026-04-06",
+                title: "📜 Reporte: Ingeniería Detallada v3.0 (Muni)",
+                desc: "Documento oficial de 12 páginas con desglose técnico de insumos. Sin precios individuales. Detalle de 28 cámaras.",
+                tag: "Propuesta",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-06_reporte_tecnico_municipal_lebu_detallado.html"
+            },
+            {
+                id: 14,
+                date: "2026-04-07",
+                title: "🛰️ Cotización: Starlink Escuela y Parque Eólico Colhue",
+                desc: "2 antenas Starlink con soporte soldado antivandalismo. Incluye charla comunitaria de protección. $2.000.000 + IVA.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-07_cotizacion_starlink_colhue_escuela.html"
+            },
+            {
+                id: 15,
+                date: "2026-04-08",
+                title: "💎 Informativo: Junta de Vecinos Alessandri E",
+                desc: "Guía técnica para vecinos. 16 cámaras 4MP, almacenamiento local y protocolo de corresponsabilidad.",
+                tag: "Comunidad",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-08_informativo_alessandri_e.html"
+            },
+            {
+                id: 16,
+                date: "2026-04-08",
+                title: "🗣️ Pauta: Reunión Alessandri E",
+                desc: "Guía táctica para Ricardo. Manejo de objeciones, límites de soporte y educación técnica vecinal.",
+                tag: "Estrategia",
+                url: "./data/router_seguridad/bitacora/2026-04-08_pauta_reunion_vecinos.md"
+            },
+            {
+                id: 18,
+                date: "2026-05-05",
+                title: "💎 Informativo: Villa El Bosque - Los Álamos",
+                desc: "Manual de uso para 16 cámaras + NVR. Inversión de $5.6M y estrategia de acompañamiento GORE. Optimizado para impresión.",
+                tag: "Comunidad",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-05-05_informativo_villa_el_bosque.html"
+            },
+            {
+                id: 17,
+                date: "2026-04-24",
+                title: "📜 Cotización: Mantenimiento CCTV UCAM Lebu",
+                desc: "Mantenimiento correctivo, preventivo e instalación de nuevas unidades para la Unión Comunal de Adulto Mayor. $289.170 IVA Inc.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-04-24_cotizacion_mantenimiento_camaras_ucam.html"
+            }
+        ];
+
+        let activeTagFilter = 'ALL';
+        const grid = document.getElementById('filesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const emptyState = document.getElementById('empty-state');
+
+        // --- Bitacora Cards Render Module ---
+        function renderCards(data) {
+            grid.innerHTML = '';
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `file-card ${item.isPremium ? 'premium-design' : ''}`;
+                card.style.animationDelay = `${index * 0.04}s`;
+                card.onclick = () => openInternalFile(item.url, item.title, item.tag);
+
+                card.innerHTML = `
+                    <div>
+                        <span class="file-date">${item.date}</span>
+                        <h3 class="file-title">${item.title}</h3>
+                        <p class="file-description">${item.desc}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="file-tag tag-${item.tag.toLowerCase()}">${item.tag}</span>
+                        <span style="font-size: 0.7rem; color: var(--text-dim); opacity: 0.6;">ID: #${item.id}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Filter and Search Module ---
+        function filterByTag(tag) {
+            activeTagFilter = tag;
+            
+            // Toggle active pill UI
+            const pills = document.querySelectorAll('.filter-pill');
+            pills.forEach(p => p.classList.remove('active'));
+            
+            // Set current active
+            event.target.classList.add('active');
+            
+            runSearchFilter();
+        }
+
+        function runSearchFilter() {
+            const term = searchInput.value.toLowerCase();
+            
+            const filtered = bitacoraData.filter(item => {
+                const matchesSearch = 
+                    item.title.toLowerCase().includes(term) || 
+                    item.desc.toLowerCase().includes(term) ||
+                    item.tag.toLowerCase().includes(term) ||
+                    item.date.includes(term);
+                
+                const matchesTag = activeTagFilter === 'ALL' || item.tag.toLowerCase() === activeTagFilter.toLowerCase();
+                
+                return matchesSearch && matchesTag;
+            });
+            
+            renderCards(filtered);
+        }
+
+        searchInput.addEventListener('input', runSearchFilter);
+
+        // --- Visor Drawer Controller ---
+        function openInternalFile(url, title = 'Documento de Inteligencia', tag = 'SISTEMA') {
+            const drawer = document.getElementById('drawerContainer');
+            const overlay = document.getElementById('drawerOverlay');
+            const content = document.getElementById('drawerContent');
+            const drawerTitle = document.getElementById('drawerTitle');
+            const drawerSubtitle = document.getElementById('drawerSubtitle');
+            const extLink = document.getElementById('btnDrawerExternal');
+
+            drawerTitle.textContent = title;
+            drawerSubtitle.textContent = `ROUTER CORE // CATEGORÍA: ${tag.toUpperCase()}`;
+            extLink.href = url;
+
+            content.innerHTML = '<p style="color: var(--text-dim); text-align: center; margin-top: 50px;">Cargando documento táctico...</p>';
+
+            // Open animations
+            overlay.classList.add('open');
+            drawer.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Check if it's a Markdown file
+            if (url.endsWith('.md')) {
+                // Fetch the markdown content locally and render nicely
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error("CORS or direct file restrictions. Click 'Abrir Externo' in top menu.");
+                        return response.text();
+                    })
+                    .then(text => {
+                        // Very simple markdown visual formatter for display
+                        const formattedText = text
+                            .replace(/# (.*)/g, '<h1>$1</h1>')
+                            .replace(/## (.*)/g, '<h2>$1</h2>')
+                            .replace(/### (.*)/g, '<h3>$1</h3>')
+                            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                            .replace(/- (.*)/g, '<li>$1</li>')
+                            .replace(/\n\n/g, '<p></p>');
+
+                        content.innerHTML = `<div class="markdown-viewer">${formattedText}</div>`;
+                    })
+                    .catch(err => {
+                        content.innerHTML = `
+                            <div class="markdown-viewer" style="text-align: center; padding-top: 50px;">
+                                <p style="font-size: 1.5rem; margin-bottom: 20px; color: var(--text-main);">📄 Archivo Markdown local</p>
+                                <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 0.85rem;">Debido a políticas de seguridad del navegador para accesos locales (CORS), no es posible renderizar el archivo directamente dentro de la interfaz estática.</p>
+                                <a href="${url}" target="_blank" class="btn-drawer" style="display: inline-flex; justify-content: center; margin: 0 auto; width: 220px; background: var(--accent-blue); color: white;">Abrir en Nueva Ventana ↗</a>
+                            </div>
+                        `;
+                    });
+            } else {
+                // HTML files are rendered perfectly inside the iframe
+                content.innerHTML = `<iframe src="${url}" class="drawer-iframe" id="drawerFrame"></iframe>`;
+            }
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawerContainer').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // --- Interactive 3.0x Calculator Module ---
+        let calculatorItems = [];
+
+        function addCalculatorItem() {
+            const nameInput = document.getElementById('calcItemName');
+            const costInput = document.getElementById('calcItemCost');
+            const emptyMsg = document.getElementById('calcEmptyListMsg');
+
+            const name = nameInput.value.trim();
+            const cost = parseFloat(costInput.value);
+
+            if (!name || isNaN(cost) || cost <= 0) {
+                alert("Por favor, ingresa una descripción válida y un costo mayor a cero.");
+                return;
+            }
+
+            if (emptyMsg) emptyMsg.style.display = 'none';
+
+            calculatorItems.push({ name, cost });
+            nameInput.value = '';
+            costInput.value = '';
+
+            renderCalculatorList();
+            updateCalculator();
+        }
+
+        function removeCalculatorItem(index) {
+            calculatorItems.splice(index, 1);
+            if (calculatorItems.length === 0) {
+                document.getElementById('calcEmptyListMsg').style.display = 'block';
+            }
+            renderCalculatorList();
+            updateCalculator();
+        }
+
+        function renderCalculatorList() {
+            const list = document.getElementById('calcItemsList');
+            const items = list.querySelectorAll('.calc-item-pill');
+            items.forEach(i => i.remove());
+
+            calculatorItems.forEach((item, index) => {
+                const pill = document.createElement('div');
+                pill.className = 'calc-item-pill';
+                pill.innerHTML = `
+                    <span>${item.name}</span>
+                    <div>
+                        <span class="cost-val">$${item.cost.toLocaleString('es-CL')}</span>
+                        <button class="btn-del-item" onclick="removeCalculatorItem(${index})">×</button>
+                    </div>
+                `;
+                list.appendChild(pill);
+            });
+        }
+
+        function updateCalculator() {
+            const slider = document.getElementById('multSlider');
+            const multValLabel = document.getElementById('multValLabel');
+            const multiplier = parseFloat(slider.value);
+            
+            multValLabel.textContent = `${multiplier.toFixed(1)}x`;
+
+            const costBase = calculatorItems.reduce((acc, curr) => acc + curr.cost, 0);
+            const netVal = Math.round(costBase * multiplier);
+            const ivaVal = Math.round(netVal * 0.19);
+            const totalVal = netVal + ivaVal;
+
+            document.getElementById('summaryBase').textContent = `$${costBase.toLocaleString('es-CL')}`;
+            document.getElementById('summaryNet').textContent = `$${netVal.toLocaleString('es-CL')}`;
+            document.getElementById('summaryIva').textContent = `$${ivaVal.toLocaleString('es-CL')}`;
+            document.getElementById('summaryTotal').textContent = `$${totalVal.toLocaleString('es-CL')}`;
+        }
+
+        function copyFormattedQuote() {
+            const projectName = document.getElementById('calcProjectName').value.trim() || 'Proyecto de Seguridad';
+            const slider = document.getElementById('multSlider');
+            const multiplier = parseFloat(slider.value);
+
+            if (calculatorItems.length === 0) {
+                alert("Agrega al menos un ítem o insumo para poder copiar una propuesta.");
+                return;
+            }
+
+            const costBase = calculatorItems.reduce((acc, curr) => acc + curr.cost, 0);
+            const netVal = Math.round(costBase * multiplier);
+            const ivaVal = Math.round(netVal * 0.19);
+            const totalVal = netVal + ivaVal;
+
+            let itemsText = '';
+            calculatorItems.forEach(item => {
+                itemsText += `- ${item.name}\n`;
+            });
+
+            const proposalText = `*ROUTER SEGURIDAD | PROPUESTA COMERCIAL*\n` +
+                                 `----------------------------------------\n` +
+                                 `*PROYECTO:* ${projectName}\n\n` +
+                                 `*Detalle Técnico de Solución:*\n` +
+                                 `${itemsText}\n` +
+                                 `*Resumen Financiero:*\n` +
+                                 `- Inversión Neta: $${netVal.toLocaleString('es-CL')} CLP\n` +
+                                 `- IVA (19%): $${ivaVal.toLocaleString('es-CL')} CLP\n` +
+                                 `- *TOTAL INVERSIÓN:* $${totalVal.toLocaleString('es-CL')} CLP\n\n` +
+                                 `_Garantía técnica de 1 año y puesta en marcha sin mensualidades obligatorias. El equipamiento e infraestructura es 100% de propiedad del cliente._`;
+
+            navigator.clipboard.writeText(proposalText).then(() => {
+                alert("¡Propuesta comercial formateada copiada exitosamente al portapapeles! Listo para pegar en WhatsApp.");
+            }).catch(err => {
+                console.error("Error al copiar texto: ", err);
+                alert("No se pudo copiar de forma automática. Por favor revisa la consola.");
+            });
+        }
+
+        // --- Subagent Interactive Terminal Module ---
+        const agentData = {
+            business: {
+                name: "Business Agent (ROUTER Core)",
+                mission: "Supervisar la expansión estratégica y viabilidad del ecosistema de ROUTER.",
+                directives: [
+                    "Analizar base de datos regional de Arauco y Biobío.",
+                    "Coordinar a subagentes de Marketing, Diseño e Ingeniería.",
+                    "Monitorear las cotizaciones de CCTV y optimización Starlink."
+                ],
+                logs: [
+                    "[OK] Initializing Router Business core agent...",
+                    "[INFO] Base de datos de bitácora cargada con éxito.",
+                    "[ANALYSIS] Proyecto Lebu 9 Puntos v3.0 analizado: Utilidad $12.1M.",
+                    "[SUCCESS] El margen óptimo actual del mercado rural se mantiene en 3.0x.",
+                    "[WAITING] Esperando directivas estratégicas de Ricardo Mari..."
+                ]
+            },
+            marketing: {
+                name: "Marketing Engine",
+                mission: "Incrementar la tracción de leads locales con video-marketing de impacto (HeyGen).",
+                directives: [
+                    "Refinar guiones comerciales de 60 segundos centrándose en 'Cero Mensualidades'.",
+                    "Segmentar campañas geolocalizadas (Lebu, Los Álamos, Cañete, Arauco).",
+                    "Monitorear métricas de conversión en redes sociales y derivaciones a WhatsApp."
+                ],
+                logs: [
+                    "[OK] Initializing Marketing Sub-agent...",
+                    "[INFO] Carga de scripts completada: 4 guiones activos de video.",
+                    "[INFO] Guion 1 'Hogar Seguro sin cuotas' listo para clon HeyGen.",
+                    "[CAMPAIGN] Configurando embudo rural Arauco: Segmento 'Conectividad Rural'.",
+                    "[SUCCESS] Campaña lista para distribución digital orgánica."
+                ]
+            },
+            design: {
+                name: "Design & UI Sub-agent",
+                mission: "Garantizar una identidad visual de vanguardia y presupuestos extremadamente profesionales.",
+                directives: [
+                    "Asegurar consistencia de estilos oscuros y limpios en todos los dossier.",
+                    "Optimizar renders de arquitectura de CCTV para Municipalidades y Empresas.",
+                    "Mantener el Command Center con micro-interacciones interactivas de punta."
+                ],
+                logs: [
+                    "[OK] Initializing Design and Brand Sub-agent...",
+                    "[UI] Cargando librerías de fuentes (Outfit & Mono) completado.",
+                    "[DESIGN] Creación de dossier premium Club Nuevo Amanecer verificada exitosamente.",
+                    "[STYLE] Estilos glassmorphic aplicados con desenfoque de 25px.",
+                    "[OK] Todos los activos visuales cumplen con los estándares premium."
+                ]
+            },
+            analyst: {
+                name: "Competition & Financial Analyst",
+                mission: "Auditar precios de la competencia para asegurar márgenes saludables.",
+                directives: [
+                    "Escanear precios de grandes proveedores en Chile (ADT, Verisure, locales).",
+                    "Simular el costo total de propiedad a 3 años para el cliente.",
+                    "Asegurar que toda cotización respete el margen 3.0x de insumos para viabilidad de ROUTER."
+                ],
+                logs: [
+                    "[OK] Initializing Financial Analyst Sub-agent...",
+                    "[DATA] Estudio comparativo de costos a 3 años actualizado.",
+                    "[WARNING] La competencia incrementó cobro de arriendos en un 8%.",
+                    "[METRIC] ROI promedio de clientes ROUTER con 'Cero Mensualidades': 7 meses.",
+                    "[SUCCESS] El multiplicador de 3.0x sigue siendo el más competitivo para la empresa."
+                ]
+            }
+        };
+
+        function selectAgent(agentKey) {
+            const terminal = document.getElementById('agentTerminal');
+            const termName = document.getElementById('termAgentName');
+            const termLogs = document.getElementById('termLogs');
+            
+            // Toggle active styles on buttons
+            document.querySelectorAll('.agent-item-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`agent-${agentKey}`).classList.add('active');
+
+            // Set content
+            const agent = agentData[agentKey];
+            termName.textContent = agent.name.toUpperCase();
+            
+            let logsHtml = `<p style="color: #60a5fa; margin-bottom: 10px; font-weight: 700; font-size: 0.65rem;">🎯 MISIÓN:</p>`;
+            logsHtml += `<p style="color: #cbd5e1; margin-bottom: 15px; font-style: italic;">"${agent.mission}"</p>`;
+            
+            logsHtml += `<p style="color: #60a5fa; margin-bottom: 10px; font-weight: 700; font-size: 0.65rem;">📋 DIRECTIVAS ACTIVAS:</p>`;
+            agent.directives.forEach(dir => {
+                logsHtml += `<p style="color: #94a3b8; margin-bottom: 6px; padding-left: 10px;">➔ ${dir}</p>`;
+            });
+
+            logsHtml += `<div style="margin: 15px 0 10px 0; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 15px;"></div>`;
+            logsHtml += `<p style="color: #60a5fa; margin-bottom: 10px; font-weight: 700; font-size: 0.65rem;">📡 CONSOLE LOGS:</p>`;
+
+            agent.logs.forEach(log => {
+                let logClass = 'info';
+                if (log.startsWith('[OK]') || log.startsWith('[SUCCESS]')) logClass = 'ok';
+                if (log.startsWith('[WARNING]')) logClass = 'warn';
+                
+                logsHtml += `<div class="log-line ${logClass}">${log}</div>`;
+            });
+
+            termLogs.innerHTML = logsHtml;
+            terminal.classList.add('active');
+
+            // Scroll logs container to top automatically
+            termLogs.scrollTop = 0;
+        }
+
+        // --- Init Module ---
+        // Sorted descending by date
+        bitacoraData.sort((a, b) => new Date(b.date) - new Date(a.date));
+        renderCards(bitacoraData);
+        
+        // Auto select first agent (Business)
+        selectAgent('business');
+    </script>
+</body>
+</html>
