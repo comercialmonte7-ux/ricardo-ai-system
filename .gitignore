@@ -1,0 +1,6 @@
+# Local configuration containing sensitive API keys
+config.js
+
+# OS temporary files
+.DS_Store
+Thumbs.db

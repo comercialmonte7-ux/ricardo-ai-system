@@ -1594,6 +1594,8 @@
         </div>
     </div>
 
+    <!-- Cargar configuración local de API Keys (ignorada en Git) -->
+    <script src="config.js"></script>
     <script>
         // System Data: Bitacora Records (preserved and sorted correctly)
         const bitacoraData = [
@@ -2246,7 +2248,8 @@
         // Conversation memory for DeepSeek context
         let auraConversation = [];
         let auraCurrentRole = 'general';
-        let DEEPSEEK_API_KEY = localStorage.getItem('aura_deepseek_key') || '';
+        // Load API key from local config.js (if present) or localStorage fallback
+        let DEEPSEEK_API_KEY = (typeof DEEPSEEK_CONFIG !== 'undefined' && DEEPSEEK_CONFIG.apiKey) || localStorage.getItem('aura_deepseek_key') || '';
 
         // System prompt — Aura's full personality
         const AURA_SYSTEM_PROMPT = `Eres Aura, la asistente inteligente de la empresa "Router Seguridad y Tecnología", ubicada en la región del Biobío, Chile (ciudades: Lebu, Cañete, Arauco, Los Álamos, Contulmo).
