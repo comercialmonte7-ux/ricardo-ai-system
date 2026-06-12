@@ -386,10 +386,150 @@
         .file-tag.tag-marketing { background: #fff7ed; color: #9a3412; }
         .file-tag.tag-estrategia { background: #ecfdf5; color: #065f46; }
         .file-tag.tag-comunidad { background: #fdf2f8; color: #9d174d; }
+        .file-tag.tag-noticias { background: #f0fdf4; color: #15803d; }
 
         /* Premium Border Variant */
         .file-card.premium-design {
             border-left: 3px solid var(--accent-purple);
+        }
+
+        /* --- News Card Styling --- */
+        .file-card.news-card {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 310px;
+        }
+        .news-image-wrapper {
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            position: relative;
+            background: #cbd5e1;
+        }
+        .news-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-base);
+        }
+        .file-card.news-card:hover .news-card-image {
+            transform: scale(1.04);
+        }
+        .news-card-content {
+            padding: 16px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .file-card.news-card .card-footer {
+            padding: 0 20px 16px 20px;
+            margin-top: 0;
+        }
+
+        /* --- News Detail Drawer View --- */
+        .news-detail-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .news-detail-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+        .news-detail-date {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+        .news-detail-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+        .news-detail-text h4 {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin: 20px 0 10px 0;
+            font-weight: 700;
+        }
+        .news-detail-text p {
+            margin-bottom: 12px;
+        }
+        .news-social-panel {
+            background: var(--bg-gray-light);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        .news-social-panel h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .news-social-panel p {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+        }
+        .social-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+        }
+        .social-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: var(--transition-base);
+        }
+        .social-tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(0,0,0,0.03);
+        }
+        .social-tab-btn.active {
+            color: var(--accent-blue);
+            background: #eff6ff;
+        }
+        .social-tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .social-tab-content.active {
+            display: flex;
+        }
+        .social-copy-box {
+            width: 100%;
+            height: 120px;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            resize: none;
+            font-family: inherit;
+            line-height: 1.4;
+        }
+        .social-copy-box:focus {
+            outline: none;
+            border-color: var(--accent-blue);
         }
 
         /* --- Sidebar Panel --- */
@@ -1435,6 +1575,7 @@
                             <button class="filter-pill" onclick="filterByTag('Marketing')">Marketing</button>
                             <button class="filter-pill" onclick="filterByTag('Estrategia')">Estrategia</button>
                             <button class="filter-pill" onclick="filterByTag('Comunidad')">Comunidad</button>
+                            <button class="filter-pill" onclick="filterByTag('Noticias')">Noticias 📰</button>
                         </div>
                     </div>
 
@@ -1596,6 +1737,75 @@
     <script>
         // System Data: Bitacora Records (preserved and sorted correctly)
         const bitacoraData = [
+            {
+                id: 119,
+                date: "2026-06-12",
+                title: "⚡ Cámaras Autónomas: Seguridad Solar en Sectores Rurales",
+                desc: "Aura analiza cómo los kits de CCTV solar están revolucionando la seguridad de parcelas y sectores rurales sin conectividad eléctrica en la provincia de Arauco.",
+                tag: "Noticias",
+                isPremium: true,
+                url: "#",
+                image: "images/noticia_solar_security.png",
+                content: `
+                    <p>La seguridad en predios agrícolas, parcelas de agrado e instalaciones forestales en la provincia de Arauco ha enfrentado históricamente un gran obstáculo: la falta de empalme eléctrico y conectividad de red por cable.</p>
+                    <h4>CCTV Solar: Independencia Energética</h4>
+                    <p>La solución que se está consolidando en comunas como Cañete, Lebu y Contulmo son los sistemas de CCTV autónomos alimentados por paneles solares fotovoltaicos y baterías de litio de descarga profunda. Estos sistemas captan la radiación del día y almacenan energía suficiente para alimentar cámaras PTZ (domo robótico) de bajo consumo durante la noche y días nublados.</p>
+                    <h4>Monitoreo 4G y Almacenamiento Local</h4>
+                    <p>Al no contar con internet físico, estas cámaras utilizan enlaces móviles de alta velocidad 4G/LTE con chips dedicados. De esta forma, el propietario puede recibir notificaciones instantáneas de detección de movimiento, mover la cámara 360° desde su celular y revisar grabaciones almacenadas localmente en tarjetas MicroSD de nivel industrial o en pequeños NVR autónomos de bajo voltaje.</p>
+                    <h4>Cero Cuotas y Control Total</h4>
+                    <p>Frente a las costosas alternativas de grandes corporaciones que exigen mensualidades por un servicio que no cubre zonas rurales, el modelo de Router consiste en la venta e instalación directa del kit solar, traspasando la propiedad absoluta del equipamiento al cliente, sin cobros de arriendo recurrentes.</p>
+                `,
+                socialCopy: {
+                    instagram: `⚡ ¿Sin electricidad en tu parcela o campo? ¡No es problema para mantenerlo seguro! 🔒\n\nEn la provincia de Arauco (Lebu, Cañete, Contulmo), los sistemas de CCTV con energía solar fotovoltaica se están convirtiendo en el estándar definitivo para la protección rural.\n\n✅ Cámaras de bajo consumo 24/7.\n✅ Conectividad móvil 4G para monitoreo en vivo desde tu celular.\n✅ Cero cuotas mensuales: tú eres el dueño absoluto del equipo.\n\n¡Contáctanos para una asesoría de seguridad off-grid en tu zona! 📲👇\n#RouterSeguridad #EnergiaSolar #CCTV #BioBio #Canete #Lebu #CamarasDeSeguridad`,
+                    whatsapp: `*⚡ Cámaras Autónomas: Seguridad Solar en Sectores Rurales*\n\nRicardo, te comparto esta propuesta para publicar en tus estados o enviar a clientes con parcelas:\n\n*Cero cuotas mensuales y energía limpia:* Protege tu campo o parcela en Lebu, Cañete o Contulmo con nuestros kits de CCTV solares autónomos. Cámaras PTZ con detección inteligente y conexión 4G móvil directo a tu celular.\n\n*Más info aquí:* https://wa.me/569XXXXXXXX?text=Hola%20quiero%20cotizar%20camaras%20solares`
+                }
+            },
+            {
+                id: 118,
+                date: "2026-06-12",
+                title: "🛰️ Conectividad Satelital: Starlink e Inteligencia de Vigilancia",
+                desc: "La integración de Starlink con cámaras Hikvision AcuSense permite vigilar escuelas rurales y juntas de vecinos aisladas en tiempo real en todo el Biobío.",
+                tag: "Noticias",
+                isPremium: true,
+                url: "#",
+                image: "images/noticia_starlink_security.png",
+                content: `
+                    <p>La conectividad satelital de Starlink está transformando la viabilidad técnica de los proyectos de seguridad en zonas rurales del Biobío. Juntas de vecinos y escuelas aisladas que antes no tenían factibilidad de internet, hoy pueden integrarse a redes de vigilancia en alta definición.</p>
+                    <h4>Starlink: Banda Ancha en Zonas Aisladas</h4>
+                    <p>Gracias a la constelación de satélites de órbita baja de SpaceX, es posible obtener latencias inferiores a 40ms y velocidades de subida de hasta 20 Mbps en cualquier rincón de la provincia de Arauco. Esta capacidad permite el streaming fluido de múltiples canales de video en alta definición (1080p y 4K) sin microcortes.</p>
+                    <h4>Vigilancia Comunitaria Centralizada</h4>
+                    <p>Al integrar Starlink con grabadores NVR Hikvision y la app Hik-Connect, los comités de seguridad pueden compartir el acceso a las cámaras de la sede vecinal o la escuela local. Ante cualquier evento sospechoso, los vecinos reciben una alerta con video en tiempo real, permitiendo una coordinación comunitaria inmediata y efectiva con Carabineros.</p>
+                    <h4>Proyectos FNDR y Subsidios Estatales</h4>
+                    <p>El uso de estas tecnologías mixtas (Starlink + CCTV) ha demostrado ser el factor clave para la aprobación de fondos gubernamentales (FNDR) de seguridad pública. Los evaluadores técnicos priorizan proyectos que demuestran una factibilidad de conectividad real e independiente de la infraestructura telefónica local.</p>
+                `,
+                socialCopy: {
+                    instagram: `🛰️ ¡Starlink + Cámaras de Seguridad! La revolución en conectividad llega a las zonas más aisladas de la provincia de Arauco. 🌲✨\n\nGracias a la tecnología satelital de SpaceX combinada con cámaras de seguridad inteligentes de Router, escuelas rurales y juntas de vecinos en Lebu, Cañete y Arauco ya pueden estar conectadas en tiempo real para monitoreo comunitario.\n\n✅ Transmisión de video en alta definición 24/7.\n✅ Sin caídas por problemas de redes móviles locales.\n✅ Ideal para proyectos comunitarios y municipales FNDR.\n\n¿Quieres llevar esta solución a tu sector? Escríbenos. 📩\n#Starlink #CCTV #VigilanciaComunitaria #Arauco #Canete #Lebu #RouterSeguridad`,
+                    whatsapp: `*🛰️ Starlink + CCTV: Conectividad y Seguridad Satelital*\n\nRicardo, este copy es ideal para compartir en grupos de juntas de vecinos o comités de seguridad:\n\n*¿Sin internet en tu sector?* Llevamos seguridad comunitaria con Starlink + cámaras Hikvision de alta definición. Monitoreo satelital estable y continuo para sedes vecinales, campos o escuelas en el Biobío. Factible en cualquier punto geográfico.\n\n*Conversemos por WhatsApp:* https://wa.me/569XXXXXXXX?text=Hola%20quiero%20saber%20mas%20de%20Starlink%20CCTV`
+                }
+            },
+            {
+                id: 117,
+                date: "2026-06-12",
+                title: "🧠 Inteligencia Artificial Aplicada: Menos Alarmas Falsas en CCTV",
+                desc: "Aura detalla cómo los algoritmos de detección humana y vehicular de Hikvision AcuSense optimizan el monitoreo comercial y evitan falsos positivos.",
+                tag: "Noticias",
+                isPremium: true,
+                url: "#",
+                image: "images/noticia_cctv_ia.png",
+                content: `
+                    <p>El monitoreo tradicional de cámaras de seguridad se ve constantemente plagado por alertas innecesarias causadas por hojas que se mueven, mascotas, lluvia o sombras. La Inteligencia Artificial aplicada a CCTV ha llegado para resolver este problema crónico.</p>
+                    <h4>Tecnología AcuSense de Hikvision</h4>
+                    <p>Los algoritmos de aprendizaje profundo (Deep Learning) integrados en las cámaras y grabadores Hikvision AcuSense clasifican instantáneamente los objetos que aparecen en pantalla en tres categorías: humanos, vehículos y otros. De esta manera, el sistema ignora el movimiento de ramas o animales y solo activa la alarma cuando una persona o un automóvil cruzan una línea virtual establecida.</p>
+                    <h4>Monitoreo Eficiente y Notificaciones en Celular</h4>
+                    <p>Para el propietario de un negocio o vivienda en Arauco, esto significa que las notificaciones push que llegan a su celular son 90% reales. Ya no es necesario revisar el teléfono a mitad de la noche por un perro que pasó frente a la cámara; el sistema solo alertará ante riesgos auténticos de intrusión.</p>
+                    <h4>Búsqueda Rápida de Evidencia</h4>
+                    <p>Al momento de revisar grabaciones tras un incidente, la IA permite filtrar las últimas 24 horas buscando exclusivamente "aparición de vehículos" o "aparición de personas". Lo que antes tomaba horas de revisión manual de grabaciones ahora se resuelve en menos de un minuto.</p>
+                `,
+                socialCopy: {
+                    instagram: `🧠 ¿Cansado de recibir alertas falsas en tu celular a mitad de la noche? La Inteligencia Artificial llegó a tu sistema de seguridad. 📱💤\n\nCon la tecnología Hikvision AcuSense integrada por Router, tus cámaras diferencian entre personas, vehículos y factores ambientales (hojas, lluvia, mascotas).\n\n✅ Reducción del 90% en falsas alarmas.\n✅ Alertas push solo ante intrusiones reales.\n✅ Búsqueda inteligente de grabaciones en segundos.\n\nProtege tu negocio o casa con tecnología de punta en Arauco. ¡Cotiza con nosotros! 🔒👇\n#CCTVconIA #HikvisionAcuSense #RouterSeguridad #Innovacion #InteligenciaArtificial`,
+                    whatsapp: `*🧠 Cámaras Inteligentes: Dile adiós a las falsas alarmas*\n\nRicardo, comparte esto con clientes comerciales y residenciales aburridos de las alarmas falsas:\n\n*Surveillance con Inteligencia Artificial:* Cámaras inteligentes que diferencian personas y autos de las mascotas, viento y lluvia. Recibe alertas 100% reales en tu celular y busca grabaciones al instante filtrando por humano o vehículo.\n\n*Cotiza gratis:* https://wa.me/569XXXXXXXX?text=Hola%20quiero%20saber%20mas%20de%20camaras%20con%20IA`
+                }
+            },
             {
                 id: 116,
                 date: "2026-06-11",
@@ -1905,21 +2115,39 @@
 
             data.forEach((item, index) => {
                 const card = document.createElement('div');
-                card.className = `file-card ${item.isPremium ? 'premium-design' : ''}`;
+                const isNews = item.tag.toLowerCase() === 'noticias';
+                card.className = `file-card ${item.isPremium ? 'premium-design' : ''} ${isNews ? 'news-card' : ''}`;
                 card.style.animationDelay = `${index * 0.04}s`;
-                card.onclick = () => openInternalFile(item.url, item.title, item.tag);
+                card.onclick = () => openInternalFile(item.url, item.title, item.tag, item);
 
-                card.innerHTML = `
-                    <div>
-                        <span class="file-date">${item.date}</span>
-                        <h3 class="file-title">${item.title}</h3>
-                        <p class="file-description">${item.desc}</p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="file-tag tag-${item.tag.toLowerCase()}">${item.tag}</span>
-                        <span style="font-size: 0.7rem; color: var(--text-dim); opacity: 0.6;">ID: #${item.id}</span>
-                    </div>
-                `;
+                if (isNews) {
+                    card.innerHTML = `
+                        <div class="news-image-wrapper">
+                            <img src="${item.image || 'images/default-news.jpg'}" alt="${item.title}" class="news-card-image">
+                        </div>
+                        <div class="news-card-content">
+                            <span class="file-date">${item.date}</span>
+                            <h3 class="file-title" style="margin-bottom: 8px; font-size: 0.95rem;">${item.title}</h3>
+                            <p class="file-description" style="margin-bottom: 0; font-size: 0.8rem;">${item.desc}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="file-tag tag-noticias">${item.tag}</span>
+                            <span style="font-size: 0.7rem; color: var(--text-dim); opacity: 0.6;">ID: #${item.id}</span>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div>
+                            <span class="file-date">${item.date}</span>
+                            <h3 class="file-title">${item.title}</h3>
+                            <p class="file-description">${item.desc}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="file-tag tag-${item.tag.toLowerCase()}">${item.tag}</span>
+                            <span style="font-size: 0.7rem; color: var(--text-dim); opacity: 0.6;">ID: #${item.id}</span>
+                        </div>
+                    `;
+                }
                 grid.appendChild(card);
             });
         }
@@ -1959,7 +2187,7 @@
         searchInput.addEventListener('input', runSearchFilter);
 
         // --- Visor Drawer Controller ---
-        function openInternalFile(url, title = 'Documento de Inteligencia', tag = 'SISTEMA') {
+        function openInternalFile(url, title = 'Documento de Inteligencia', tag = 'SISTEMA', item = null) {
             const drawer = document.getElementById('drawerContainer');
             const overlay = document.getElementById('drawerOverlay');
             const content = document.getElementById('drawerContent');
@@ -1977,6 +2205,46 @@
             overlay.classList.add('open');
             drawer.classList.add('open');
             document.body.style.overflow = 'hidden';
+
+            // Check if it's a news item
+            if (tag.toLowerCase() === 'noticias') {
+                extLink.style.display = 'none'; // Hide external button for news
+                
+                content.innerHTML = `
+                    <div class="news-detail-wrapper">
+                        <img src="${item.image || 'images/default-news.jpg'}" alt="${item.title}" class="news-detail-image">
+                        
+                        <div class="news-detail-body">
+                            <p class="news-detail-date">📅 Publicado el ${item.date} · Por Aura (AI Intelligence)</p>
+                            <div class="news-detail-text">${item.content || item.desc}</div>
+                        </div>
+
+                        <!-- Interactive Social Publication Section -->
+                        <div class="news-social-panel">
+                            <h3>📢 Publicar en Redes Sociales</h3>
+                            <p>Copia el contenido optimizado por Aura para tus plataformas con un solo click:</p>
+                            
+                            <div class="social-tabs">
+                                <button class="social-tab-btn active" onclick="switchSocialTab(event, 'instagram')">Instagram / FB</button>
+                                <button class="social-tab-btn" onclick="switchSocialTab(event, 'whatsapp')">WhatsApp Link</button>
+                            </div>
+                            
+                            <div class="social-tab-content active" id="social-instagram">
+                                <textarea readonly class="social-copy-box" id="copyTextInstagram">${item.socialCopy?.instagram || ''}</textarea>
+                                <button class="btn-shortcut primary" style="width: 100%;" onclick="copySocialContent('copyTextInstagram', this)">Copiar para Instagram / Facebook</button>
+                            </div>
+                            
+                            <div class="social-tab-content" id="social-whatsapp">
+                                <textarea readonly class="social-copy-box" id="copyTextWhatsApp">${item.socialCopy?.whatsapp || ''}</textarea>
+                                <button class="btn-shortcut primary" style="width: 100%;" onclick="copySocialContent('copyTextWhatsApp', this)">Copiar para WhatsApp</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            } else {
+                extLink.style.display = 'inline-block';
+            }
 
             // Check if it's a Markdown file
             if (url.endsWith('.md')) {
@@ -2017,6 +2285,30 @@
             document.getElementById('drawerContainer').classList.remove('open');
             document.getElementById('drawerOverlay').classList.remove('open');
             document.body.style.overflow = '';
+        }
+
+        // --- Social Media Copy & Tab Modules ---
+        function switchSocialTab(event, tabId) {
+            const container = event.target.closest('.news-social-panel');
+            container.querySelectorAll('.social-tab-btn').forEach(btn => btn.classList.remove('active'));
+            container.querySelectorAll('.social-tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            container.querySelector(`#social-${tabId}`).classList.add('active');
+        }
+
+        // Copy content helper with visual feedback
+        function copySocialContent(elementId, button) {
+            const textarea = document.getElementById(elementId);
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '¡Copiado con éxito! ✅';
+                button.style.background = 'var(--accent-emerald)';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            });
         }
 
         // --- Interactive 3.0x Calculator Module ---
