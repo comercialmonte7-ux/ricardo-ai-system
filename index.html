@@ -2571,7 +2571,16 @@ REGLAS:
 - Si te piden algo fuera de tu área, responde igualmente pero menciona tu especialidad.
 - Usa emojis moderadamente para dar calidez.
 - Respuestas concisas pero completas (máximo 200 palabras).
-- Cuando no sepas algo, sé honesta y sugiere dónde encontrar la información.`;
+- Cuando no sepas algo, sé honesta y sugiere dónde encontrar la información.
+- SI EL USUARIO TE PIDE CREAR, REDACTAR O GENERAR UNA NOTICIA, ARTÍCULO O POST DE SEGURIDAD O TECNOLOGÍA: Debes agregar al final de tu respuesta (o como tu respuesta principal) el siguiente bloque estructurado exacto para que el sistema lo publique automáticamente en el dashboard en tiempo real:
+[[NOTICIA]]
+TITULO: [Título llamativo de la noticia]
+RESUMEN: [Resumen corto de 2 líneas]
+IMAGEN: [Especifica uno de estos tres valores: images/noticia_solar_security.png , images/noticia_starlink_security.png , o images/noticia_cctv_ia.png]
+CONTENIDO: [Cuerpo del artículo en HTML limpio con subtítulos <h4> y párrafos <p>]
+INSTAGRAM: [Copy atractivo para Instagram con emojis y hashtags]
+WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
+[[FIN_NOTICIA]]`;
 
         // ── INIT: Load saved API key ──
         function initAuraConnection() {
@@ -2792,6 +2801,80 @@ REGLAS:
             auraConversation.push({ role: sender, text: text, time: getTimeNow() });
         }
 
+        // --- Real-time News Parsing and Publishing Module ---
+        function parseAndAddAuraNews(text) {
+            const newsRegex = /\[\[NOTICIA\]\]([\s\S]*?)\[\[FIN_NOTICIA\]\]/i;
+            const match = text.match(newsRegex);
+            if (!match) return text; // No news block found, return original text
+
+            const block = match[1];
+            
+            // Extract fields
+            const getField = (fieldName) => {
+                const regex = new RegExp(`${fieldName}:\\s*([\\s\\S]*?)(?=\\n[A-Z]+:|$)`, 'i');
+                const m = block.match(regex);
+                return m ? m[1].trim() : '';
+            };
+
+            const title = getField('TITULO');
+            const desc = getField('RESUMEN');
+            let image = getField('IMAGEN') || '';
+            const content = getField('CONTENIDO');
+            const instagram = getField('INSTAGRAM');
+            const whatsapp = getField('WHATSAPP');
+
+            if (title && content) {
+                // Determine a realistic image fallback if not valid or empty
+                const lowerTitle = title.toLowerCase();
+                if (!image || (!image.includes('/') && !image.endsWith('.png') && !image.endsWith('.jpg'))) {
+                    if (lowerTitle.includes('solar') || lowerTitle.includes('sol')) {
+                        image = 'images/noticia_solar_security.png';
+                    } else if (lowerTitle.includes('satelital') || lowerTitle.includes('starlink') || lowerTitle.includes('conex')) {
+                        image = 'images/noticia_starlink_security.png';
+                    } else {
+                        image = 'images/noticia_cctv_ia.png';
+                    }
+                }
+
+                const newId = bitacoraData.length > 0 ? Math.max(...bitacoraData.map(item => item.id)) + 1 : 120;
+                
+                const newArticle = {
+                    id: newId,
+                    date: new Date().toISOString().split('T')[0],
+                    title: title,
+                    desc: desc || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+                    tag: "Noticias",
+                    isPremium: true,
+                    url: "#",
+                    image: image,
+                    content: content,
+                    socialCopy: {
+                        instagram: instagram,
+                        whatsapp: whatsapp
+                    }
+                };
+
+                // Prepend to array
+                bitacoraData.unshift(newArticle);
+                
+                // Re-render in real-time
+                runSearchFilter();
+                
+                // Switch filter tab to Noticias so user sees it unprompted!
+                filterByTag('Noticias');
+                
+                // Clean the text of the news block to display a nice confirmation in chat
+                let cleanText = text.replace(newsRegex, '').trim();
+                if (!cleanText) {
+                    cleanText = `✨ <strong>¡He generado un nuevo artículo para ti!</strong><br><br>📰 <strong>Título:</strong> ${title}<br><br>Ya está publicado en la pestaña de <strong>NOTICIAS</strong> en tiempo real. ¡Haz click sobre la tarjeta para verlo y copiar el contenido para tus redes sociales!`;
+                } else {
+                    cleanText = formatAuraResponse(cleanText) + `<br><br>✨ <strong>¡Nueva noticia publicada en la Bitácora!</strong><br>📰 <em>"${title}"</em> está lista para ser revisada y compartida en la sección de NOTICIAS.`;
+                }
+                return cleanText;
+            }
+            return text;
+        }
+
         async function sendAuraMessage() {
             const msg = auraChatInput.value.trim();
             if (!msg) return;
@@ -2808,7 +2891,11 @@ REGLAS:
                 try {
                     const response = await callDeepSeekAPI(msg);
                     auraTyping.classList.remove('active');
-                    addChatMessage(formatAuraResponse(response), 'bot');
+                    // Check and parse news real-time updates
+                    const hasNews = response.includes('[[NOTICIA]]');
+                    const processedResponse = parseAndAddAuraNews(response);
+                    const finalHtml = hasNews ? processedResponse : formatAuraResponse(processedResponse);
+                    addChatMessage(finalHtml, 'bot');
                 } catch (error) {
                     auraTyping.classList.remove('active');
                     addChatMessage(`⚠️ <strong>Error de conexión:</strong> ${error.message}<br><br>Respondiendo en modo local...`, 'bot');
