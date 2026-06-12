@@ -2230,7 +2230,11 @@
                 logsHtml += `<div class="log-line ${logClass}">${log}</div>`;
             });
 
-            t        // Auto select first agent (Business)
+            termLogs.innerHTML = logsHtml;
+            termLogs.scrollTop = termLogs.scrollHeight;
+        }
+
+        // Auto select first agent (Business)
         selectAgent('business');
 
         // ═══════════════════════════════════════════════════════
