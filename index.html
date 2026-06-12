@@ -2576,7 +2576,7 @@ REGLAS:
 [[NOTICIA]]
 TITULO: [Título llamativo de la noticia]
 RESUMEN: [Resumen corto de 2 líneas]
-IMAGEN: [Especifica uno de estos tres valores: images/noticia_solar_security.png , images/noticia_starlink_security.png , o images/noticia_cctv_ia.png]
+IMAGEN: [Deja este campo vacío para que el sistema asigne una imagen premium y única de stock automáticamente, o pon una palabra clave como solar, cctv, ia, satelital]
 CONTENIDO: [Cuerpo del artículo en HTML limpio con subtítulos <h4> y párrafos <p>]
 INSTAGRAM: [Copy atractivo para Instagram con emojis y hashtags]
 WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
@@ -2801,6 +2801,90 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             auraConversation.push({ role: sender, text: text, time: getTimeNow() });
         }
 
+        // --- Unsplash Curated Non-Duplicate Stock Images Registry ---
+        const STOCK_IMAGES = {
+            solar: [
+                'photo-1508514177221-188b1cf16e9d', // Solar panel close up
+                'photo-1509391366360-2e959784a276', // Solar panels field
+                'photo-1620038650424-85b67b365396', // Solar battery system
+                'photo-1548613053-22079da77418'  // Solar sunset energy
+            ],
+            satelital: [
+                'photo-1451187580459-43490279c0fa', // Satellite space tech
+                'photo-1446776811953-b23d57bd21aa', // Satellite orbit earth
+                'photo-1518364538800-6bcb3f25da49', // Antenna receiver
+                'photo-1516849841032-87cbac4d88f7'  // Tech tower receiver
+            ],
+            cctv: [
+                'photo-1557597774-9d273605dfa9', // Dome security camera
+                'photo-1521791136368-1a46827d0adb', // Security screens control room
+                'photo-1563986768609-322da13575f3', // Analytics dashboard
+                'photo-1504608524841-42fe6f032b4b', // Modern street camera setup
+                'photo-1582139329536-e7284fece509'  // Tech dome camera
+            ],
+            ia: [
+                'photo-1526374965328-7f61d4dc18c5', // Green matrix code lines
+                'photo-1485827404703-89b55fcc595e', // AI robot arm tech
+                'photo-1507679799987-c73779587ccf', // Modern smart dashboard mobile
+                'photo-1618005182384-a83a8bd57fbe', // Tech AI abstract lines
+                'photo-1531747118685-ca8fa6e08806'  // Digital AI network nodes
+            ],
+            empresa: [
+                'photo-1486406146926-c627a92ad1ab', // Modern corporate glass skyscraper
+                'photo-1497366216548-37526070297c', // Modern office glass conference
+                'photo-1454165804606-c3d57bc86b40', // Business meeting report
+                'photo-1460925895917-afdab827c52f'  // Laptop analytics charts
+            ],
+            general: [
+                'photo-1451187580459-43490279c0fa',
+                'photo-1507679799987-c73779587ccf',
+                'photo-1557597774-9d273605dfa9',
+                'photo-1526374965328-7f61d4dc18c5',
+                'photo-1486406146926-c627a92ad1ab'
+            ]
+        };
+
+        function getUniqueStockImageUrl(title, desc) {
+            const text = (title + ' ' + desc).toLowerCase();
+            let category = 'general';
+            
+            if (text.includes('solar') || text.includes('sol') || text.includes('energia')) {
+                category = 'solar';
+            } else if (text.includes('satelital') || text.includes('starlink') || text.includes('antena') || text.includes('satelite')) {
+                category = 'satelital';
+            } else if (text.includes('camara') || text.includes('cctv') || text.includes('vigilancia') || text.includes('seguridad')) {
+                category = 'cctv';
+            } else if (text.includes('ia') || text.includes('inteligencia') || text.includes('algoritmo') || text.includes('robot')) {
+                category = 'ia';
+            } else if (text.includes('empresa') || text.includes('negocio') || text.includes('comercial') || text.includes('oficina')) {
+                category = 'empresa';
+            }
+
+            const candidates = STOCK_IMAGES[category] || STOCK_IMAGES.general;
+            
+            // Find currently used image IDs in bitacoraData
+            const usedImages = new Set();
+            bitacoraData.forEach(item => {
+                if (item.image) {
+                    const match = item.image.match(/photo-([a-zA-Z0-9\-]+)/);
+                    if (match) usedImages.add('photo-' + match[1]);
+                }
+            });
+
+            // Filter out used candidates if possible
+            let unusedCandidates = candidates.filter(id => !usedImages.has(id));
+            
+            // If all candidates in the category are used, reuse from the category or fall back to general
+            if (unusedCandidates.length === 0) {
+                const allUnused = STOCK_IMAGES.general.filter(id => !usedImages.has(id));
+                unusedCandidates = allUnused.length > 0 ? allUnused : candidates;
+            }
+
+            // Pick a random one from the remaining candidates
+            const selectedId = unusedCandidates[Math.floor(Math.random() * unusedCandidates.length)];
+            return `https://images.unsplash.com/${selectedId}?w=600&auto=format&fit=crop&q=80`;
+        }
+
         // --- Real-time News Parsing and Publishing Module ---
         function parseAndAddAuraNews(text) {
             const newsRegex = /\[\[NOTICIA\]\]([\s\S]*?)\[\[FIN_NOTICIA\]\]/i;
@@ -2824,16 +2908,9 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             const whatsapp = getField('WHATSAPP');
 
             if (title && content) {
-                // Determine a realistic image fallback if not valid or empty
-                const lowerTitle = title.toLowerCase();
-                if (!image || (!image.includes('/') && !image.endsWith('.png') && !image.endsWith('.jpg'))) {
-                    if (lowerTitle.includes('solar') || lowerTitle.includes('sol')) {
-                        image = 'images/noticia_solar_security.png';
-                    } else if (lowerTitle.includes('satelital') || lowerTitle.includes('starlink') || lowerTitle.includes('conex')) {
-                        image = 'images/noticia_starlink_security.png';
-                    } else {
-                        image = 'images/noticia_cctv_ia.png';
-                    }
+                // Determine a realistic image fallback using Unsplash curated stock API if not manually defined
+                if (!image || (!image.includes('/') && !image.includes('images/'))) {
+                    image = getUniqueStockImageUrl(title, desc || content);
                 }
 
                 const newId = bitacoraData.length > 0 ? Math.max(...bitacoraData.map(item => item.id)) + 1 : 120;
