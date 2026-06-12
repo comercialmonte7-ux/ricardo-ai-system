@@ -1040,6 +1040,166 @@
         .aura-btn .aura-icon.pptx { background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: white; }
         .aura-btn .aura-icon.video { background: linear-gradient(135deg, #ef4444, #f87171); color: white; }
 
+        /* --- Aura Chat --- */
+        .aura-chat-section {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 18px;
+        }
+
+        .aura-chat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .aura-chat-label::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: var(--border-light);
+        }
+
+        .aura-chat-messages {
+            background: #0f172a;
+            border-radius: 14px;
+            padding: 16px;
+            min-height: 200px;
+            max-height: 320px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            animation: chatFadeIn 0.3s ease;
+        }
+
+        @keyframes chatFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-msg.bot {
+            background: rgba(37, 99, 235, 0.15);
+            color: #e2e8f0;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .chat-msg.user {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+        }
+
+        .chat-msg .msg-time {
+            display: block;
+            font-size: 0.6rem;
+            opacity: 0.5;
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chat-typing {
+            display: none;
+            align-self: flex-start;
+            padding: 10px 14px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 14px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-typing.active {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .aura-chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .aura-chat-input {
+            flex: 1;
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            transition: var(--transition-base);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .aura-chat-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+
+        .aura-chat-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .aura-chat-send {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            border-radius: 12px;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-base);
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+
+        .aura-chat-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .aura-chat-send:active {
+            transform: scale(0.95);
+        }
+
         @media (max-width: 1100px) {
             .aura-card {
                 flex-direction: column;
@@ -1148,6 +1308,26 @@
                         <span class="aura-icon video">🎬</span>
                         Desarrollar Contenido para Video
                     </button>
+                </div>
+
+                <!-- Aura Chat Zone -->
+                <div class="aura-chat-section">
+                    <div class="aura-chat-label">💬 Chat con Aura</div>
+                    <div class="aura-chat-messages" id="auraChatMessages">
+                        <div class="chat-msg bot">
+                            Hola Ricardo 👋 Soy <strong>Aura</strong>, tu asistente personal. ¿En qué puedo ayudarte hoy?
+                            <span class="msg-time">Aura · ahora</span>
+                        </div>
+                        <div class="chat-typing" id="auraTyping">
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                        </div>
+                    </div>
+                    <div class="aura-chat-input-wrapper">
+                        <input type="text" id="auraChatInput" class="aura-chat-input" placeholder="Escribe un mensaje a Aura..." autocomplete="off">
+                        <button class="aura-chat-send" id="auraChatSend" onclick="sendAuraMessage()">➤</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1980,6 +2160,89 @@
         
         // Auto select first agent (Business)
         selectAgent('business');
+
+        // === AURA CHAT MODULE ===
+        const auraChatMessages = document.getElementById('auraChatMessages');
+        const auraChatInput = document.getElementById('auraChatInput');
+        const auraTyping = document.getElementById('auraTyping');
+
+        // Aura response library
+        const auraResponses = {
+            'hola': '¡Hola Ricardo! 😊 ¿Qué necesitas hoy? Puedo ayudarte con cotizaciones, presentaciones, contenido de video o gestión de tareas.',
+            'cotización': 'Para crear una cotización, usa la Calculadora de Propuestas en el panel lateral. Agrega los insumos, ajusta el multiplicador y copia el resultado. ¿Necesitas que te guíe?',
+            'cotizacion': 'Para crear una cotización, usa la Calculadora de Propuestas en el panel lateral. Agrega los insumos, ajusta el multiplicador y copia el resultado. ¿Necesitas que te guíe?',
+            'presupuesto': '📊 Puedo ayudarte a estructurar un presupuesto. ¿Es para un proyecto de cámaras, enlace CCTV, o mantenimiento? Dame los detalles y prepararé los números.',
+            'presentación': '🎬 Tenemos plantillas de presentación listas: Villa Alessandri, Nuevo Amanecer, Vista al Mar. ¿Quieres crear una nueva o adaptar una existente?',
+            'presentacion': '🎬 Tenemos plantillas de presentación listas: Villa Alessandri, Nuevo Amanecer, Vista al Mar. ¿Quieres crear una nueva o adaptar una existente?',
+            'video': '🎥 Puedo generar guiones para HeyGen o contenido de marketing en video. ¿Qué tipo de video necesitas: comercial, informativo o para redes sociales?',
+            'instagram': '📸 Para gestionar Instagram, te recomiendo publicar contenido de las instalaciones completadas. ¿Quieres que prepare un guion de post?',
+            'cámara': '📹 Trabajamos con Hikvision DS-2CE56H0T y cámaras PTZ. ¿Necesitas una cotización de instalación o un informe técnico?',
+            'camara': '📹 Trabajamos con Hikvision DS-2CE56H0T y cámaras PTZ. ¿Necesitas una cotización de instalación o un informe técnico?',
+            'gore': '🏛️ Para proyectos GORE/FNDR, tenemos la documentación de Villa Alessandri como referencia. ¿Necesitas preparar rendición o una nueva postulación?',
+            'ayuda': '🛟 Puedo ayudarte con:\n• Cotizaciones y presupuestos\n• Presentaciones interactivas\n• Contenido para video/marketing\n• Gestión de tareas\n• Informes técnicos\n¿Qué prefieres?',
+            'gracias': '¡De nada, Ricardo! 🙌 Estoy aquí siempre que me necesites. ¡A seguir creciendo! 🚀'
+        };
+
+        function getTimeNow() {
+            return new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function addChatMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-msg ${sender}`;
+            const timeLabel = sender === 'user' ? 'Tú' : 'Aura';
+            msgDiv.innerHTML = `${text}<span class="msg-time">${timeLabel} · ${getTimeNow()}</span>`;
+            // Insert before the typing indicator
+            auraChatMessages.insertBefore(msgDiv, auraTyping);
+            auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
+        }
+
+        function getAuraResponse(userMsg) {
+            const lower = userMsg.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            for (const [key, response] of Object.entries(auraResponses)) {
+                const normalizedKey = key.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                if (lower.includes(normalizedKey)) {
+                    return response;
+                }
+            }
+            // Default response
+            const defaults = [
+                `Entendido, Ricardo. Voy a procesar tu solicitud sobre "${userMsg}". ¿Necesitas más detalles?`,
+                `Interesante. Déjame analizar eso. ¿Podrías darme más contexto sobre lo que necesitas?`,
+                `Tomé nota de tu mensaje. ¿Quieres que lo convierta en una tarea o lo integre en algún proyecto activo?`,
+                `Procesando... 🔄 Para darte la mejor respuesta, ¿esto está relacionado con un proyecto de seguridad o con gestión interna?`
+            ];
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+
+        function sendAuraMessage() {
+            const msg = auraChatInput.value.trim();
+            if (!msg) return;
+
+            // Add user message
+            addChatMessage(msg, 'user');
+            auraChatInput.value = '';
+
+            // Show typing indicator
+            auraTyping.classList.add('active');
+            auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
+
+            // Simulate response delay
+            const delay = 800 + Math.random() * 1200;
+            setTimeout(() => {
+                auraTyping.classList.remove('active');
+                const response = getAuraResponse(msg);
+                addChatMessage(response.replace(/\n/g, '<br>'), 'bot');
+            }, delay);
+        }
+
+        // Enter key support
+        auraChatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendAuraMessage();
+            }
+        });
     </script>
 </body>
 </html>
