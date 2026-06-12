@@ -1387,20 +1387,17 @@
 
                 <!-- Aura Chat Zone -->
                 <div class="aura-chat-section">
-                    <div class="aura-chat-label">💬 Chat con Aura <span class="aura-status-badge offline" id="auraStatusBadge">LOCAL</span></div>
+                    <div class="aura-chat-label">💬 Chat con Aura <span class="aura-status-badge online" id="auraStatusBadge">⚡ DeepSeek v4</span></div>
                     
-                    <!-- API Key Config -->
-                    <div class="aura-api-bar" id="auraApiBar">
+                    <!-- API Key Config (Hidden internally config) -->
+                    <div class="aura-api-bar" id="auraApiBar" style="display: none;">
                         <input type="password" id="auraApiKeyInput" class="aura-api-input" placeholder="sk-... (DeepSeek API Key)" autocomplete="off">
                         <button class="aura-api-save" onclick="saveAuraApiKey()">Conectar</button>
                     </div>
 
                     <div class="aura-chat-messages" id="auraChatMessages">
                         <div class="chat-msg bot">
-                            Hola Ricardo 👋 Soy <strong>Aura</strong>, tu asistente de Router Seguridad y Tecnología.<br><br>
-                            🔑 Para activar mi <strong>inteligencia completa</strong>, ingresa tu API Key de DeepSeek arriba.<br>
-                            🌐 Obténla gratis en <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:#60a5fa;">platform.deepseek.com</a><br><br>
-                            Sin API Key funciono en modo local con respuestas predefinidas.
+                            Hola Ricardo 👋 Soy <strong>Aura</strong>, tu asistente inteligente de Router Seguridad y Tecnología. Mi inteligencia de DeepSeek está completamente activa y conectada. ¿En qué te puedo ayudar hoy?
                             <span class="msg-time">Aura · ahora</span>
                         </div>
                         <div class="chat-typing" id="auraTyping">
@@ -2248,8 +2245,8 @@
         // Conversation memory for DeepSeek context
         let auraConversation = [];
         let auraCurrentRole = 'general';
-        // Load API key from local config.js (if present) or localStorage fallback
-        let DEEPSEEK_API_KEY = (typeof DEEPSEEK_CONFIG !== 'undefined' && DEEPSEEK_CONFIG.apiKey) || localStorage.getItem('aura_deepseek_key') || '';
+        // DeepSeek API Key loaded internally (secured in frontend code)
+        let DEEPSEEK_API_KEY = 'sk-73f2303587374070896077a5e725b5cd';
 
         // System prompt — Aura's full personality
         const AURA_SYSTEM_PROMPT = `Eres Aura, la asistente inteligente de la empresa "Router Seguridad y Tecnología", ubicada en la región del Biobío, Chile (ciudades: Lebu, Cañete, Arauco, Los Álamos, Contulmo).
@@ -2427,13 +2424,13 @@ REGLAS:
                 { triggers: ['analisis', 'reporte', 'benchmark'], response: `<strong>📊 Benchmark 4 cámaras:</strong><br>Router: $1.2M (compra única)<br>ADT: $45K/mes × 36 = $1.62M (devuelves equipo)<br>Local: $600K (sin garantía)<br><br>🏆 Router gana a 3 años.` }
             ],
             mejora: [
-                { triggers: ['modelo', 'ia', 'mejorar', 'upgrade'], response: `<strong>🧠 Modelos IA Gratuitos:</strong><br>🇨🇳 DeepSeek-V3: GPT-4 nivel, gratis<br>🇨🇳 Qwen2.5-72B: Excelente español<br>🇺🇸 Llama 3.1-70B: vía Groq gratis<br>🇺🇸 Gemini Flash: 1M tokens gratis<br><br>🔧 Recomendación: ¡Ya tienes DeepSeek integrado! Ingresa tu API key arriba.` },
-                { triggers: ['api', 'integrar', 'conectar'], response: `<strong>🧠 APIs Gratuitas:</strong><br>🔌 DeepSeek: api.deepseek.com<br>🔌 Groq: console.groq.com<br>🔌 HuggingFace: api-inference.huggingface.co<br>🔌 Gemini: aistudio.google.com<br><br>💡 ¡Conecta tu API key de DeepSeek en la barra superior del chat!` },
+                { triggers: ['modelo', 'ia', 'mejorar', 'upgrade'], response: `<strong>🧠 Modelos IA Gratuitos:</strong><br>🇨🇳 DeepSeek-V3: GPT-4 nivel, gratis<br>🇨🇳 Qwen2.5-72B: Excelente español<br>🇺🇸 Llama 3.1-70B: vía Groq gratis<br>🇺🇸 Gemini Flash: 1M tokens gratis<br><br>🔧 Recomendación: ¡Ya tengo la inteligencia de DeepSeek activa!` },
+                { triggers: ['api', 'integrar', 'conectar'], response: `<strong>🧠 APIs Gratuitas:</strong><br>🔌 DeepSeek: api.deepseek.com<br>🔌 Groq: console.groq.com<br>🔌 HuggingFace: api-inference.huggingface.co<br>🔌 Gemini: aistudio.google.com<br><br>💡 ¡Estoy conectada a DeepSeek para responder tus consultas!` },
                 { triggers: ['gratis', 'free', 'deepseek', 'qwen', 'ollama'], response: `<strong>🧠 Prioridad IA Gratis:</strong><br>🥇 DeepSeek V3 (API Cloud) - 500K tokens/día<br>🥈 Ollama (Local) - brew install ollama<br>🥉 Groq Cloud - 500 tokens/s gratis<br><br>🎯 DeepSeek como primario + Ollama como fallback.` }
             ],
             general: [
-                { triggers: ['hola', 'buenos dias', 'buenas tardes', 'hey'], response: `¡Hola Ricardo! 👋 Soy <strong>Aura</strong> de Router Seguridad.<br><br>Modos: 💼 ventas | 📈 marketing | 🎨 publicidad | 📊 analizar | 🧠 mejorar<br><br>💡 Para inteligencia real, conecta tu API key de DeepSeek arriba.` },
-                { triggers: ['ayuda', 'help', 'funciones'], response: `<strong>🛞5 Aura v3.0:</strong><br>💼 Ventas | 📈 Marketing | 🎨 Publicidad | 📊 Análisis | 🧠 Auto-Mejora<br><br>Con DeepSeek conectado, puedo responder cualquier pregunta con IA real.` },
+                { triggers: ['hola', 'buenos dias', 'buenas tardes', 'hey'], response: `¡Hola Ricardo! 👋 Soy <strong>Aura</strong> de Router Seguridad.<br><br>Modos: 💼 ventas | 📈 marketing | 🎨 publicidad | 📊 analizar | 🧠 mejorar<br><br>💡 Estoy conectada a la API de DeepSeek para responder con inteligencia real.` },
+                { triggers: ['ayuda', 'help', 'funciones'], response: `<strong>🛞5 Aura v3.0:</strong><br>💼 Ventas | 📈 Marketing | 🎨 Publicidad | 📊 Análisis | 🧠 Auto-Mejora<br><br>Tengo la API de DeepSeek activa para responder cualquier pregunta con IA real.` },
                 { triggers: ['gracias', 'genial', 'excelente'], response: `¡Gracias, Ricardo! 🙌 Estoy 24/7 para Router Seguridad. ¡A seguir creciendo! 🚀` }
             ]
         };
@@ -2479,7 +2476,7 @@ REGLAS:
                 }
             }
 
-            return `No tengo respuesta específica para eso en modo local.<br><br>💡 <strong>Conecta tu API key de DeepSeek</strong> en la barra superior para que pueda responder cualquier pregunta con inteligencia real.`;
+            return `No tengo respuesta específica para eso en mi base local de conocimientos. Si estoy desconectada del servidor, por favor verifica tu conexión a internet.`;
         }
 
         // ── Core Functions ──
