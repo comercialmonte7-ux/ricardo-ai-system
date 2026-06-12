@@ -2333,516 +2333,390 @@
         }
 
         // --- Web Page Manager & File System Sync Module ---
-        let routerDirHandle = null;
+        let webProjects = [];
+        let activeProjectId = null;
+        let activeProjectHandle = null;
 
-        // IndexedDB database setup for file handles
-        const DB_NAME = 'RouterSystemDB';
-        const STORE_NAME = 'FileHandles';
-
-        function getDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
-                request.onupgradeneeded = (e) => {
-                    const db = e.target.result;
-                    db.createObjectStore(STORE_NAME);
-                };
-                request.onsuccess = (e) => resolve(e.target.result);
-                request.onerror = (e) => reject(e.target.error);
-            });
-        }
-
-        async function saveDirectoryHandle(handle) {
-            const db = await getDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const request = store.put(handle, 'router_dir');
-                request.onsuccess = () => resolve();
-                request.onerror = (e) => reject(e.target.error);
-            });
-        }
-
-        async function getDirectoryHandle() {
+        function initWebManagerConnection() {
             try {
-                const db = await getDB();
-                return new Promise((resolve, reject) => {
-                    const tx = db.transaction(STORE_NAME, 'readonly');
-                    const store = tx.objectStore(STORE_NAME);
-                    const request = store.get('router_dir');
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = (e) => reject(e.target.error);
-                });
-            } catch (e) {
-                return null;
-            }
-        }
-
-        async function verifyPermission(fileHandle, readWrite) {
-            const options = {};
-            if (readWrite) {
-                options.mode = 'readwrite';
-            }
-            if ((await fileHandle.queryPermission(options)) === 'granted') {
-                return true;
-            }
-            if ((await fileHandle.requestPermission(options)) === 'granted') {
-                return true;
-            }
-            return false;
-        }
-
-        // Initialize folder link on page load if possible
-        async function initWebManagerConnection() {
-            try {
-                const handle = await getDirectoryHandle();
-                if (handle) {
-                    routerDirHandle = handle;
-                    console.log("Found saved router directory handle.");
+                const data = localStorage.getItem('dashboard_web_projects');
+                if (data) {
+                    webProjects = JSON.parse(data);
+                } else {
+                    webProjects = [{
+                        id: 'router_website',
+                        name: 'Router Seguridad',
+                        url: 'https://router-seguridad-tecnologia.vercel.app',
+                        hosting: 'Vercel',
+                        username: 'hostalplazalebu',
+                        password: '',
+                        hasAuraNews: true
+                    }];
+                    saveWebProjects();
                 }
-            } catch (e) {
-                console.error("Error retrieving saved directory handle:", e);
-            }
+            } catch(e) {}
         }
-
-        // Call initialization
         initWebManagerConnection();
 
+        function saveWebProjects() {
+            try { localStorage.setItem('dashboard_web_projects', JSON.stringify(webProjects)); } catch(e) {}
+        }
+
         function openWebManager() {
-            const drawer = document.getElementById('drawerContainer');
             const overlay = document.getElementById('drawerOverlay');
-            const content = document.getElementById('drawerContent');
+            const drawer = document.getElementById('drawerContainer');
             const drawerTitle = document.getElementById('drawerTitle');
-            const drawerSubtitle = document.getElementById('drawerSubtitle');
-            const extLink = document.getElementById('btnDrawerExternal');
+            const content = document.getElementById('drawerContent');
 
-            drawerTitle.textContent = "Gestión de Páginas Web";
-            drawerSubtitle.textContent = "ROUTER CORE // PANEL DE CONTROL DE CONTENIDO";
-            extLink.style.display = 'none';
+            if (!overlay || !drawer) { alert('Error: No se encontró el panel lateral.'); return; }
 
-            // Inject CSS styles if not already injected
+            drawerTitle.textContent = "Hub Central de Páginas Web";
+
             if (!document.getElementById('web-manager-styles')) {
                 const style = document.createElement('style');
                 style.id = 'web-manager-styles';
                 style.innerHTML = `
-                    .web-manager-wrapper {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 20px;
-                        padding: 10px 0;
-                        font-family: var(--font-main);
-                    }
+                    .web-manager-wrapper { padding: 5px; color: var(--color-text-dark); }
                     .web-manager-card {
-                        background: rgba(255, 255, 255, 0.03);
-                        border: 1px solid rgba(255, 255, 255, 0.08);
+                        background: #fff;
+                        border: 1px solid #e2e8f0;
                         border-radius: 12px;
-                        padding: 20px;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 12px;
+                        padding: 16px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
                     }
-                    .web-manager-card h3 {
-                        font-size: 1.1rem;
-                        color: var(--accent-blue);
-                        margin: 0;
-                        font-family: var(--font-heading);
-                    }
-                    .dir-status-box {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        padding: 10px 14px;
-                        border-radius: 8px;
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        width: fit-content;
-                    }
-                    .connection-disconnected {
-                        background: rgba(239, 68, 68, 0.1);
-                        color: #ef4444;
-                        border: 1px solid rgba(239, 68, 68, 0.2);
-                    }
-                    .connection-pending {
-                        background: rgba(245, 158, 11, 0.1);
-                        color: #f59e0b;
-                        border: 1px solid rgba(245, 158, 11, 0.2);
-                    }
-                    .connection-connected {
-                        background: rgba(16, 185, 129, 0.1);
-                        color: #10b981;
-                        border: 1px solid rgba(16, 185, 129, 0.2);
-                    }
-                    .status-desc {
-                        font-size: 0.85rem;
-                        color: var(--text-dim);
-                        margin: 0;
-                        line-height: 1.4;
-                    }
-                    .news-manage-list {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 12px;
-                        margin-top: 10px;
-                    }
-                    .news-manage-item {
-                        display: flex;
-                        align-items: center;
-                        gap: 16px;
-                        background: rgba(255, 255, 255, 0.02);
-                        border: 1px solid rgba(255, 255, 255, 0.05);
-                        border-radius: 8px;
-                        padding: 12px;
-                        transition: all 0.2s ease;
-                    }
-                    .news-manage-item:hover {
-                        background: rgba(255, 255, 255, 0.04);
-                        border-color: rgba(255, 255, 255, 0.1);
-                    }
-                    .news-manage-thumb {
-                        width: 50px;
-                        height: 50px;
-                        border-radius: 6px;
-                        object-fit: cover;
-                        background: #111;
-                    }
-                    .news-manage-info {
-                        flex-grow: 1;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 4px;
-                    }
-                    .news-manage-title {
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        color: var(--text-main);
-                        margin: 0;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                        overflow: hidden;
-                    }
-                    .news-manage-date {
-                        font-size: 0.75rem;
-                        color: var(--text-dim);
-                        margin: 0;
-                    }
-                    .news-manage-actions {
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                    }
-                    .badge-publish-status {
-                        font-size: 0.75rem;
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        text-transform: uppercase;
-                    }
-                    .badge-published {
-                        background: rgba(16, 185, 129, 0.15);
-                        color: #10b981;
-                    }
-                    .badge-draft {
-                        background: rgba(255, 255, 255, 0.08);
-                        color: var(--text-dim);
-                    }
-                    .btn-toggle-publish {
-                        background: transparent;
-                        border: 1px solid var(--accent-blue);
-                        color: var(--accent-blue);
-                        padding: 6px 12px;
-                        border-radius: 6px;
-                        font-size: 0.8rem;
-                        font-weight: 600;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                    }
-                    .btn-toggle-publish:hover {
-                        background: var(--accent-blue);
-                        color: #000;
-                    }
-                    .btn-toggle-publish.active {
-                        border-color: #ef4444;
-                        color: #ef4444;
-                    }
-                    .btn-toggle-publish.active:hover {
-                        background: #ef4444;
-                        color: #fff;
-                    }
-                    .mt-20 { margin-top: 20px; }
+                    .web-manager-card h3 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.1rem; display:flex; align-items:center; gap:8px;}
+                    .web-field { font-size: 0.9rem; color: #475569; margin-bottom: 6px; }
+                    .web-field strong { color: #1e293b; }
+                    .web-actions { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+                    .btn-small { padding: 6px 12px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; border: none; font-weight: 500; }
+                    .btn-primary { background: var(--color-primary, #6366f1); color: white; }
+                    .btn-outline { background: white; border: 1px solid #cbd5e1; color: #475569; }
+                    .btn-danger { background: #fee2e2; color: #ef4444; }
+                    
+                    .dir-status-box { padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top:10px; font-weight: 600; display:flex; align-items:center; gap:8px;}
+                    .connection-disconnected { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+                    .connection-connected { background: #dcfce7; color: #10b981; border: 1px solid #86efac; }
+                    .news-manage-list { margin-top: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; overflow:hidden;}
+                    .news-manage-item { display:flex; padding: 12px; border-bottom: 1px solid #e2e8f0; align-items:center; justify-content:space-between; gap:10px;}
+                    .news-manage-item:last-child { border-bottom: none; }
+                    .news-manage-info { flex: 1; }
+                    .news-manage-info h4 { margin:0 0 4px 0; font-size:0.9rem; color:#0f172a; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+                    .news-manage-info p { margin:0; font-size:0.8rem; color:#64748b; }
+                    .password-reveal { background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-family: monospace; cursor:pointer; }
+                    
                     .notification-banner {
-                        background: rgba(16, 185, 129, 0.1);
-                        border: 1px solid rgba(16, 185, 129, 0.2);
-                        color: #10b981;
-                        padding: 10px 14px;
-                        border-radius: 8px;
-                        font-size: 0.85rem;
+                        background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);
+                        color: #10b981; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem;
                         margin-bottom: 12px;
-                        animation: fadeIn 0.3s ease;
                     }
                 `;
                 document.head.appendChild(style);
             }
 
-            // Render structure
-            content.innerHTML = `
-                <div class="web-manager-wrapper">
-                    <div id="webSyncNotification" style="display: none;" class="notification-banner"></div>
+            renderWebHubUI(content);
 
-                    <div class="web-manager-card">
-                        <h3>🔗 Conexión a Sitio Web de Router</h3>
-                        <div id="dirConnectionStatus" class="dir-status-box connection-disconnected">
-                            <span class="status-indicator">🔴</span> No Vinculado
-                        </div>
-                        <p class="status-desc" id="dirConnectionDesc">Vincule su carpeta del proyecto del sitio web de Router para sincronizar noticias automáticamente en tiempo real.</p>
-                        <button id="btnLinkFolder" class="btn-shortcut primary" onclick="selectRouterFolder()">Vincular Carpeta de Router</button>
-                    </div>
-
-                    <div class="web-manager-card mt-20">
-                        <h3>📰 Artículos de Noticias (Máximo 3 Activos)</h3>
-                        <p class="status-desc">Selecciona cuáles 3 artículos se mostrarán dinámicamente en la landing page pública. Al activar un cuarto artículo, el más antiguo se rotará a Borrador automáticamente.</p>
-                        <div class="news-manage-list" id="newsManageList">
-                            <p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 20px;">Cargando artículos...</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Open animations
             overlay.classList.add('open');
             drawer.classList.add('open');
             document.body.style.overflow = 'hidden';
-
-            // Check connection state
-            updateConnectionUI();
-            renderWebManagerNewsList();
         }
 
-        async function updateConnectionUI() {
-            const statusBox = document.getElementById('dirConnectionStatus');
-            const descText = document.getElementById('dirConnectionDesc');
-            const linkBtn = document.getElementById('btnLinkFolder');
-
-            if (!statusBox) return;
-
-            if (!routerDirHandle) {
-                statusBox.className = "dir-status-box connection-disconnected";
-                statusBox.innerHTML = '<span class="status-indicator">🔴</span> No Vinculado';
-                descText.textContent = "Sincroniza noticias vinculando la carpeta local de tu proyecto (/Users/ricardomarimodinger/Desktop/router-website).";
-                linkBtn.textContent = "Vincular Carpeta de Router";
-                linkBtn.onclick = selectRouterFolder;
-                return;
-            }
-
-            // Check permission
-            try {
-                const hasPermission = await routerDirHandle.queryPermission({ mode: 'readwrite' });
-                if (hasPermission === 'granted') {
-                    statusBox.className = "dir-status-box connection-connected";
-                    statusBox.innerHTML = '<span class="status-indicator">🟢</span> Vinculado y Activo';
-                    descText.innerHTML = `Conectado de forma segura a:<br><strong style="color: var(--text-main); font-size: 0.75rem;">${routerDirHandle.name}</strong>`;
-                    linkBtn.textContent = "Desvincular Carpeta";
-                    linkBtn.onclick = unlinkRouterFolder;
-                } else {
-                    statusBox.className = "dir-status-box connection-pending";
-                    statusBox.innerHTML = '<span class="status-indicator">🟡</span> Requiere Autorización';
-                    descText.textContent = "Se requiere permiso de escritura para sincronizar. Haz click en 'Autorizar Conexión'.";
-                    linkBtn.textContent = "Autorizar Conexión";
-                    linkBtn.onclick = authorizeRouterFolder;
-                }
-            } catch (e) {
-                console.error("Error querying permission:", e);
-                routerDirHandle = null;
-                updateConnectionUI();
-            }
-        }
-
-        async function selectRouterFolder() {
-            try {
-                const handle = await window.showDirectoryPicker();
-                let isCorrectFolder = false;
-                try {
-                    await handle.getFileHandle('index.html');
-                    await handle.getDirectoryHandle('js');
-                    isCorrectFolder = true;
-                } catch (e) {
-                    isCorrectFolder = false;
-                }
-
-                if (!isCorrectFolder) {
-                    alert("⚠️ Advertencia: La carpeta seleccionada no parece contener el proyecto de Router (no se encontró index.html o carpeta js). Por favor selecciona la carpeta correcta.");
-                    return;
-                }
-
-                const hasPermission = await verifyPermission(handle, true);
-                if (hasPermission) {
-                    routerDirHandle = handle;
-                    await saveDirectoryHandle(handle);
-                    updateConnectionUI();
-                    showWebSyncNotification("🟢 ¡Carpeta vinculada correctamente! Sincronización activa.");
-                    syncPublishedNewsToFileSystem();
-                } else {
-                    alert("Se requieren permisos de escritura para poder publicar las noticias.");
-                }
-            } catch (e) {
-                console.error("Directory picker cancelled or failed:", e);
-            }
-        }
-
-        async function authorizeRouterFolder() {
-            if (!routerDirHandle) return;
-            try {
-                const hasPermission = await verifyPermission(routerDirHandle, true);
-                if (hasPermission) {
-                    updateConnectionUI();
-                    showWebSyncNotification("🟢 Permisos de escritura concedidos. Conexión restaurada.");
-                    syncPublishedNewsToFileSystem();
-                } else {
-                    alert("No se concedieron permisos de escritura.");
-                }
-            } catch (e) {
-                console.error("Authorization failed:", e);
-            }
-        }
-
-        async function unlinkRouterFolder() {
-            if (confirm("¿Está seguro de que desea desvincular la carpeta? Las noticias publicadas permanecerán en su sitio local pero no se actualizarán al hacer cambios en el dashboard.")) {
-                routerDirHandle = null;
-                try {
-                    const db = await getDB();
-                    const tx = db.transaction(STORE_NAME, 'readwrite');
-                    tx.objectStore(STORE_NAME).delete('router_dir');
-                } catch (e) {
-                    console.error("Error deleting saved handle:", e);
-                }
-                updateConnectionUI();
-                showWebSyncNotification("🔴 Carpeta desvinculada.");
-            }
-        }
-
-        function renderWebManagerNewsList() {
-            const listContainer = document.getElementById('newsManageList');
-            if (!listContainer) return;
-
-            const newsItems = bitacoraData.filter(item => item.tag === "Noticias");
+        function renderWebHubUI(content) {
+            let html = `<div class="web-manager-wrapper">`;
+            html += `<div id="webSyncNotification" style="display: none;" class="notification-banner"></div>`;
             
-            if (newsItems.length === 0) {
-                listContainer.innerHTML = '<p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 20px;">No se encontraron artículos de noticias. Pídele a Aura que te redacte uno.</p>';
-                return;
-            }
+            html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <p style="margin:0; font-size:0.9rem; color:#64748b;">Administra accesos y carpetas locales.</p>
+                        <button class="btn-small btn-primary" onclick="promptNewProject()">+ Nuevo Proyecto</button>
+                     </div>`;
 
-            let publishedIds = [];
-            try {
-                publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
-            } catch (e) {
-                publishedIds = [117, 118, 119];
-            }
+            webProjects.forEach(proj => {
+                html += `
+                <div class="web-manager-card" id="card-${proj.id}">
+                    <h3>🌐 ${proj.name}</h3>
+                    <div class="web-field"><strong>URL:</strong> <a href="${proj.url}" target="_blank" style="color:var(--color-primary)">${proj.url}</a></div>
+                    <div class="web-field"><strong>Hosting:</strong> ${proj.hosting}</div>
+                    <div class="web-field"><strong>Usuario:</strong> ${proj.username || '-'}</div>
+                    <div class="web-field"><strong>Clave:</strong> <span class="password-reveal" onclick="togglePassword(this, '${proj.password}')">•••••••• (Ver)</span></div>
+                    
+                    <div class="web-actions">
+                        <button class="btn-small btn-outline" onclick="editProject('${proj.id}')">Editar</button>
+                        <button class="btn-small btn-danger" onclick="deleteProject('${proj.id}')">Eliminar</button>
+                    </div>
 
-            listContainer.innerHTML = '';
+                    ${proj.hasAuraNews ? renderAuraNewsSection(proj.id) : ''}
+                </div>`;
+            });
+
+            html += `</div>`;
+            content.innerHTML = html;
             
-            newsItems.forEach(item => {
-                const isPublished = publishedIds.includes(item.id);
-                const itemEl = document.createElement('div');
-                itemEl.className = 'news-manage-item';
-                itemEl.innerHTML = `
-                    <img src="${item.image || 'images/default-news.jpg'}" alt="" class="news-manage-thumb" onerror="this.src='images/default-news.jpg'">
-                    <div class="news-manage-info">
-                        <h4 class="news-manage-title">${item.title}</h4>
-                        <p class="news-manage-date">📅 ${item.date} · <span class="badge-publish-status ${isPublished ? 'badge-published' : 'badge-draft'}">${isPublished ? 'Publicado' : 'Borrador'}</span></p>
-                    </div>
-                    <div class="news-manage-actions">
-                        <button class="btn-toggle-publish ${isPublished ? 'active' : ''}" onclick="toggleNewsPublish(${item.id})">
-                            ${isPublished ? 'Despublicar' : 'Publicar'}
-                        </button>
-                    </div>
-                `;
-                listContainer.appendChild(itemEl);
+            // Check statuses asynchronously
+            webProjects.forEach(proj => {
+                if (proj.hasAuraNews) {
+                    checkProjectFolderStatus(proj.id);
+                }
             });
         }
 
-        async function toggleNewsPublish(id) {
-            let publishedIds = [];
-            try {
-                publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
-            } catch (e) {
-                publishedIds = [117, 118, 119];
-            }
-
-            const isCurrentlyPublished = publishedIds.includes(id);
-
-            if (isCurrentlyPublished) {
-                publishedIds = publishedIds.filter(pid => pid !== id);
-                showWebSyncNotification(`⚙️ Artículo despublicado.`);
-            } else {
-                publishedIds = publishedIds.filter(pid => pid !== id);
-                publishedIds.unshift(id);
+        function renderAuraNewsSection(id) {
+            return `
+            <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <h4 style="margin:0 0 10px 0; font-size:0.95rem; color:#1e293b;">📰 Sincronización de Noticias (Aura)</h4>
+                <div id="status-${id}" class="dir-status-box connection-disconnected">
+                    <span>🔴 Buscando carpeta local...</span>
+                </div>
+                <div class="web-actions">
+                    <button id="btn-link-${id}" class="btn-small btn-primary" onclick="linkProjectFolder('${id}')">Vincular Carpeta</button>
+                </div>
                 
-                if (publishedIds.length > 3) {
-                    const removedId = publishedIds.pop();
-                    const removedItem = bitacoraData.find(item => item.id === removedId);
-                    const removedTitle = removedItem ? removedItem.title : `ID ${removedId}`;
-                    showWebSyncNotification(`🔄 Rotación: Se publicó y se despublicó el más antiguo ("${removedTitle}").`, true);
-                } else {
-                    showWebSyncNotification(`🟢 Artículo publicado con éxito.`);
-                }
-            }
-
-            try {
-                localStorage.setItem('router_web_published_news', JSON.stringify(publishedIds));
-            } catch (e) {
-                console.error("Error saving published news to localStorage:", e);
-            }
-            renderWebManagerNewsList();
-            await syncPublishedNewsToFileSystem();
+                <div class="news-manage-list" id="news-list-${id}" style="display:none; margin-top:15px;">
+                    <p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 20px;">Cargando artículos...</p>
+                </div>
+            </div>`;
         }
 
-        async function syncPublishedNewsToFileSystem() {
-            if (!routerDirHandle) return;
+        function togglePassword(element, pwd) {
+            if (element.textContent.includes('••••••••')) {
+                element.textContent = pwd || '(vacío)';
+            } else {
+                element.textContent = '•••••••• (Ver)';
+            }
+        }
+
+        function promptNewProject() {
+            const name = prompt("Nombre del Proyecto Web:");
+            if (!name) return;
+            const url = prompt("URL del sitio:");
+            const hosting = prompt("Plataforma de Hosting (ej: Vercel):");
+            const username = prompt("Usuario de acceso:");
+            const password = prompt("Contraseña:");
+            const hasAuraNews = confirm("¿Habilitar módulo de noticias sincronizado con Aura para esta web?");
             
-            const permission = await routerDirHandle.queryPermission({ mode: 'readwrite' });
-            if (permission !== 'granted') {
-                console.log("No write permissions granted for directory sync.");
+            const newProj = {
+                id: 'proj_' + Date.now(),
+                name, url, hosting, username, password, hasAuraNews
+            };
+            webProjects.push(newProj);
+            saveWebProjects();
+            renderWebHubUI(document.getElementById('drawerContent'));
+        }
+
+        function editProject(id) {
+            const p = webProjects.find(x => x.id === id);
+            if (!p) return;
+            const pwd = prompt("Nueva contraseña (deja vacío para no cambiar):", p.password);
+            if (pwd !== null) {
+                p.password = pwd;
+                saveWebProjects();
+                renderWebHubUI(document.getElementById('drawerContent'));
+            }
+        }
+
+        function deleteProject(id) {
+            if(confirm("¿Seguro que quieres eliminar este proyecto del Hub?")) {
+                webProjects = webProjects.filter(x => x.id !== id);
+                saveWebProjects();
+                renderWebHubUI(document.getElementById('drawerContent'));
+            }
+        }
+
+        // --- FS API Logic ---
+        const DB_NAME = "RicardoHubDB";
+        function getDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 2);
+                request.onupgradeneeded = e => {
+                    const db = e.target.result;
+                    if(!db.objectStoreNames.contains('directories')) {
+                        db.createObjectStore('directories');
+                    }
+                };
+                request.onsuccess = e => resolve(e.target.result);
+                request.onerror = e => reject(e.target.error);
+            });
+        }
+
+        async function getDirectoryHandle(id) {
+            try {
+                const db = await getDB();
+                return new Promise((resolve, reject) => {
+                    const t = db.transaction('directories', 'readonly');
+                    const store = t.objectStore('directories');
+                    const req = store.get(id);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch(e) { return null; }
+        }
+
+        async function saveDirectoryHandle(id, handle) {
+            try {
+                const db = await getDB();
+                const t = db.transaction('directories', 'readwrite');
+                t.objectStore('directories').put(handle, id);
+            } catch(e) { console.error(e); }
+        }
+
+        async function unlinkProjectFolder(id) {
+            try {
+                const db = await getDB();
+                const t = db.transaction('directories', 'readwrite');
+                t.objectStore('directories').delete(id);
+                activeProjectHandle = null;
+                activeProjectId = null;
+                showWebSyncNotification("🔴 Carpeta desvinculada.");
+                checkProjectFolderStatus(id);
+            } catch(e) {}
+        }
+
+        async function checkProjectFolderStatus(id) {
+            const statusBox = document.getElementById('status-' + id);
+            const linkBtn = document.getElementById('btn-link-' + id);
+            const newsList = document.getElementById('news-list-' + id);
+            if(!statusBox) return;
+
+            const handle = await getDirectoryHandle(id);
+            if (!handle) {
+                statusBox.className = "dir-status-box connection-disconnected";
+                statusBox.innerHTML = '<span>🔴 No Vinculado</span>';
+                linkBtn.textContent = "Vincular Carpeta";
+                linkBtn.style.display = "inline-block";
+                linkBtn.onclick = () => linkProjectFolder(id);
+                newsList.style.display = "none";
                 return;
             }
 
             try {
-                let publishedIds = [];
-                try {
-                    publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
-                } catch (e) {
-                    publishedIds = [117, 118, 119];
+                const perm = await handle.queryPermission({ mode: 'readwrite' });
+                if (perm === 'granted') {
+                    statusBox.className = "dir-status-box connection-connected";
+                    statusBox.innerHTML = '<span>🟢 Conectado: ' + handle.name + '</span>';
+                    linkBtn.textContent = "Desvincular";
+                    linkBtn.onclick = () => unlinkProjectFolder(id);
+                    linkBtn.className = "btn-small btn-danger";
+                    newsList.style.display = "block";
+                    activeProjectHandle = handle;
+                    activeProjectId = id;
+                    renderProjectNewsList(id);
+                } else {
+                    statusBox.className = "dir-status-box connection-disconnected";
+                    statusBox.innerHTML = '<span>🟡 Requiere Permisos de Navegador</span>';
+                    linkBtn.textContent = "Autorizar Acceso";
+                    linkBtn.onclick = async () => {
+                        if ((await handle.requestPermission({ mode: 'readwrite' })) === 'granted') {
+                            showWebSyncNotification("🟢 Permisos concedidos.");
+                            checkProjectFolderStatus(id);
+                        }
+                    };
                 }
+            } catch(e) {
+                unlinkProjectFolder(id);
+            }
+        }
 
+        async function linkProjectFolder(id) {
+            try {
+                const handle = await window.showDirectoryPicker();
+                // Validate if it has js folder inside (basic validation)
+                try {
+                    await handle.getDirectoryHandle('js');
+                } catch(e) {
+                    showWebSyncNotification("⚠️ La carpeta no parece ser un proyecto web válido (falta carpeta js/).", true);
+                }
+                const perm = await handle.queryPermission({ mode: 'readwrite' });
+                if(perm === 'prompt') await handle.requestPermission({ mode: 'readwrite' });
+                await saveDirectoryHandle(id, handle);
+                showWebSyncNotification("🟢 Carpeta vinculada exitosamente.");
+                checkProjectFolderStatus(id);
+            } catch(e) {
+                console.log("Picker cancelled");
+            }
+        }
+
+        function renderProjectNewsList(id) {
+            const list = document.getElementById('news-list-' + id);
+            if(!list) return;
+
+            let publishedIds = [];
+            try {
+                publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
+            } catch(e) { publishedIds = [117, 118, 119]; }
+
+            const newsItems = bitacoraData.filter(item => item.tag === "Noticias");
+            
+            if(newsItems.length === 0) {
+                list.innerHTML = '<p style="padding:15px;text-align:center;color:#64748b;">No hay noticias creadas por Aura aún.</p>';
+                return;
+            }
+
+            let html = '';
+            newsItems.forEach(item => {
+                const isPub = publishedIds.includes(item.id);
+                html += `
+                <div class="news-manage-item">
+                    <div class="news-manage-info">
+                        <h4>${item.title}</h4>
+                        <p>${item.date} | ${isPub ? '<strong style="color:#10b981;">Publicado</strong>' : 'Borrador'}</p>
+                    </div>
+                    <button class="btn-small ${isPub ? 'btn-danger' : 'btn-primary'}" onclick="toggleNewsPublish(${item.id}, '${id}')">
+                        ${isPub ? 'Ocultar' : 'Publicar'}
+                    </button>
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        async function toggleNewsPublish(newsId, projectId) {
+            let publishedIds = [];
+            try {
+                publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
+            } catch(e) { publishedIds = [117, 118, 119]; }
+
+            if (publishedIds.includes(newsId)) {
+                publishedIds = publishedIds.filter(id => id !== newsId);
+            } else {
+                publishedIds.unshift(newsId);
+                if (publishedIds.length > 3) publishedIds = publishedIds.slice(0, 3);
+            }
+
+            try { localStorage.setItem('router_web_published_news', JSON.stringify(publishedIds)); } catch(e){}
+            renderProjectNewsList(projectId);
+            await syncProjectNewsToFileSystem(projectId);
+        }
+
+        async function syncProjectNewsToFileSystem(projectId) {
+            if (activeProjectId !== projectId || !activeProjectHandle) return;
+            
+            const handle = activeProjectHandle;
+            const permission = await handle.queryPermission({ mode: 'readwrite' });
+            if (permission !== 'granted') return;
+
+            try {
+                let publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
                 const newsItems = bitacoraData.filter(item => item.tag === "Noticias");
                 
                 const activeNewsList = [];
                 publishedIds.forEach(id => {
                     const article = newsItems.find(item => item.id === id);
-                    if (article) {
-                        activeNewsList.push({
-                            id: article.id,
-                            date: article.date,
-                            title: article.title,
-                            desc: article.desc,
-                            image: article.image,
-                            content: article.content
-                        });
-                    }
+                    if (article) activeNewsList.push({
+                        id: article.id, date: article.date, title: article.title,
+                        desc: article.desc, image: article.image, content: article.content
+                    });
                 });
 
-                const jsDirHandle = await routerDirHandle.getDirectoryHandle('js', { create: true });
+                const jsDirHandle = await handle.getDirectoryHandle('js', { create: true });
                 const fileHandle = await jsDirHandle.getFileHandle('news-data.js', { create: true });
                 const writable = await fileHandle.createWritable();
-                
-                const fileContent = `// Archivo generado automáticamente por Ricardo AI System. NO EDITAR DIRECTAMENTE.
+                const content = `// Archivo generado automáticamente por Ricardo AI System. NO EDITAR DIRECTAMENTE.
 const ROUTER_NEWS_DATA = ${JSON.stringify(activeNewsList, null, 2)};
 `;
-                await writable.write(fileContent);
+                await writable.write(content);
                 await writable.close();
-                console.log("Sincronización de noticias completada en news-data.js");
                 showWebSyncNotification("⚡ Sincronización exitosa: Sitio web local actualizado.");
-            } catch (error) {
-                console.error("Error en sincronización de archivos:", error);
-                showWebSyncNotification("⚠️ Error de sincronización al escribir archivos locales.", false);
+            } catch (e) {
+                console.error(e);
+                showWebSyncNotification("⚠️ Error al escribir el archivo local news-data.js", true);
             }
         }
 
@@ -2851,28 +2725,20 @@ const ROUTER_NEWS_DATA = ${JSON.stringify(activeNewsList, null, 2)};
             if (!banner) return;
             banner.style.display = 'block';
             banner.textContent = msg;
-            
-            if (isWarning) {
-                banner.style.background = 'rgba(245, 158, 11, 0.1)';
-                banner.style.borderColor = 'rgba(245, 158, 11, 0.2)';
-                banner.style.color = '#f59e0b';
-            } else if (msg.includes('Error') || msg.includes('No') || msg.includes('desvinculada')) {
-                banner.style.background = 'rgba(239, 68, 68, 0.1)';
-                banner.style.borderColor = 'rgba(239, 68, 68, 0.2)';
-                banner.style.color = '#ef4444';
-            } else {
-                banner.style.background = 'rgba(16, 185, 129, 0.1)';
-                banner.style.borderColor = 'rgba(16, 185, 129, 0.2)';
-                banner.style.color = '#10b981';
-            }
-            banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (isWarning) { banner.style.background = 'rgba(245,158,11,0.1)'; banner.style.color = '#f59e0b'; }
+            else if (msg.includes('Error') || msg.includes('desvinculada')) { banner.style.background = 'rgba(239,68,68,0.1)'; banner.style.color = '#ef4444'; }
+            else { banner.style.background = 'rgba(16,185,129,0.1)'; banner.style.color = '#10b981'; }
+            setTimeout(() => { if(banner) banner.style.display='none'; }, 4000);
         }
 
-        // Expose functions to window for onclick handlers
+        // Expose functions
         window.openWebManager = openWebManager;
-        window.selectRouterFolder = selectRouterFolder;
-        window.authorizeRouterFolder = authorizeRouterFolder;
-        window.unlinkRouterFolder = unlinkRouterFolder;
+        window.togglePassword = togglePassword;
+        window.promptNewProject = promptNewProject;
+        window.editProject = editProject;
+        window.deleteProject = deleteProject;
+        window.linkProjectFolder = linkProjectFolder;
+        window.unlinkProjectFolder = unlinkProjectFolder;
         window.toggleNewsPublish = toggleNewsPublish;
 
         // --- Interactive 3.0x Calculator Module ---
