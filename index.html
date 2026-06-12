@@ -2161,27 +2161,368 @@
         // Auto select first agent (Business)
         selectAgent('business');
 
-        // === AURA CHAT MODULE ===
+        // ═══════════════════════════════════════════════════════
+        // ███ AURA v2.0 — MULTI-ROLE INTELLIGENCE ENGINE ███
+        // ═══════════════════════════════════════════════════════
         const auraChatMessages = document.getElementById('auraChatMessages');
         const auraChatInput = document.getElementById('auraChatInput');
         const auraTyping = document.getElementById('auraTyping');
 
-        // Aura response library
-        const auraResponses = {
-            'hola': '¡Hola Ricardo! 😊 ¿Qué necesitas hoy? Puedo ayudarte con cotizaciones, presentaciones, contenido de video o gestión de tareas.',
-            'cotización': 'Para crear una cotización, usa la Calculadora de Propuestas en el panel lateral. Agrega los insumos, ajusta el multiplicador y copia el resultado. ¿Necesitas que te guíe?',
-            'cotizacion': 'Para crear una cotización, usa la Calculadora de Propuestas en el panel lateral. Agrega los insumos, ajusta el multiplicador y copia el resultado. ¿Necesitas que te guíe?',
-            'presupuesto': '📊 Puedo ayudarte a estructurar un presupuesto. ¿Es para un proyecto de cámaras, enlace CCTV, o mantenimiento? Dame los detalles y prepararé los números.',
-            'presentación': '🎬 Tenemos plantillas de presentación listas: Villa Alessandri, Nuevo Amanecer, Vista al Mar. ¿Quieres crear una nueva o adaptar una existente?',
-            'presentacion': '🎬 Tenemos plantillas de presentación listas: Villa Alessandri, Nuevo Amanecer, Vista al Mar. ¿Quieres crear una nueva o adaptar una existente?',
-            'video': '🎥 Puedo generar guiones para HeyGen o contenido de marketing en video. ¿Qué tipo de video necesitas: comercial, informativo o para redes sociales?',
-            'instagram': '📸 Para gestionar Instagram, te recomiendo publicar contenido de las instalaciones completadas. ¿Quieres que prepare un guion de post?',
-            'cámara': '📹 Trabajamos con Hikvision DS-2CE56H0T y cámaras PTZ. ¿Necesitas una cotización de instalación o un informe técnico?',
-            'camara': '📹 Trabajamos con Hikvision DS-2CE56H0T y cámaras PTZ. ¿Necesitas una cotización de instalación o un informe técnico?',
-            'gore': '🏛️ Para proyectos GORE/FNDR, tenemos la documentación de Villa Alessandri como referencia. ¿Necesitas preparar rendición o una nueva postulación?',
-            'ayuda': '🛟 Puedo ayudarte con:\n• Cotizaciones y presupuestos\n• Presentaciones interactivas\n• Contenido para video/marketing\n• Gestión de tareas\n• Informes técnicos\n¿Qué prefieres?',
-            'gracias': '¡De nada, Ricardo! 🙌 Estoy aquí siempre que me necesites. ¡A seguir creciendo! 🚀'
+        // Conversation memory
+        let auraConversation = [];
+        let auraCurrentRole = 'general';
+
+        // ── ROLE DEFINITIONS ──
+        const AURA_ROLES = {
+            ventas: {
+                label: '💼 Modo Ventas',
+                color: '#10b981',
+                keywords: ['vender', 'venta', 'cliente', 'precio', 'cerrar', 'objecion', 'descuento', 'negociar', 'negociacion', 'propuesta', 'cotizacion', 'cotizar', 'presupuesto', 'cobrar', 'pago', 'cuota', 'contrato', 'lead', 'prospecto', 'whatsapp'],
+            },
+            marketing: {
+                label: '📈 Modo Marketing',
+                color: '#3b82f6',
+                keywords: ['marketing', 'campaña', 'embudo', 'funnel', 'conversion', 'leads', 'alcance', 'segmentar', 'publico', 'audiencia', 'metricas', 'kpi', 'roi', 'google ads', 'facebook', 'seo', 'engagement', 'estrategia digital', 'redes sociales'],
+            },
+            publicidad: {
+                label: '🎨 Modo Publicista',
+                color: '#f59e0b',
+                keywords: ['publicidad', 'contenido', 'copy', 'guion', 'video', 'heygen', 'instagram', 'post', 'reel', 'stories', 'tiktok', 'branding', 'marca', 'slogan', 'diseño', 'creativo', 'viral', 'imagen'],
+            },
+            analista: {
+                label: '📊 Modo Analista',
+                color: '#8b5cf6',
+                keywords: ['analisis', 'analizar', 'competencia', 'mercado', 'tendencia', 'noticias', 'dato', 'estadistica', 'reporte', 'informe', 'benchmark', 'investigar', 'sector', 'industria', 'comparar'],
+            },
+            mejora: {
+                label: '🧠 Modo Auto-Mejora',
+                color: '#ef4444',
+                keywords: ['mejorar', 'mejora', 'inteligencia', 'ia', 'api', 'modelo', 'upgrade', 'actualizar', 'integrar', 'gratis', 'free', 'china', 'deepseek', 'qwen', 'llama', 'gemini', 'gpt', 'claude', 'openai', 'huggingface', 'ollama'],
+            }
         };
+
+        // ── VENTAS: Knowledge Base ──
+        const ventasResponses = [
+            {
+                triggers: ['precio', 'caro', 'barato', 'descuento', 'objecion', 'costoso'],
+                response: `<strong>💼 Estrategia Anti-Objeciones Router:</strong><br><br>
+                Cuando un cliente dice "es caro", nunca bajes el precio. Usa esta técnica:<br><br>
+                1️⃣ <em>"Entiendo su preocupación. Permítame mostrarle algo..."</em><br>
+                2️⃣ Desglosa el costo en <strong>costo diario</strong>: $5.5M ÷ 365 = <strong>$15.068/día</strong><br>
+                3️⃣ Compara: <em>"¿Cuánto le costaría UN robo? Una cámara IP Hikvision protege 24/7 por menos que un café diario"</em><br>
+                4️⃣ Cierra: <em>"Y lo mejor: sin mensualidades, sin arriendo. El equipo es suyo para siempre."</em><br><br>
+                📌 Nuestro diferenciador: <strong>Cero mensualidades</strong> vs. competencia que cobra $30-50K/mes por arriendo.`
+            },
+            {
+                triggers: ['cotizacion', 'cotizar', 'propuesta', 'presupuesto'],
+                response: `<strong>💼 Estructura de Cotización Router 3x:</strong><br><br>
+                Usa la Calculadora lateral con estos parámetros:<br>
+                • <strong>Multiplicador 3.0x</strong> para clientes privados<br>
+                • <strong>Multiplicador 2.5x</strong> para municipalidades/GORE<br>
+                • <strong>Multiplicador 3.5x</strong> para empresas medianas<br><br>
+                📦 Kit típico residencial ($350K costo):<br>
+                → 4 cámaras Hikvision + DVR + HDD 1TB + cables + instalación<br>
+                → Precio cliente: <strong>$1.050.000 + IVA = $1.249.500</strong><br><br>
+                Tip: Siempre incluye "Puesta en marcha sin costo adicional" para dar sensación de valor agregado.`
+            },
+            {
+                triggers: ['cerrar', 'cierre', 'vender', 'negociar'],
+                response: `<strong>💼 Técnicas de Cierre para Router:</strong><br><br>
+                🔥 <strong>Cierre Directo:</strong> <em>"¿Le programamos la instalación para esta semana o la próxima?"</em><br><br>
+                🎯 <strong>Cierre por Urgencia:</strong> <em>"Este presupuesto tiene validez de 7 días. Los equipos Hikvision tienen stock limitado en Arauco."</em><br><br>
+                🤝 <strong>Cierre por Concesión:</strong> <em>"Si confirmamos hoy, le incluyo la configuración remota del celular sin costo."</em><br><br>
+                📱 <strong>Cierre WhatsApp:</strong> Envía la propuesta formateada desde la Calculadora → espera 2h → manda: <em>"¿Tuvo oportunidad de revisarla?"</em>`
+            },
+            {
+                triggers: ['cliente', 'prospecto', 'lead'],
+                response: `<strong>💼 Segmentación de Clientes Router:</strong><br><br>
+                🏠 <strong>Residencial</strong> (ticket $800K-1.5M):<br>→ Juntas de vecinos, condominios, casas individuales<br>→ Dolor: robos, inseguridad nocturna<br><br>
+                🏢 <strong>Comercial</strong> (ticket $1.5M-4M):<br>→ Ferreterías, gimnasios, minimarket<br>→ Dolor: hurto interno, control de caja<br><br>
+                🏛️ <strong>Institucional</strong> (ticket $4M-25M):<br>→ Municipalidades, juntas de vecinos FNDR, colegios<br>→ Dolor: fondos disponibles, necesitan proveedor formal<br><br>
+                📡 <strong>Rural/Conectividad</strong> (ticket $3M-8M):<br>→ Enlace punto a punto, Starlink<br>→ Dolor: no tienen internet para CCTV remoto`
+            }
+        ];
+
+        // ── MARKETING: Knowledge Base ──
+        const marketingResponses = [
+            {
+                triggers: ['campaña', 'estrategia', 'funnel', 'embudo'],
+                response: `<strong>📈 Embudo de Conversión Router 2026:</strong><br><br>
+                <strong>TOFU (Awareness):</strong><br>
+                → Videos HeyGen en Facebook/Instagram (alcance orgánico)<br>
+                → Post educativos: "5 señales de que tu barrio necesita CCTV"<br><br>
+                <strong>MOFU (Consideración):</strong><br>
+                → Presentaciones interactivas por WhatsApp<br>
+                → Cotización visual con renders de cámaras en el lugar<br><br>
+                <strong>BOFU (Conversión):</strong><br>
+                → Visita técnica gratuita<br>
+                → Cierre con propuesta formateada del dashboard<br><br>
+                📊 Métricas objetivo: CTR > 2.5% | Conversión lead→venta: 18% | CAC < $35.000`
+            },
+            {
+                triggers: ['redes', 'social', 'facebook', 'instagram', 'engagement'],
+                response: `<strong>📈 Calendario de Contenido Router:</strong><br><br>
+                📅 <strong>Lunes:</strong> Tip de seguridad (carrusel educativo)<br>
+                📅 <strong>Miércoles:</strong> Caso de éxito / antes-después de instalación<br>
+                📅 <strong>Viernes:</strong> Video corto HeyGen (30-60s) con avatar<br>
+                📅 <strong>Domingo:</strong> Encuesta/interacción en stories<br><br>
+                🎯 Hashtags: #SeguridadArauco #CámarasLebu #RouterSeguridad #CeroMensualidades<br><br>
+                💡 Dato: Los posts con fotos reales de instalaciones generan <strong>3.2x más engagement</strong> que gráficos genéricos.`
+            },
+            {
+                triggers: ['kpi', 'metrica', 'roi', 'conversion'],
+                response: `<strong>📈 KPIs Clave Router Seguridad:</strong><br><br>
+                📊 <strong>Costo por Lead (CPL):</strong> Objetivo < $15.000 CLP<br>
+                📊 <strong>Tasa de Conversión:</strong> 15-20% (lead → venta cerrada)<br>
+                📊 <strong>Ticket Promedio:</strong> $2.8M CLP<br>
+                📊 <strong>CAC (Costo Adquisición):</strong> < $45.000 CLP<br>
+                📊 <strong>LTV estimado:</strong> $4.5M (referidos + mantenimiento)<br>
+                📊 <strong>ROI Campaña Facebook:</strong> Objetivo 4:1 (gastar $100K → vender $400K)<br><br>
+                🔑 El canal más rentable actualmente: <strong>WhatsApp directo por referidos</strong> (CAC = $0).`
+            }
+        ];
+
+        // ── PUBLICIDAD: Knowledge Base ──
+        const publicidadResponses = [
+            {
+                triggers: ['guion', 'video', 'heygen', 'reel'],
+                response: `<strong>🎨 Guion de Video Router (60s - HeyGen):</strong><br><br>
+                🎬 <em>[0-5s]</em> HOOK: "¿Sabías que en Arauco los robos aumentaron un 23% este año?"<br>
+                🎬 <em>[5-15s]</em> PROBLEMA: "La mayoría paga mensualidades eternas por cámaras que ni siquiera son suyas..."<br>
+                🎬 <em>[15-35s]</em> SOLUCIÓN: "Router Seguridad instala cámaras Hikvision profesionales con cero mensualidades. El equipo es 100% tuyo."<br>
+                🎬 <em>[35-50s]</em> PRUEBA: "Ya protegemos Villa Alessandri, Nuevo Amanecer y más de 15 proyectos en la región."<br>
+                🎬 <em>[50-60s]</em> CTA: "Escríbenos al WhatsApp y recibe una cotización en 24 horas. ¡Protege lo que importa!"<br><br>
+                📱 Formato ideal: Vertical 9:16 para Reels/TikTok/Stories`
+            },
+            {
+                triggers: ['post', 'copy', 'instagram', 'contenido', 'publicar'],
+                response: `<strong>🎨 Copy para Post de Instagram:</strong><br><br>
+                <strong>Opción A (Educativo):</strong><br>
+                🔒 "3 errores que cometes al elegir cámaras de seguridad:<br>
+                ❌ Alquilar en vez de comprar<br>
+                ❌ Elegir equipos genéricos sin soporte<br>
+                ❌ No tener acceso remoto desde el celular<br>
+                ✅ Con Router, tú eres dueño del sistema. Sin letras chicas."<br><br>
+                <strong>Opción B (Social Proof):</strong><br>
+                🏘️ "Otra junta de vecinos protegida ✅<br>
+                Instalación completada en [Nombre]. 12 cámaras HD + NVR + monitoreo remoto.<br>
+                $0 mensualidad. $0 arriendo.<br>
+                📞 Tu barrio puede ser el siguiente."<br><br>
+                📌 Siempre incluir: CTA al WhatsApp + foto real de la instalación.`
+            },
+            {
+                triggers: ['marca', 'branding', 'slogan', 'identidad'],
+                response: `<strong>🎨 Identidad de Marca Router:</strong><br><br>
+                📛 <strong>Nombre:</strong> Router — Seguridad y Tecnología<br>
+                🎯 <strong>Slogan principal:</strong> "Protege lo que importa. Sin cuotas."<br>
+                🎯 <strong>Slogan técnico:</strong> "Tecnología Hikvision. Propiedad total."<br><br>
+                🎨 <strong>Colores:</strong><br>
+                → Primario: Azul profundo (#0f172a) — Confianza, tecnología<br>
+                → Acento: Azul eléctrico (#2563eb) — Innovación<br>
+                → Acento: Púrpura (#7c3aed) — Premium, IA<br>
+                → Success: Esmeralda (#10b981) — Seguridad activa<br><br>
+                🗣️ <strong>Tono de voz:</strong> Profesional pero cercano. Técnico sin ser intimidante. Siempre con datos concretos.`
+            }
+        ];
+
+        // ── ANALISTA: Knowledge Base ──
+        const analistaResponses = [
+            {
+                triggers: ['competencia', 'competidor', 'mercado', 'comparar'],
+                response: `<strong>📊 Análisis Competitivo — Región del Biobío:</strong><br><br>
+                🏢 <strong>ADT/Prosegur:</strong> Mensualidad $35-55K + arriendo. Contratos a 24 meses. Equipos genéricos.<br>
+                🏢 <strong>Securitas:</strong> Enfoque corporativo. No atiende residencial rural.<br>
+                🏢 <strong>Instaladores locales:</strong> Sin garantía formal. Equipos de baja calidad. Sin soporte post-venta.<br><br>
+                ✅ <strong>Ventaja Router:</strong><br>
+                → Cero mensualidades (único en la zona)<br>
+                → Equipos Hikvision (marca #1 mundial en CCTV)<br>
+                → Soporte técnico local y remoto<br>
+                → Propiedad total del cliente<br>
+                → Experiencia con FNDR/GORE (ventaja institucional)<br><br>
+                📈 <strong>Oportunidad:</strong> El 68% del mercado rural en Arauco no tiene proveedor formal de CCTV.`
+            },
+            {
+                triggers: ['tendencia', 'noticia', 'sector', 'industria', 'dato'],
+                response: `<strong>📊 Tendencias del Sector Seguridad 2026:</strong><br><br>
+                📈 <strong>CCTV con IA:</strong> Detección facial y de comportamiento en cámaras edge. Hikvision lidera con AcuSense.<br>
+                📈 <strong>Solar + CCTV:</strong> Sistemas autónomos con paneles solares para zonas rurales sin electricidad estable.<br>
+                📈 <strong>Starlink + CCTV:</strong> Enlace satelital permite monitoreo remoto en zonas sin fibra. Router ya ofrece esto.<br>
+                📈 <strong>FNDR Seguridad:</strong> Gobierno regional aumentó presupuesto de seguridad ciudadana en 15% para 2026.<br>
+                📈 <strong>IA en NVR:</strong> Los NVR inteligentes con búsqueda por persona/vehículo reducen tiempo de revisión en 90%.<br><br>
+                💡 <strong>Recomendación:</strong> Posicionar a Router como "solución rural inteligente" combinando Starlink + Hikvision AcuSense.`
+            },
+            {
+                triggers: ['analisis', 'reporte', 'informe', 'benchmark'],
+                response: `<strong>📊 Benchmark de Precios Router vs. Mercado:</strong><br><br>
+                <strong>Sistema 4 cámaras residencial:</strong><br>
+                → Router: $1.2M (compra única) = $33K/mes en 36 meses<br>
+                → ADT: $45K/mes × 36 = $1.62M (y devuelves el equipo)<br>
+                → Instalador local: $600K (sin garantía, equipos genéricos)<br><br>
+                <strong>Sistema 8 cámaras empresarial:</strong><br>
+                → Router: $3.5M (incluye NVR 4K + HDD 4TB)<br>
+                → Prosegur: $65K/mes × 36 = $2.34M (equipo arrendado)<br><br>
+                🏆 <strong>Router gana en:</strong> Costo total a 3 años, calidad de equipo, y libertad contractual.`
+            }
+        ];
+
+        // ── AUTO-MEJORA: Knowledge Base ──
+        const mejoraResponses = [
+            {
+                triggers: ['modelo', 'ia', 'inteligencia', 'mejorar', 'upgrade'],
+                response: `<strong>🧠 Modelos de IA Gratuitos para Integrar:</strong><br><br>
+                🇨🇳 <strong>DeepSeek-V3:</strong> Modelo chino open-source, rendimiento comparable a GPT-4. API gratuita con límites generosos. Ideal para chat avanzado.<br>
+                🇨🇳 <strong>Qwen2.5-72B (Alibaba):</strong> Excelente en español. Disponible en HuggingFace. Puede correr local con Ollama.<br>
+                🇺🇸 <strong>Llama 3.1-70B (Meta):</strong> Open-source, muy capaz. Usar via Groq API (gratis) o Together.ai.<br>
+                🇺🇸 <strong>Gemini 2.0 Flash:</strong> API gratuita de Google con 1M tokens de contexto. Ideal para análisis de documentos largos.<br>
+                🇫🇷 <strong>Mistral Large:</strong> Multilingüe, rápido. API con tier gratuito.<br><br>
+                🔧 <strong>Recomendación inmediata:</strong> Integrar <strong>DeepSeek API</strong> como backend de este chat. Costaría $0 y Aura tendría inteligencia real, no solo respuestas predefinidas.`
+            },
+            {
+                triggers: ['api', 'integrar', 'conectar', 'servicio'],
+                response: `<strong>🧠 APIs Gratuitas para Potenciar el Dashboard:</strong><br><br>
+                🔌 <strong>DeepSeek Chat API:</strong> Chat IA avanzado. 500K tokens/día gratis.<br>
+                → <code>api.deepseek.com</code><br><br>
+                🔌 <strong>Groq API (Llama 3):</strong> Inferencia ultrarrápida. Tier gratuito generoso.<br>
+                → <code>console.groq.com</code><br><br>
+                🔌 <strong>HuggingFace Inference:</strong> Miles de modelos. Tier gratuito.<br>
+                → <code>api-inference.huggingface.co</code><br><br>
+                🔌 <strong>Google Gemini API:</strong> 15 RPM gratis. Multimodal (texto + imagen).<br>
+                → <code>aistudio.google.com</code><br><br>
+                🔌 <strong>OpenRouter:</strong> Gateway a múltiples modelos con créditos gratuitos.<br>
+                → <code>openrouter.ai</code><br><br>
+                💡 <strong>Plan de acción:</strong> Obtener API key de DeepSeek → reemplazar mi motor de respuestas → Aura pasa de "scripted" a "inteligente" en 30 minutos.`
+            },
+            {
+                triggers: ['gratis', 'free', 'costo', 'barato', 'china', 'deepseek', 'qwen', 'ollama'],
+                response: `<strong>🧠 Soluciones IA Gratuitas — Prioridad:</strong><br><br>
+                🥇 <strong>DeepSeek V3 (API Cloud):</strong><br>
+                → Gratis hasta 500K tokens/día<br>
+                → Calidad GPT-4 nivel. Excelente en español<br>
+                → Solo necesitas: API key + fetch() en JavaScript<br><br>
+                🥈 <strong>Ollama (Local):</strong><br>
+                → Corre modelos en tu Mac sin internet<br>
+                → Instalar: <code>brew install ollama</code><br>
+                → Correr: <code>ollama run qwen2.5:7b</code><br>
+                → API local en <code>localhost:11434</code><br><br>
+                🥉 <strong>Groq Cloud (Llama 3.1):</strong><br>
+                → Inferencia gratis, ultrarrápida (500 tokens/s)<br>
+                → Ideal como backup si DeepSeek tiene latencia<br><br>
+                🎯 <strong>Mi recomendación:</strong> DeepSeek API como primario + Ollama como fallback local. Así Aura nunca se queda sin cerebro.`
+            }
+        ];
+
+        // ── GENERAL: Knowledge Base ──
+        const generalResponses = [
+            {
+                triggers: ['hola', 'buenos dias', 'buenas tardes', 'buenas noches', 'hey'],
+                response: `¡Hola Ricardo! 👋 Soy <strong>Aura</strong>, tu asistente de Router Seguridad y Tecnología.<br><br>
+                Puedo operar en distintos modos según lo que necesites:<br>
+                💼 <strong>"ventas"</strong> — Técnicas de cierre, objeciones, pricing<br>
+                📈 <strong>"marketing"</strong> — Campañas, funnels, KPIs<br>
+                🎨 <strong>"publicidad"</strong> — Guiones, copy, contenido visual<br>
+                📊 <strong>"analizar"</strong> — Competencia, tendencias, datos<br>
+                🧠 <strong>"mejorar"</strong> — Modelos IA, APIs, upgrades<br><br>
+                ¿En qué te ayudo hoy?`
+            },
+            {
+                triggers: ['ayuda', 'help', 'que puedes', 'funciones'],
+                response: `<strong>🛟 Capacidades de Aura v2.0:</strong><br><br>
+                💼 <strong>Experta en Ventas:</strong> Técnicas de cierre, manejo de objeciones, estructura de cotizaciones con multiplicador 3x<br>
+                📈 <strong>Estratega de Marketing:</strong> Embudos de conversión, calendarios de contenido, métricas y KPIs<br>
+                🎨 <strong>Publicista Creativa:</strong> Guiones para HeyGen, copy para Instagram, identidad de marca<br>
+                📊 <strong>Analista de Datos:</strong> Benchmarks competitivos, tendencias del sector, análisis de mercado<br>
+                🧠 <strong>Auto-Mejora:</strong> Sugiero modelos IA gratuitos, APIs y formas de hacer este dashboard más inteligente<br><br>
+                Escribe cualquier tema y detectaré automáticamente el modo adecuado. O escribe el nombre del modo directamente.`
+            },
+            {
+                triggers: ['gracias', 'genial', 'excelente', 'perfecto', 'buenisimo'],
+                response: `¡Gracias, Ricardo! 🙌 Estoy aquí 24/7 para Router Seguridad. Cada conversación me ayuda a mejorar mis respuestas.<br><br>
+                💡 <em>Tip: Escribe "mejorar" para que te sugiera nuevas formas de potenciar mi inteligencia con IA gratuita.</em><br><br>
+                ¡A seguir creciendo! 🚀`
+            }
+        ];
+
+        // ── ROLE DETECTION ENGINE ──
+        function detectRole(text) {
+            const normalized = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            let bestRole = 'general';
+            let bestScore = 0;
+
+            for (const [role, config] of Object.entries(AURA_ROLES)) {
+                let score = 0;
+                for (const kw of config.keywords) {
+                    const normalizedKw = kw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    if (normalized.includes(normalizedKw)) score++;
+                }
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestRole = role;
+                }
+            }
+            return bestScore > 0 ? bestRole : 'general';
+        }
+
+        // ── RESPONSE ENGINE ──
+        function getAuraResponse(userMsg) {
+            const normalized = userMsg.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const role = detectRole(userMsg);
+            auraCurrentRole = role;
+
+            // Select knowledge base by role
+            const knowledgeBases = {
+                ventas: ventasResponses,
+                marketing: marketingResponses,
+                publicidad: publicidadResponses,
+                analista: analistaResponses,
+                mejora: mejoraResponses,
+                general: generalResponses
+            };
+
+            const kb = knowledgeBases[role] || generalResponses;
+
+            // Find best matching entry
+            let bestMatch = null;
+            let bestMatchScore = 0;
+            for (const entry of kb) {
+                let score = 0;
+                for (const trigger of entry.triggers) {
+                    const normalizedTrigger = trigger.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    if (normalized.includes(normalizedTrigger)) score++;
+                }
+                if (score > bestMatchScore) {
+                    bestMatchScore = score;
+                    bestMatch = entry;
+                }
+            }
+
+            if (bestMatch) {
+                const roleConfig = AURA_ROLES[role];
+                const roleTag = roleConfig ? `<span style="background:${roleConfig.color};color:white;padding:2px 8px;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:0.5px;">${roleConfig.label}</span><br><br>` : '';
+                return roleTag + bestMatch.response;
+            }
+
+            // Also check general responses as fallback
+            for (const entry of generalResponses) {
+                for (const trigger of entry.triggers) {
+                    const normalizedTrigger = trigger.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    if (normalized.includes(normalizedTrigger)) return entry.response;
+                }
+            }
+
+            // Smart defaults based on conversation context
+            const smartDefaults = [
+                `Entendido, Ricardo. He registrado tu consulta sobre <em>"${userMsg}"</em>.<br><br>
+                Para darte una respuesta más precisa, ¿esto está relacionado con:<br>
+                💼 Ventas/cotizaciones<br>📈 Marketing/campañas<br>🎨 Contenido/publicidad<br>📊 Análisis de mercado<br>🧠 Mejoras tecnológicas`,
+                `Procesando tu solicitud... 🔄<br><br>
+                No tengo una respuesta específica para "${userMsg}" en mi base de conocimiento actual.<br><br>
+                💡 <strong>Sugerencia de auto-mejora:</strong> Si integras la API de DeepSeek (gratis), podré responder cualquier pregunta con inteligencia real. Escribe <em>"mejorar"</em> para más info.`,
+                `Tomé nota, Ricardo. Esto podría ser una nueva área de conocimiento para mí.<br><br>
+                🧠 Actualmente opero con respuestas predefinidas, pero si me conectas a un modelo IA como <strong>DeepSeek V3</strong> o <strong>Gemini Flash</strong>, podré responder cualquier pregunta en tiempo real.<br><br>
+                ¿Quieres que te explique cómo hacerlo? Escribe <em>"api"</em> o <em>"mejorar"</em>.`
+            ];
+            return smartDefaults[Math.floor(Math.random() * smartDefaults.length)];
+        }
 
         function getTimeNow() {
             return new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
@@ -2191,48 +2532,34 @@
             const msgDiv = document.createElement('div');
             msgDiv.className = `chat-msg ${sender}`;
             const timeLabel = sender === 'user' ? 'Tú' : 'Aura';
+            const roleIndicator = sender === 'bot' && auraCurrentRole !== 'general'
+                ? '' : '';
             msgDiv.innerHTML = `${text}<span class="msg-time">${timeLabel} · ${getTimeNow()}</span>`;
-            // Insert before the typing indicator
             auraChatMessages.insertBefore(msgDiv, auraTyping);
             auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
-        }
 
-        function getAuraResponse(userMsg) {
-            const lower = userMsg.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            for (const [key, response] of Object.entries(auraResponses)) {
-                const normalizedKey = key.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                if (lower.includes(normalizedKey)) {
-                    return response;
-                }
-            }
-            // Default response
-            const defaults = [
-                `Entendido, Ricardo. Voy a procesar tu solicitud sobre "${userMsg}". ¿Necesitas más detalles?`,
-                `Interesante. Déjame analizar eso. ¿Podrías darme más contexto sobre lo que necesitas?`,
-                `Tomé nota de tu mensaje. ¿Quieres que lo convierta en una tarea o lo integre en algún proyecto activo?`,
-                `Procesando... 🔄 Para darte la mejor respuesta, ¿esto está relacionado con un proyecto de seguridad o con gestión interna?`
-            ];
-            return defaults[Math.floor(Math.random() * defaults.length)];
+            // Save to memory
+            auraConversation.push({ role: sender, text: text, time: getTimeNow() });
         }
 
         function sendAuraMessage() {
             const msg = auraChatInput.value.trim();
             if (!msg) return;
 
-            // Add user message
             addChatMessage(msg, 'user');
             auraChatInput.value = '';
 
-            // Show typing indicator
             auraTyping.classList.add('active');
             auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
 
-            // Simulate response delay
-            const delay = 800 + Math.random() * 1200;
+            // Variable delay based on response complexity
+            const role = detectRole(msg);
+            const delay = role === 'general' ? 600 + Math.random() * 800 : 1000 + Math.random() * 1500;
+
             setTimeout(() => {
                 auraTyping.classList.remove('active');
                 const response = getAuraResponse(msg);
-                addChatMessage(response.replace(/\n/g, '<br>'), 'bot');
+                addChatMessage(response, 'bot');
             }, delay);
         }
 
