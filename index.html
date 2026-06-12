@@ -903,20 +903,28 @@
             display: none;
         }
 
-        /* --- Aura Agent Card --- */
+        /* --- Aura Agent Card (Full-Width) --- */
         .aura-card {
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow-soft);
+            margin-bottom: 40px;
+            display: flex;
+            min-height: 220px;
         }
 
         .aura-hero {
             position: relative;
-            height: 180px;
+            width: 260px;
+            min-height: 100%;
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
             overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .aura-hero::before {
@@ -928,14 +936,11 @@
         }
 
         .aura-avatar-wrapper {
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
+            position: relative;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            border: 3px solid var(--bg-card);
+            border: 3px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
             overflow: hidden;
             z-index: 2;
@@ -950,22 +955,25 @@
         .aura-avatar-wrapper::after {
             content: '';
             position: absolute;
-            bottom: 4px;
-            right: 4px;
-            width: 12px;
-            height: 12px;
+            bottom: 6px;
+            right: 6px;
+            width: 14px;
+            height: 14px;
             background: var(--accent-emerald);
             border-radius: 50%;
-            border: 2px solid var(--bg-card);
+            border: 2px solid #1e1b4b;
         }
 
         .aura-body {
-            padding: 40px 24px 24px;
-            text-align: center;
+            padding: 28px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .aura-name {
-            font-size: 1.15rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 2px;
@@ -979,16 +987,16 @@
         }
 
         .aura-role {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: var(--text-dim);
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .aura-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
         .aura-btn {
@@ -1000,7 +1008,7 @@
             border: 1px solid var(--border-light);
             background: var(--bg-body);
             color: var(--text-main);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition-base);
@@ -1010,8 +1018,8 @@
         .aura-btn:hover {
             border-color: var(--accent-blue);
             background: #eff6ff;
-            transform: translateX(4px);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
         }
 
         .aura-btn .aura-icon {
@@ -1031,6 +1039,25 @@
         .aura-btn .aura-icon.budget { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; }
         .aura-btn .aura-icon.pptx { background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: white; }
         .aura-btn .aura-icon.video { background: linear-gradient(135deg, #ef4444, #f87171); color: white; }
+
+        @media (max-width: 1100px) {
+            .aura-card {
+                flex-direction: column;
+            }
+            .aura-hero {
+                width: 100%;
+                min-height: 150px;
+            }
+            .aura-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .aura-actions {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* --- Animations --- */
         @keyframes fadeInUp {
@@ -1083,6 +1110,45 @@
             <div class="hero-overlay">
                 <h2 class="hero-title">Business Command Center</h2>
                 <p class="hero-subtitle">Bienvenido, Ricardo. Este es tu centro neurálgico táctico para la expansión de tu línea de seguridad. Diseña cotizaciones inteligentes, audita subagentes y controla tus activos estratégicos.</p>
+            </div>
+        </div>
+
+        <!-- Aura Personal Assistant (Full-Width) -->
+        <div class="aura-card">
+            <div class="aura-hero">
+                <div class="aura-avatar-wrapper">
+                    <img src="./images/aura_avatar.png" alt="Aura - Asistente IA">
+                </div>
+            </div>
+            <div class="aura-body">
+                <h3 class="aura-name"><span>Aura</span> — Tu Asistente Personal</h3>
+                <p class="aura-role">Inteligencia Artificial · Siempre Activa</p>
+                <div class="aura-actions">
+                    <a href="https://www.instagram.com/" target="_blank" class="aura-btn" id="aura-btn-instagram">
+                        <span class="aura-icon ig">📸</span>
+                        Abrir Instagram
+                    </a>
+                    <button class="aura-btn" id="aura-btn-web" onclick="alert('Módulo de Gestión de Páginas Web próximamente.')">
+                        <span class="aura-icon web">🌐</span>
+                        Gestionar Páginas Web
+                    </button>
+                    <button class="aura-btn" id="aura-btn-task" onclick="alert('Módulo de Nueva Tarea próximamente.')">
+                        <span class="aura-icon task">✅</span>
+                        Agregar Nueva Tarea
+                    </button>
+                    <button class="aura-btn" id="aura-btn-budget" onclick="alert('Módulo de Presupuestos próximamente.')">
+                        <span class="aura-icon budget">💰</span>
+                        Desarrollar Presupuesto
+                    </button>
+                    <button class="aura-btn" id="aura-btn-pptx" onclick="alert('Módulo de Presentaciones próximamente.')">
+                        <span class="aura-icon pptx">📊</span>
+                        Desarrollar Presentaciones
+                    </button>
+                    <button class="aura-btn" id="aura-btn-video" onclick="alert('Módulo de Contenido para Video próximamente.')">
+                        <span class="aura-icon video">🎬</span>
+                        Desarrollar Contenido para Video
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1173,45 +1239,6 @@
 
                         <!-- Action Button -->
                         <button class="calc-action-btn copy" onclick="copyFormattedQuote()">Copiar Propuesta 📋</button>
-                    </div>
-                </div>
-
-                <!-- Aura Personal Assistant -->
-                <div class="aura-card">
-                    <div class="aura-hero">
-                        <div class="aura-avatar-wrapper">
-                            <img src="./images/aura_avatar.png" alt="Aura - Asistente IA">
-                        </div>
-                    </div>
-                    <div class="aura-body">
-                        <h3 class="aura-name"><span>Aura</span> — Tu Asistente Personal</h3>
-                        <p class="aura-role">Inteligencia Artificial · Siempre Activa</p>
-                        <div class="aura-actions">
-                            <a href="https://www.instagram.com/" target="_blank" class="aura-btn" id="aura-btn-instagram">
-                                <span class="aura-icon ig">📸</span>
-                                Abrir Instagram
-                            </a>
-                            <button class="aura-btn" id="aura-btn-web" onclick="alert('Módulo de Gestión de Páginas Web próximamente.')">
-                                <span class="aura-icon web">🌐</span>
-                                Gestionar Páginas Web
-                            </button>
-                            <button class="aura-btn" id="aura-btn-task" onclick="alert('Módulo de Nueva Tarea próximamente.')">
-                                <span class="aura-icon task">✅</span>
-                                Agregar Nueva Tarea
-                            </button>
-                            <button class="aura-btn" id="aura-btn-budget" onclick="alert('Módulo de Presupuestos próximamente.')">
-                                <span class="aura-icon budget">💰</span>
-                                Desarrollar Presupuesto
-                            </button>
-                            <button class="aura-btn" id="aura-btn-pptx" onclick="alert('Módulo de Presentaciones próximamente.')">
-                                <span class="aura-icon pptx">📊</span>
-                                Desarrollar Presentaciones
-                            </button>
-                            <button class="aura-btn" id="aura-btn-video" onclick="alert('Módulo de Contenido para Video próximamente.')">
-                                <span class="aura-icon video">🎬</span>
-                                Desarrollar Contenido para Video
-                            </button>
-                        </div>
                     </div>
                 </div>
 
