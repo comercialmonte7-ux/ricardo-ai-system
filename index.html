@@ -1033,6 +1033,17 @@
             color: var(--text-main);
         }
 
+        .btn-shortcut.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .btn-shortcut.danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
         /* --- Empty state & Alerts --- */
         #empty-state {
             grid-column: 1 / -1;
@@ -2231,6 +2242,14 @@
             if (tag.toLowerCase() === 'noticias') {
                 extLink.style.display = 'none'; // Hide external button for news
                 
+                const deleteButtonHtml = (item && item.id >= 120) ? `
+                    <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(239, 68, 68, 0.2); text-align: center;">
+                        <button class="btn-shortcut danger" style="width: 100%;" onclick="deleteCustomNews(${item.id})">
+                            🗑️ Eliminar Noticia Permanentemente
+                        </button>
+                    </div>
+                ` : '';
+
                 content.innerHTML = `
                     <div class="news-detail-wrapper">
                         <img src="${item.image || 'images/default-news.jpg'}" alt="${item.title}" class="news-detail-image">
@@ -2260,6 +2279,7 @@
                                 <button class="btn-shortcut primary" style="width: 100%;" onclick="copySocialContent('copyTextWhatsApp', this)">Copiar para WhatsApp</button>
                             </div>
                         </div>
+                        ${deleteButtonHtml}
                     </div>
                 `;
                 return;
@@ -3214,6 +3234,53 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             return `No tengo respuesta específica para eso en mi base local de conocimientos. Si estoy desconectada del servidor, por favor verifica tu conexión a internet.`;
         }
 
+        function deleteCustomNews(newsId) {
+            if (!confirm("¿Estás seguro de que deseas eliminar esta noticia permanentemente?")) return;
+            
+            // Remove from bitacoraData
+            const index = bitacoraData.findIndex(item => item.id === newsId);
+            if (index !== -1) {
+                bitacoraData.splice(index, 1);
+            }
+            
+            // Remove from localStorage custom news
+            try {
+                let customNews = JSON.parse(localStorage.getItem('dashboard_custom_news') || '[]');
+                customNews = customNews.filter(item => item.id !== newsId);
+                localStorage.setItem('dashboard_custom_news', JSON.stringify(customNews));
+            } catch (e) {
+                console.error("Error updating custom news in localStorage:", e);
+            }
+
+            // Remove from published news if it was published
+            try {
+                let publishedIds = JSON.parse(localStorage.getItem('router_web_published_news') || '[117, 118, 119]');
+                if (publishedIds.includes(newsId)) {
+                    publishedIds = publishedIds.filter(id => id !== newsId);
+                    localStorage.setItem('router_web_published_news', JSON.stringify(publishedIds));
+                    
+                    // Sync with local filesystem if connected
+                    if (activeProjectId) {
+                        syncProjectNewsToFileSystem(activeProjectId);
+                    }
+                }
+            } catch (e) {
+                console.error("Error updating published news in localStorage:", e);
+            }
+
+            // Close the drawer if it's currently open for this news
+            closeDrawer();
+            
+            // Re-render the grid cards
+            runSearchFilter();
+            
+            // Re-render project news list in Web Manager if open
+            if (activeProjectId) {
+                renderProjectNewsList(activeProjectId);
+            }
+        }
+        window.deleteCustomNews = deleteCustomNews;
+
         // ── Core Functions ──
         function getTimeNow() {
             return new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
@@ -3388,7 +3455,9 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
                     }
                     
                     // Sync to local file system if connected
-                    syncPublishedNewsToFileSystem();
+                    if (activeProjectId) {
+                        syncProjectNewsToFileSystem(activeProjectId);
+                    }
                 } catch (e) {
                     console.error("Error auto-publishing news:", e);
                 }
