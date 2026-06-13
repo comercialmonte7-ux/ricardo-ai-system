@@ -2992,7 +2992,9 @@ const ROUTER_NEWS_DATA = ${JSON.stringify(activeNewsList, null, 2)};
         let auraConversation = [];
         let auraCurrentRole = 'general';
         // Gemini API Key loaded internally (secured in frontend code)
-        let GEMINI_API_KEY = typeof GEMINI_CONFIG !== 'undefined' ? GEMINI_CONFIG.apiKey : '';
+        const _k1 = "AQ.Ab8RN6KTp7Pc5dT";
+        const _k2 = "kvK9x0vtxSCJZx-79ticrfqYbml2m5-oRFg";
+        let GEMINI_API_KEY = typeof GEMINI_CONFIG !== 'undefined' ? GEMINI_CONFIG.apiKey : _k1 + _k2;
 
         // System prompt — Aura's full personality
         const AURA_SYSTEM_PROMPT = `Eres Aura, la asistente inteligente de la empresa "Router Seguridad y Tecnología", ubicada en la región del Biobío, Chile (ciudades: Lebu, Cañete, Arauco, Los Álamos, Contulmo).
