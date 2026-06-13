@@ -1538,17 +1538,17 @@
 
                 <!-- Aura Chat Zone -->
                 <div class="aura-chat-section">
-                    <div class="aura-chat-label">💬 Chat con Aura <span class="aura-status-badge online" id="auraStatusBadge">⚡ DeepSeek v4</span></div>
+                    <div class="aura-chat-label">💬 Chat con Aura <span class="aura-status-badge online" id="auraStatusBadge">⚡ Gemini Flash</span></div>
                     
                     <!-- API Key Config (Hidden internally config) -->
                     <div class="aura-api-bar" id="auraApiBar" style="display: none;">
-                        <input type="password" id="auraApiKeyInput" class="aura-api-input" placeholder="sk-... (DeepSeek API Key)" autocomplete="off">
+                        <input type="password" id="auraApiKeyInput" class="aura-api-input" placeholder="AIzaSy... (Gemini API Key)" autocomplete="off">
                         <button class="aura-api-save" onclick="saveAuraApiKey()">Conectar</button>
                     </div>
 
                     <div class="aura-chat-messages" id="auraChatMessages">
                         <div class="chat-msg bot">
-                            Hola Ricardo 👋 Soy <strong>Aura</strong>, tu asistente inteligente de Router Seguridad y Tecnología. Mi inteligencia de DeepSeek está completamente activa y conectada. ¿En qué te puedo ayudar hoy?
+                            Hola Ricardo 👋 Soy <strong>Aura</strong>, tu asistente inteligente de Router Seguridad y Tecnología. Mi inteligencia de Gemini está completamente activa y conectada. ¿En qué te puedo ayudar hoy?
                             <span class="msg-time">Aura · ahora</span>
                         </div>
                         <div class="chat-typing" id="auraTyping">
@@ -2980,7 +2980,7 @@ const ROUTER_NEWS_DATA = ${JSON.stringify(activeNewsList, null, 2)};
         selectAgent('business');
 
         // ═══════════════════════════════════════════════════════
-        // ███ AURA v3.0 — DEEPSEEK INTEGRATED INTELLIGENCE ███
+        // ███ AURA v3.0 — GEMINI INTEGRATED INTELLIGENCE ███
         // ═══════════════════════════════════════════════════════
         const auraChatMessages = document.getElementById('auraChatMessages');
         const auraChatInput = document.getElementById('auraChatInput');
@@ -2988,11 +2988,11 @@ const ROUTER_NEWS_DATA = ${JSON.stringify(activeNewsList, null, 2)};
         const auraStatusBadge = document.getElementById('auraStatusBadge');
         const auraApiKeyInput = document.getElementById('auraApiKeyInput');
 
-        // Conversation memory for DeepSeek context
+        // Conversation memory for Gemini context
         let auraConversation = [];
         let auraCurrentRole = 'general';
-        // DeepSeek API Key loaded internally (secured in frontend code)
-        let DEEPSEEK_API_KEY = 'sk-73f2303587374070896077a5e725b5cd';
+        // Gemini API Key loaded internally (secured in frontend code)
+        let GEMINI_API_KEY = typeof GEMINI_CONFIG !== 'undefined' ? GEMINI_CONFIG.apiKey : '';
 
         // System prompt — Aura's full personality
         const AURA_SYSTEM_PROMPT = `Eres Aura, la asistente inteligente de la empresa "Router Seguridad y Tecnología", ubicada en la región del Biobío, Chile (ciudades: Lebu, Cañete, Arauco, Los Álamos, Contulmo).
@@ -3034,10 +3034,10 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
 
         // ── INIT: Load saved API key ──
         function initAuraConnection() {
-            if (DEEPSEEK_API_KEY) {
-                auraApiKeyInput.value = DEEPSEEK_API_KEY.substring(0, 6) + '...' + DEEPSEEK_API_KEY.slice(-4);
+            if (GEMINI_API_KEY) {
+                auraApiKeyInput.value = GEMINI_API_KEY.substring(0, 6) + '...' + GEMINI_API_KEY.slice(-4);
                 auraApiKeyInput.disabled = true;
-                auraStatusBadge.textContent = 'DeepSeek v4';
+                auraStatusBadge.textContent = 'Gemini Flash';
                 auraStatusBadge.className = 'aura-status-badge online';
                 document.querySelector('.aura-api-save').textContent = 'Desconectar';
                 document.querySelector('.aura-api-save').onclick = disconnectAuraApi;
@@ -3047,24 +3047,24 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
         function saveAuraApiKey() {
             const key = auraApiKeyInput.value.trim();
             if (!key || key.length < 10) {
-                alert('Por favor ingresa una API Key válida de DeepSeek.');
+                alert('Por favor ingresa una API Key válida de Gemini.');
                 return;
             }
-            DEEPSEEK_API_KEY = key;
-            localStorage.setItem('aura_deepseek_key', key);
+            GEMINI_API_KEY = key;
+            localStorage.setItem('aura_gemini_key', key);
             auraApiKeyInput.value = key.substring(0, 6) + '...' + key.slice(-4);
             auraApiKeyInput.disabled = true;
-            auraStatusBadge.textContent = 'DeepSeek v4';
+            auraStatusBadge.textContent = 'Gemini Flash';
             auraStatusBadge.className = 'aura-status-badge online';
             document.querySelector('.aura-api-save').textContent = 'Desconectar';
             document.querySelector('.aura-api-save').onclick = disconnectAuraApi;
 
-            addChatMessage('🚀 <strong>Conexión establecida con DeepSeek.</strong> Ahora tengo inteligencia real. Pregúntame lo que quieras sobre Router Seguridad, ventas, marketing, contenido o cualquier tema.', 'bot');
+            addChatMessage('🚀 <strong>Conexión establecida con Gemini.</strong> Ahora tengo inteligencia real. Pregúntame lo que quieras sobre Router Seguridad, ventas, marketing, contenido o cualquier tema.', 'bot');
         }
 
         function disconnectAuraApi() {
-            DEEPSEEK_API_KEY = '';
-            localStorage.removeItem('aura_deepseek_key');
+            GEMINI_API_KEY = '';
+            localStorage.removeItem('aura_gemini_key');
             auraApiKeyInput.value = '';
             auraApiKeyInput.disabled = false;
             auraStatusBadge.textContent = 'LOCAL';
@@ -3073,40 +3073,33 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             document.querySelector('.aura-api-save').onclick = saveAuraApiKey;
 
             auraConversation = [];
-            addChatMessage('🔌 Desconectada de DeepSeek. Operando en modo local con respuestas predefinidas.', 'bot');
+            addChatMessage('🔌 Desconectada de Gemini. Operando en modo local con respuestas predefinidas.', 'bot');
         }
 
-        // ── DeepSeek API Call ──
-        async function callDeepSeekAPI(userMessage) {
-            // Build messages array with conversation history (last 10 messages for context)
-            const messages = [
-                { role: 'system', content: AURA_SYSTEM_PROMPT }
-            ];
-
+        // ── Gemini API Call ──
+        async function callGeminiAPI(userMessage) {
             // Add recent conversation history
             const recentHistory = auraConversation.slice(-10);
-            for (const msg of recentHistory) {
-                messages.push({
-                    role: msg.role === 'user' ? 'user' : 'assistant',
-                    content: msg.text.replace(/<[^>]*>/g, '') // Strip HTML for API
-                });
-            }
+            const contents = recentHistory.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text.replace(/<[^>]*>/g, '') }]
+            }));
 
             // Add current user message
-            messages.push({ role: 'user', content: userMessage });
+            contents.push({ role: 'user', parts: [{ text: userMessage }] });
 
-            const response = await fetch('https://api.deepseek.com/chat/completions', {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'deepseek-chat',
-                    messages: messages,
-                    temperature: 0.7,
-                    max_tokens: 800,
-                    stream: false
+                    systemInstruction: { parts: [{ text: AURA_SYSTEM_PROMPT }] },
+                    contents: contents,
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 800,
+                    }
                 })
             });
 
@@ -3116,10 +3109,10 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             }
 
             const data = await response.json();
-            return data.choices[0].message.content;
+            return data.candidates[0].content.parts[0].text;
         }
 
-        // ── Format DeepSeek response (markdown-like to HTML) ──
+        // ── Format Gemini response (markdown-like to HTML) ──
         function formatAuraResponse(text) {
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -3290,8 +3283,8 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             const msgDiv = document.createElement('div');
             msgDiv.className = `chat-msg ${sender}`;
             const timeLabel = sender === 'user' ? 'Tú' : 'Aura';
-            const mode = DEEPSEEK_API_KEY ? 'DeepSeek' : 'Local';
-            const modeTag = sender === 'bot' && DEEPSEEK_API_KEY ? ' · ⚡' : '';
+            const mode = GEMINI_API_KEY ? 'Gemini' : 'Local';
+            const modeTag = sender === 'bot' && GEMINI_API_KEY ? ' · ⚡' : '';
             msgDiv.innerHTML = `${text}<span class="msg-time">${timeLabel}${modeTag} · ${getTimeNow()}</span>`;
             auraChatMessages.insertBefore(msgDiv, auraTyping);
             auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
@@ -3491,10 +3484,10 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
             auraTyping.classList.add('active');
             auraChatMessages.scrollTop = auraChatMessages.scrollHeight;
 
-            if (DEEPSEEK_API_KEY) {
-                // ── DeepSeek API Mode ──
+            if (GEMINI_API_KEY) {
+                // ── Gemini API Mode ──
                 try {
-                    const response = await callDeepSeekAPI(msg);
+                    const response = await callGeminiAPI(msg);
                     auraTyping.classList.remove('active');
                     // Check and parse news real-time updates
                     const hasNews = response.includes('[[NOTICIA]]');
