@@ -3024,11 +3024,12 @@ REGLAS:
 - Usa emojis moderadamente para dar calidez.
 - Respuestas concisas pero completas (máximo 200 palabras).
 - Cuando no sepas algo, sé honesta y sugiere dónde encontrar la información.
+- NUNCA des explicaciones meta sobre cómo funciona tu sistema por dentro (ej: "yo no subo fotos, solo genero texto"). Simplemente actúa y genera el bloque requerido.
 - SI EL USUARIO TE PIDE CREAR, REDACTAR O GENERAR UNA NOTICIA, ARTÍCULO O POST DE SEGURIDAD O TECNOLOGÍA: Debes agregar al final de tu respuesta (o como tu respuesta principal) el siguiente bloque estructurado exacto para que el sistema lo publique automáticamente en el dashboard en tiempo real:
 [[NOTICIA]]
 TITULO: [Título llamativo de la noticia]
 RESUMEN: [Resumen corto de 2 líneas]
-IMAGEN: [Deja este campo vacío para que el sistema asigne una imagen premium y única de stock automáticamente, o pon una palabra clave como solar, cctv, ia, satelital]
+IMAGEN: [Si el usuario te dio una URL, ponla aquí. Si no, deja este campo vacío para usar imágenes stock, o pon una palabra clave como solar, cctv]
 CONTENIDO: [Cuerpo del artículo en HTML limpio con subtítulos <h4> y párrafos <p>]
 INSTAGRAM: [Copy atractivo para Instagram con emojis y hashtags]
 WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
@@ -3100,7 +3101,7 @@ WHATSAPP: [Copy directo y resumido para estados de WhatsApp con CTA]
                     contents: contents,
                     generationConfig: {
                         temperature: 0.7,
-                        maxOutputTokens: 800,
+                        maxOutputTokens: 8192,
                     }
                 })
             });
