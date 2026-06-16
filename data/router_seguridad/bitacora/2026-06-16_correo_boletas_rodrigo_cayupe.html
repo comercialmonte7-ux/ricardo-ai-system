@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correo: Solicitud Boletas de Honorarios – Rodrigo Cayupe | GORE Biobío</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --green: #10b981;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 40px 20px; line-height: 1.7; }
+
+        .actions {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            display: flex; gap: 10px;
+        }
+        .btn {
+            background: var(--primary); color: white; padding: 10px 20px;
+            border-radius: 50px; font-weight: 600; border: none; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(15,23,42,0.15); display: flex; align-items: center;
+            gap: 8px; transition: all 0.2s; text-decoration: none; font-size: 0.85rem;
+        }
+        .btn:hover { background: var(--accent); transform: translateY(-2px); }
+        .btn-copy { background: var(--green); }
+        .btn-copy:hover { background: #059669; }
+
+        .container { max-width: 780px; margin: 0 auto; }
+
+        /* Header */
+        .page-header {
+            background: var(--primary); color: white; border-radius: 16px;
+            padding: 28px 32px; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .page-header h1 { font-size: 1.3rem; font-weight: 700; }
+        .page-header p { font-size: 0.85rem; opacity: 0.65; margin-top: 4px; }
+        .badge {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Email card */
+        .email-card {
+            background: white; border-radius: 16px; border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 24px;
+        }
+        .email-header {
+            background: #f1f5f9; border-bottom: 1px solid var(--border);
+            padding: 20px 28px;
+        }
+        .email-field { display: flex; gap: 12px; margin-bottom: 8px; font-size: 0.9rem; }
+        .email-field:last-child { margin-bottom: 0; }
+        .field-label { font-weight: 700; color: #64748b; min-width: 60px; }
+        .field-value { color: var(--text); }
+        .field-value a { color: var(--accent); text-decoration: none; }
+        .subject-line { font-size: 1rem; font-weight: 700; color: var(--primary); }
+
+        .email-body { padding: 32px 28px; }
+        .email-body p { margin-bottom: 16px; font-size: 0.95rem; }
+        .email-body strong { color: var(--primary); }
+
+        /* Boleta cards */
+        .boleta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .boleta-box {
+            border-radius: 12px; border: 2px solid var(--border);
+            padding: 18px; background: #f8fafc;
+        }
+        .boleta-box.accent { border-color: #bfdbfe; background: #eff6ff; }
+        .boleta-box.green { border-color: #a7f3d0; background: #ecfdf5; }
+        .boleta-number {
+            display: inline-block; width: 28px; height: 28px; border-radius: 50%;
+            font-size: 0.8rem; font-weight: 700; text-align: center; line-height: 28px;
+            margin-bottom: 10px;
+        }
+        .boleta-box.accent .boleta-number { background: var(--accent); color: white; }
+        .boleta-box.green .boleta-number { background: var(--green); color: white; }
+        .boleta-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 12px; color: var(--primary); }
+        .boleta-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .boleta-row:last-child { border-bottom: none; font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+        .boleta-row span:first-child { color: #64748b; }
+
+        /* Warning box */
+        .warning-box {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+            padding: 14px 18px; margin: 20px 0; font-size: 0.875rem;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+        .warning-box .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+        /* Requirements */
+        .req-list { list-style: none; margin: 16px 0; }
+        .req-list li {
+            padding: 8px 0; border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem; display: flex; gap: 10px; align-items: flex-start;
+        }
+        .req-list li:last-child { border-bottom: none; }
+        .req-list li::before { content: '✅'; flex-shrink: 0; }
+
+        .signature-block { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.9rem; }
+        .signature-block strong { display: block; font-size: 1rem; }
+
+        /* Note card */
+        .note-card {
+            background: white; border-radius: 16px; border: 1px solid var(--border);
+            padding: 20px 24px; font-size: 0.875rem; color: #64748b;
+        }
+        .note-card strong { color: var(--text); }
+    </style>
+</head>
+<body>
+
+<div class="actions">
+    <button onclick="copiarTextoCorreo()" class="btn btn-copy">📋 Copiar Texto</button>
+    <button onclick="window.print()" class="btn">🖨️ Imprimir</button>
+</div>
+
+<div class="container">
+
+    <div class="page-header">
+        <div>
+            <h1>📧 Correo — Solicitud Boletas de Honorarios</h1>
+            <p>Proyecto FNDR 8% Seguridad Ciudadana · GORE Biobío · Generado el 16 de Junio de 2026</p>
+        </div>
+        <span class="badge">2 Boletas · $500.000 Total</span>
+    </div>
+
+    <!-- EMAIL CARD -->
+    <div class="email-card">
+        <div class="email-header">
+            <div class="email-field">
+                <span class="field-label">Para:</span>
+                <span class="field-value">Rodrigo Cayupe &lt;<a href="mailto:[correo@rodrigocayupe.cl]">[COMPLETAR CORREO DE RODRIGO]</a>&gt;</span>
+            </div>
+            <div class="email-field">
+                <span class="field-label">Asunto:</span>
+                <span class="field-value subject-line">Solicitud de 2 Boletas de Honorarios — Proyectos FNDR GORE Biobío (2024SC0170 y 2024SC0126)</span>
+            </div>
+            <div class="email-field">
+                <span class="field-label">Fecha:</span>
+                <span class="field-value">Lebu, 16 de Junio de 2026</span>
+            </div>
+        </div>
+
+        <div class="email-body" id="cuerpo-correo">
+
+            <p>Estimado Rodrigo,</p>
+
+            <p>Espero que te encuentres muy bien. Me pongo en contacto contigo para solicitarte la emisión de <strong>dos Boletas de Honorarios Electrónicas</strong> correspondientes a las charlas de seguridad que realizaste en el marco de los proyectos de Seguridad Ciudadana financiados por el <strong>Gobierno Regional del Biobío (GORE)</strong>. Estas boletas son necesarias para la rendición de cuentas formal ante el GORE, por lo que deben ser emitidas de manera correcta según los requisitos indicados a continuación.</p>
+
+            <!-- BOLETAS GRID -->
+            <div class="boleta-grid">
+                <div class="boleta-box accent">
+                    <div class="boleta-number">1</div>
+                    <div class="boleta-title">Junta de Vecinos Población Jorge Alessandri</div>
+                    <div class="boleta-row"><span>Organización:</span><span>J.V. Pob. Jorge Alessandri</span></div>
+                    <div class="boleta-row"><span>RUT Organización:</span><span><strong>[COMPLETAR RUT JV]</strong></span></div>
+                    <div class="boleta-row"><span>Código Proyecto:</span><span>2024SC0170</span></div>
+                    <div class="boleta-row"><span>Concepto:</span><span>Charla de Seguridad</span></div>
+                    <div class="boleta-row"><span>Horas:</span><span>8 horas</span></div>
+                    <div class="boleta-row"><span>Valor hora:</span><span>$25.000</span></div>
+                    <div class="boleta-row"><span>TOTAL BOLETA:</span><span>$200.000</span></div>
+                </div>
+                <div class="boleta-box green">
+                    <div class="boleta-number">2</div>
+                    <div class="boleta-title">Club de Adulto Mayor Nuevo Amanecer</div>
+                    <div class="boleta-row"><span>Organización:</span><span>Club A.M. Nuevo Amanecer</span></div>
+                    <div class="boleta-row"><span>RUT Organización:</span><span><strong>[COMPLETAR RUT CAM]</strong></span></div>
+                    <div class="boleta-row"><span>Presidenta:</span><span>Isolda Camaño Lavín</span></div>
+                    <div class="boleta-row"><span>RUN Presidenta:</span><span>5.904.132-0</span></div>
+                    <div class="boleta-row"><span>Código Proyecto:</span><span>2024SC0126</span></div>
+                    <div class="boleta-row"><span>Concepto:</span><span>Charla de Seguridad</span></div>
+                    <div class="boleta-row"><span>Horas:</span><span>12 horas</span></div>
+                    <div class="boleta-row"><span>Valor hora:</span><span>$25.000</span></div>
+                    <div class="boleta-row"><span>TOTAL BOLETA:</span><span>$300.000</span></div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <span class="icon">⚠️</span>
+                <div>
+                    <strong>Importante — Requisitos GORE Biobío:</strong> Las boletas deben ser emitidas como <strong>Boleta de Honorarios Electrónica</strong> directamente desde el portal del SII (sii.cl), a nombre de cada organización con su RUT correspondiente. <em>No se aceptan boletas a nombre de personas naturales ni boletas en papel.</em> El GORE rechazará documentos que no cumplan este formato.
+                </div>
+            </div>
+
+            <p><strong>Requisitos exactos para cada boleta (según bases GORE):</strong></p>
+            <ul class="req-list">
+                <li>Emitida como <strong>Boleta de Honorarios Electrónica</strong> desde el SII (sii.cl).</li>
+                <li>El <strong>RUT del comprador</strong> debe ser el de la organización comunitaria (no el de una persona).</li>
+                <li>El <strong>concepto</strong> debe indicar: <em>"Charla de Capacitación y Prevención en Seguridad Ciudadana — Proyecto FNDR [código]"</em>.</li>
+                <li>El <strong>monto</strong> debe coincidir exactamente con el total de horas trabajadas × valor hora.</li>
+                <li>Una vez emitida, envíame el <strong>PDF oficial de la boleta</strong> para adjuntarlo a la rendición física del GORE.</li>
+            </ul>
+
+            <p>Te pido que emitas ambas boletas a la brevedad posible ya que tenemos fechas de rendición comprometidas ante el GORE Biobío. Cualquier duda sobre los datos de las organizaciones o el formato requerido, no dudes en escribirme o llamarme directamente.</p>
+
+            <p>Muchas gracias de antemano por tu colaboración.</p>
+
+            <div class="signature-block">
+                <p>Atentamente,</p>
+                <br>
+                <strong>Ricardo Marín</strong>
+                <span>ROUTER Seguridad y Tecnología</span>
+                <span style="color: #64748b;">Lebu, Región del Biobío</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NOTA INTERNA -->
+    <div class="note-card">
+        <p><strong>📌 Nota Interna — Datos pendientes de confirmar:</strong></p>
+        <br>
+        <p>• <strong>Correo de Rodrigo Cayupe:</strong> No registrado en el sistema. Consultar directamente.</p>
+        <p>• <strong>RUT Junta de Vecinos Jorge Alessandri (2024SC0170):</strong> No encontrado en los archivos del proyecto. Confirmar con la directiva antes de enviar el correo.</p>
+        <p>• <strong>RUT Club Adulto Mayor Nuevo Amanecer (2024SC0126):</strong> Aparece en blanco en el contrato de honorarios previo. Confirmar con Isolda Camaño Lavín (RUN 5.904.132-0).</p>
+    </div>
+
+</div>
+
+<script>
+function copiarTextoCorreo() {
+    const asunto = "Solicitud de 2 Boletas de Honorarios — Proyectos FNDR GORE Biobío (2024SC0170 y 2024SC0126)";
+    const cuerpo = `Estimado Rodrigo,
+
+Espero que te encuentres muy bien. Me pongo en contacto contigo para solicitarte la emisión de DOS Boletas de Honorarios Electrónicas correspondientes a las charlas de seguridad que realizaste en el marco de los proyectos de Seguridad Ciudadana financiados por el Gobierno Regional del Biobío (GORE).
+
+=== BOLETA N°1 ===
+Organización: Junta de Vecinos Población Jorge Alessandri
+RUT Organización: [CONFIRMAR RUT]
+Código Proyecto FNDR: 2024SC0170
+Concepto: Charla de Capacitación y Prevención en Seguridad Ciudadana — Proyecto FNDR 2024SC0170
+Horas trabajadas: 8 horas
+Valor hora: $25.000
+TOTAL A EMITIR: $200.000 (doscientos mil pesos)
+
+=== BOLETA N°2 ===
+Organización: Club de Adulto Mayor Nuevo Amanecer
+RUT Organización: [CONFIRMAR RUT]
+Representante Legal: Isolda Camaño Lavín — RUN 5.904.132-0
+Código Proyecto FNDR: 2024SC0126
+Concepto: Charla de Capacitación y Prevención en Seguridad Ciudadana — Proyecto FNDR 2024SC0126
+Horas trabajadas: 12 horas
+Valor hora: $25.000
+TOTAL A EMITIR: $300.000 (trescientos mil pesos)
+
+REQUISITOS IMPORTANTES (exigidos por GORE Biobío):
+- Las boletas deben ser Boletas de Honorarios ELECTRÓNICAS emitidas desde sii.cl
+- El RUT del comprador debe ser el de la organización (no persona natural)
+- Una vez emitidas, envíame el PDF oficial para incluirlo en la rendición al GORE
+
+Te pido que las emitas a la brevedad posible ya que tenemos fechas de rendición comprometidas.
+
+Muchas gracias de antemano.
+
+Atentamente,
+Ricardo Marín
+ROUTER Seguridad y Tecnología`;
+
+    navigator.clipboard.writeText(`ASUNTO: ${asunto}\n\n${cuerpo}`).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.textContent = '✅ ¡Copiado!';
+        setTimeout(() => btn.textContent = '📋 Copiar Texto', 3000);
+    });
+}
+</script>
+
+</body>
+</html>
