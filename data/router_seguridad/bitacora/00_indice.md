@@ -6,6 +6,7 @@ En este directorio se encuentran todos los registros detallados del negocio, org
 
 | Fecha | Documento | Categoría |
 |---|---|---|
+| 2026-06-18 | [💎 Cotización: Clínica Leufu - Dr. Luis Paz](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-18_cotizacion_clinica_leufu.html) | Proyectos |
 | 2026-06-09 | [🎬 Presentación: Eduardo Frei Montalva](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-09_presentacion_vista_al_mar.html) / [📊 PowerPoint](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-09_presentacion_vista_al_mar.pptx) | Comunidad |
 | 2026-06-03 | [🎬 Presentación: Villa Alessandri](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-03_presentacion_villa_alessandri.html) / [📊 PowerPoint](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-03_presentacion_villa_alessandri.pptx) | Comunidad |
 | 2026-05-27 | [💎 Cotización: Unificada Starlink & CCTV Colhue](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-05-27_cotizacion_unificada_interenergy.html) | Proyectos |
