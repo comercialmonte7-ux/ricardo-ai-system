@@ -3,52 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotización CCTV - Liceo Isidora Ramos de Gajardo - Router</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Cotización CCTV — Liceo Isidora Ramos de Gajardo — Router Soluciones Tecnológicas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --accent-light: #dbeafe;
-            --gradient: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
-            --gradient-edu: linear-gradient(135deg, #1d4ed8 0%, #0f172a 100%);
-            --text-dark: #0f172a;
-            --text-light: #64748b;
-            --bg-light: #f8fafc;
-            --white: #ffffff;
-            --border: #e2e8f0;
-            --success: #059669;
-            --gold: #d97706;
-            --gold-light: #fef3c7;
+            --azul:       #1e3a6e;
+            --azul-med:   #2563eb;
+            --azul-claro: #dbeafe;
+            --grad:       linear-gradient(135deg, #1e3a6e 0%, #0f172a 100%);
+            --grad-med:   linear-gradient(135deg, #1d4ed8 0%, #1e3a6e 100%);
+            --gris-bg:    #f8fafc;
+            --borde:      #e2e8f0;
+            --texto:      #0f172a;
+            --muted:      #64748b;
+            --verde:      #059669;
+            --verde-bg:   #ecfdf5;
+            --naranja:    #d97706;
+            --naranja-bg: #fffbeb;
+            --blanco:     #ffffff;
         }
 
-        * { box-sizing: border-box; }
-        @page { size: 216mm 330mm; margin: 0; }
-        body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; background-color: #dde3ea; color: var(--text-dark); line-height: 1.5; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        @page { size: 216mm 279mm; margin: 0; }
 
-        .page-container {
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #d1d5db;
+            color: var(--texto);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── PÁGINA ── */
+        .pagina {
             width: 216mm;
-            min-height: 330mm;
-            margin: 20px auto;
-            background-color: var(--white);
-            box-shadow: 0 25px 60px -12px rgba(0,0,0,0.30);
-            position: relative;
+            min-height: 279mm;
+            margin: 18px auto;
+            background: var(--blanco);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
             display: flex;
             flex-direction: column;
             page-break-after: always;
-            padding-bottom: 20px;
             overflow: hidden;
+            position: relative;
         }
-        .page-container:last-child { page-break-after: auto; }
+        .pagina:last-child { page-break-after: auto; }
 
         @media print {
-            @page { size: 216mm 330mm; margin: 0; }
-            body { background: none; margin: 0; padding: 0; }
-            .page-container {
+            @page { size: 216mm 279mm; margin: 0; }
+            body { background: none; }
+            .pagina {
                 margin: 0;
                 box-shadow: none;
                 page-break-after: always;
-                height: 330mm;
+                height: 279mm;
                 width: 216mm;
                 overflow: hidden;
             }
@@ -56,997 +64,1140 @@
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
 
-        /* ---- DECORATIVE BG CIRCLES ---- */
-        .page-container::before {
-            content: '';
-            position: absolute;
-            bottom: -80px; left: -80px;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%);
-            z-index: 0; pointer-events: none;
-        }
-
-        /* ---- HEADER ---- */
-        header {
-            padding: 22px 50px 18px;
+        /* ── CABECERA ── */
+        .cabecera {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: stretch;
+            min-height: 72px;
             position: relative;
-            z-index: 1;
-            border-bottom: 2px solid #f1f5f9;
-        }
-        .header-bg-shape {
-            position: absolute; top: 0; right: 0;
-            width: 370px; height: 100%;
-            background: var(--gradient-edu);
-            border-bottom-left-radius: 90px;
-            z-index: -1;
-            display: flex; align-items: center;
-            justify-content: flex-end;
-            padding-right: 40px;
-        }
-        .header-title-block { text-align: right; }
-        .header-title-block h1 {
-            color: #fff;
-            font-size: 18px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            line-height: 1.2;
-        }
-        .header-title-block span {
-            color: #93c5fd;
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            margin-top: 3px;
-            text-transform: uppercase;
         }
 
-        .logo-box { display: flex; align-items: center; }
-        .shield-icon {
-            width: 48px; height: 56px;
-            background: var(--gradient);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            margin-right: 13px;
+        .cab-izq {
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            flex: 1;
+        }
+
+        .escudo {
+            width: 42px; height: 50px;
+            background: var(--grad);
+            clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             flex-shrink: 0;
         }
-        .shield-icon::after { content: '⚡'; font-size: 20px; color: #60a5fa; }
-        .logo-text-group { display: flex; flex-direction: column; }
-        .logo-main { font-size: 38px; font-weight: 700; color: var(--primary); line-height: 0.9; letter-spacing: -2px; }
-        .logo-sub { font-size: 8.5px; font-weight: 700; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+        .escudo::after { content: '⚡'; font-size: 18px; color: #60a5fa; }
 
-        /* ---- SCHOOL BANNER ---- */
-        .school-banner {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            padding: 12px 50px;
+        .logo-texto {}
+        .logo-nombre {
+            font-size: 26px; font-weight: 800; color: var(--azul);
+            letter-spacing: -1.5px; line-height: 1;
+        }
+        .logo-sub {
+            font-size: 7.5px; font-weight: 700;
+            color: var(--azul-med); letter-spacing: 2.5px;
+            text-transform: uppercase; display: block; margin-top: 2px;
+        }
+
+        .cab-der {
+            background: var(--grad);
+            min-width: 320px;
+            border-bottom-left-radius: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 14px 30px 14px 50px;
+            text-align: right;
+        }
+        .cab-der h1 {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+        }
+        .cab-der span {
+            color: #93c5fd;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-top: 3px;
+            display: block;
+        }
+
+        /* ── FRANJA LICEO ── */
+        .franja-liceo {
+            background: linear-gradient(135deg,#1d4ed8,#1e3a6e);
+            padding: 10px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 1;
         }
-        .school-banner-left h2 {
+        .franja-liceo h2 {
             color: white;
-            font-size: 14px;
+            font-size: 12.5px;
             font-weight: 700;
-            margin: 0;
-            letter-spacing: 0.5px;
         }
-        .school-banner-left p {
-            color: #93c5fd;
-            font-size: 10px;
-            margin: 2px 0 0;
-            letter-spacing: 2px;
+        .franja-liceo p {
+            color: #bfdbfe;
+            font-size: 9px;
             text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
         }
-        .school-banner-right {
+        .franja-meta {
             display: flex;
-            gap: 25px;
-            align-items: center;
+            gap: 20px;
         }
-        .banner-meta { text-align: right; }
-        .banner-meta label {
+        .meta-item { text-align: right; }
+        .meta-item label {
             display: block;
-            font-size: 8px;
-            color: rgba(255,255,255,0.6);
+            font-size: 7.5px;
+            color: rgba(255,255,255,0.55);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
-        .banner-meta span {
+        .meta-item span {
             display: block;
             font-size: 11px;
             font-weight: 700;
             color: white;
         }
 
-        /* ---- INFO STRIP ---- */
-        .info-strip {
-            padding: 10px 50px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+        /* ── CONTACTO ROUTER (banda visible) ── */
+        .banda-contacto {
+            background: var(--azul-claro);
+            border-bottom: 2px solid #93c5fd;
+            padding: 7px 22px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .contacto-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            color: var(--azul);
+            font-weight: 600;
+        }
+        .contacto-item .ico { font-size: 12px; }
+        .contacto-item a { color: var(--azul); text-decoration: none; }
+
+        /* ── CONTENIDO ── */
+        .contenido {
+            padding: 14px 22px 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sec-titulo {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 9px;
+            margin-top: 5px;
         }
-        .info-strip-item label {
-            display: block;
-            font-size: 8px;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 2px;
-        }
-        .info-strip-item span {
-            display: block;
-            font-size: 11px;
+        .sec-titulo h3 {
+            font-size: 10px;
             font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        /* ---- CONTENT ---- */
-        .content { padding: 15px 50px; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
-
-        .section-header {
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 10px;
-        }
-        .section-header h3 {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--primary);
+            color: var(--azul);
             text-transform: uppercase;
-            margin: 0;
             letter-spacing: 1.5px;
             white-space: nowrap;
         }
-        .section-header .line { height: 1px; flex-grow: 1; background: var(--border); }
+        .sec-titulo .linea {
+            flex-grow: 1;
+            height: 1px;
+            background: var(--borde);
+        }
 
-        /* ---- ALERT BOX ---- */
-        .daem-alert {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border: 1px solid #bfdbfe;
-            border-left: 4px solid #2563eb;
+        /* ── INTRO BOX ── */
+        .intro-box {
+            background: var(--azul-claro);
+            border-left: 4px solid var(--azul-med);
             border-radius: 8px;
             padding: 10px 14px;
             font-size: 10.5px;
-            color: #1e3a5f;
+            color: var(--azul);
+            line-height: 1.5;
             margin-bottom: 12px;
+        }
+        .intro-box b { color: #1e3a6e; }
+
+        /* ── TABLA MÓDULOS ── */
+        .tabla-container {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--borde);
+            margin-bottom: 12px;
+        }
+        table.tabla { width: 100%; border-collapse: collapse; font-size: 10px; }
+        table.tabla thead tr { background: var(--grad); }
+        table.tabla th {
+            color: rgba(255,255,255,0.85);
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+        table.tabla td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+        table.tabla tr:last-child td { border-bottom: none; }
+        table.tabla tr:hover td { background: #fafbff; }
+        table.tabla td.mod-id {
+            font-size: 8px;
+            font-weight: 800;
+            text-align: center;
+            color: var(--azul-med);
+            vertical-align: middle;
+        }
+        table.tabla td b { display: block; color: var(--azul); font-size: 10.5px; margin-bottom: 2px; }
+        table.tabla td .sub { font-size: 9px; color: var(--muted); }
+        table.tabla td.precio {
+            font-weight: 700;
+            font-size: 12px;
+            text-align: right;
+            color: var(--azul);
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+        table.tabla td.cant {
+            text-align: center;
+            font-weight: 600;
+            color: var(--azul-med);
+            vertical-align: middle;
+        }
+        .fila-alt td { background: #f8faff !important; }
+
+        /* ── TOTALES ── */
+        .totales-wrap { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .totales-box {
+            min-width: 270px;
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .t-fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 14px;
+            font-size: 9.5px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .t-fila:last-child { border-bottom: none; }
+        .t-label { color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        .t-valor { font-weight: 700; color: var(--texto); font-size: 11px; }
+        .t-fila.total-principal {
+            background: var(--grad-med);
+            padding: 10px 14px;
+        }
+        .t-fila.total-principal .t-label { color: rgba(255,255,255,0.75); font-size: 9px; }
+        .t-fila.total-principal .t-valor { color: white; font-size: 18px; }
+
+        /* ── NOTA VALIDEZ ── */
+        .nota-validez {
+            background: var(--naranja-bg);
+            border: 1px solid #fde68a;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 9.5px;
+            color: #92400e;
+            margin-bottom: 8px;
             line-height: 1.45;
         }
-        .daem-alert b { color: #1d4ed8; }
+        .nota-validez b { color: #78350f; }
 
-        /* ---- TABLE ---- */
-        .table-container {
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 12px;
-        }
-        .table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
-        .table thead tr { background: var(--gradient-edu); }
-        .table th {
-            color: rgba(255,255,255,0.9);
-            padding: 9px 12px;
-            text-align: left;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 8.5px;
-            letter-spacing: 1.2px;
-        }
-        .table td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; background: white; }
-        .table tr:last-child td { border-bottom: none; }
-        .table tr:hover td { background: #f8fafc; }
-        .table b { color: var(--primary); font-size: 10.5px; }
-        .table .sub { font-size: 9px; color: var(--text-light); display: block; }
-        .price-col { font-weight: 700; font-size: 11px; text-align: right; color: var(--primary); white-space: nowrap; }
-        .qty-col { text-align: center; font-weight: 600; color: #1d4ed8; }
-
-        /* special highlight row */
-        .row-highlight td { background: #f0f9ff !important; }
-
-        /* ---- SERVICE ITEMS ---- */
-        .services-grid {
+        /* ── PROPUESTA VALOR ── */
+        .prop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 7px;
+            margin-bottom: 10px;
         }
-        .service-item {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 9px 12px;
+        .prop-item {
+            background: var(--gris-bg);
+            border: 1px solid var(--borde);
+            border-radius: 7px;
+            padding: 8px 11px;
             display: flex;
             align-items: flex-start;
             gap: 8px;
         }
-        .service-item .svc-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-        .service-item .svc-text b { font-size: 10px; color: var(--primary); display: block; }
-        .service-item .svc-text span { font-size: 9px; color: var(--text-light); }
+        .prop-ico { font-size: 15px; flex-shrink: 0; }
+        .prop-texto b { font-size: 9.5px; color: var(--azul); display: block; line-height: 1.3; }
+        .prop-texto span { font-size: 8.5px; color: var(--muted); }
 
-        /* ---- TOTALS ---- */
-        .totals-section { margin-top: auto; padding-top: 10px; }
-        .totals-inner {
-            display: flex;
-            justify-content: flex-end;
+        /* ── TARJETAS PROTOCOLO ── */
+        .proto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        .totals-box {
-            min-width: 280px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
+        .proto-card {
+            border: 1px solid var(--borde);
+            border-radius: 8px;
             overflow: hidden;
         }
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 16px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .total-row:last-child { border-bottom: none; }
-        .total-label { font-size: 9px; color: var(--text-light); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .total-value { font-size: 12px; font-weight: 700; color: var(--text-dark); }
-        .grand-total {
-            background: var(--gradient-edu);
-            padding: 11px 16px;
-        }
-        .grand-total .total-label { color: rgba(255,255,255,0.75); font-size: 9px; }
-        .grand-total .total-value { color: white; font-size: 19px; }
-
-        /* ---- VALIDITY NOTE ---- */
-        .validity-note {
+        .proto-head {
+            padding: 9px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            background: var(--gold-light);
-            border: 1px solid #fde68a;
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-size: 10px;
-            color: #92400e;
-            margin-bottom: 10px;
         }
-        .validity-note b { color: #78350f; }
-
-        /* ---- FOOTER ---- */
-        footer {
-            padding: 10px 50px;
-            background: #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 9.5px;
-            color: var(--text-light);
-        }
-        .footer-logo { font-weight: 700; color: var(--primary); font-size: 15px; }
-
-        /* ---- PRINT BUTTON ---- */
-        .no-print {
-            position: fixed; top: 30px; left: 30px;
-            background: #fff; padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.12);
-            z-index: 100;
-            border: 1px solid var(--border);
-        }
-        .btn {
-            display: inline-block;
-            background: var(--gradient-edu);
-            color: #fff; padding: 12px 22px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: none;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.25); }
-
-        /* ============== PAGE 2 STYLES ============== */
-        .protocol-intro {
-            background: var(--gradient-edu);
-            border-radius: 10px;
-            padding: 14px 18px;
+        .proto-head .ph-ico { font-size: 16px; }
+        .proto-head h4 {
             color: white;
             font-size: 10.5px;
-            line-height: 1.55;
-            margin-bottom: 14px;
-        }
-        .protocol-intro b { color: #93c5fd; }
-
-        .protocol-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .protocol-card {
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .protocol-card-header {
-            padding: 9px 14px;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-        .protocol-card-header .ph-icon { font-size: 16px; }
-        .protocol-card-header h4 {
-            color: white;
-            font-size: 11px;
             font-weight: 700;
             margin: 0;
-            letter-spacing: 0.3px;
         }
-        .protocol-card-header p {
-            color: rgba(255,255,255,0.75);
-            font-size: 8.5px;
-            margin: 0;
+        .proto-head p {
+            color: rgba(255,255,255,0.7);
+            font-size: 7.5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .protocol-card-body {
-            padding: 10px 14px;
-            background: white;
-        }
+        .proto-body { padding: 9px 12px; background: white; }
         .proto-item {
             display: flex;
             align-items: flex-start;
-            gap: 7px;
-            padding: 5px 0;
+            gap: 6px;
+            padding: 4px 0;
             border-bottom: 1px solid #f8fafc;
-            font-size: 10px;
+            font-size: 9.5px;
             line-height: 1.4;
+            color: var(--texto);
         }
         .proto-item:last-child { border-bottom: none; }
-        .proto-dot {
+        .pt-dot {
             width: 5px; height: 5px;
             border-radius: 50%;
             flex-shrink: 0;
             margin-top: 5px;
         }
 
-        /* Architecture Diagram */
-        .arch-section { margin-bottom: 14px; }
-        .arch-diagram {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px;
+        /* ── DIAGRAMA ARQUITECTURA ── */
+        .diagrama {
+            background: var(--gris-bg);
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0;
+            margin-bottom: 12px;
         }
-        .arch-row {
+        .diag-fila {
             display: flex;
-            gap: 8px;
-            align-items: center;
+            gap: 6px;
             justify-content: center;
+            align-items: center;
             width: 100%;
         }
-        .arch-node {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 7px 12px;
-            text-align: center;
-            font-size: 9.5px;
-            font-weight: 600;
-            color: var(--text-dark);
+        .diag-nodo {
             flex: 1;
+            background: white;
+            border: 1px solid var(--borde);
+            border-radius: 7px;
+            padding: 6px 10px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--texto);
         }
-        .arch-node.core {
-            background: var(--gradient-edu);
+        .diag-nodo.core {
+            background: var(--grad);
             color: white;
             border: none;
-            font-size: 10px;
+            font-size: 9.5px;
         }
-        .arch-node.cam {
-            background: #eff6ff;
-            border-color: #bfdbfe;
+        .diag-nodo.cam {
+            background: var(--azul-claro);
+            border-color: #93c5fd;
             color: #1e40af;
-            font-size: 9px;
+            font-size: 8.5px;
         }
-        .arch-connector {
+        .diag-conector {
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 28px;
-            position: relative;
             width: 100%;
+            position: relative;
         }
-        .arch-connector::before {
+        .diag-conector::before {
             content: '';
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            height: 100%;
-            width: 2px;
+            left: 50%; top: 0;
+            height: 100%; width: 2px;
             background: #cbd5e1;
         }
-        .arch-connector.wifi::before {
+        .diag-conector.wifi::before {
             border-left: 2px dashed #3b82f6;
             background: none;
             width: 0;
         }
-        .arch-connector-label {
+        .diag-etiqueta {
             background: white;
-            border: 1px solid var(--border);
+            border: 1px solid var(--borde);
             border-radius: 10px;
             padding: 2px 8px;
-            font-size: 8px;
-            color: var(--text-light);
+            font-size: 7.5px;
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
         }
 
-        .specs-two-col {
+        /* ── SPECS ── */
+        .specs-cols {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+            margin-bottom: 10px;
         }
-        .spec-block h5 {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 7px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            border-left: 3px solid var(--accent);
-            padding-left: 8px;
-        }
-        .spec-list { margin: 0; padding: 0; list-style: none; }
-        .spec-list li {
+        .spec-bloque h5 {
             font-size: 9.5px;
-            color: var(--text-light);
-            padding: 3px 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--azul-med);
+            border-left: 3px solid var(--azul-med);
+            padding-left: 7px;
+            margin-bottom: 7px;
+            letter-spacing: 0.5px;
+        }
+        .spec-lista { list-style: none; }
+        .spec-lista li {
+            font-size: 9px;
+            color: var(--muted);
+            padding: 3px 0 3px 10px;
             border-bottom: 1px solid #f1f5f9;
-            padding-left: 12px;
             position: relative;
         }
-        .spec-list li::before {
+        .spec-lista li::before {
             content: '—';
             position: absolute; left: 0;
             color: #cbd5e1;
-            font-size: 8px;
+            font-size: 7px;
+            top: 4px;
         }
-        .spec-list li strong { color: var(--text-dark); }
+        .spec-lista li:last-child { border-bottom: none; }
+        .spec-lista li strong { color: var(--texto); font-weight: 600; }
 
-        /* Signature block */
-        .signature-strip {
-            margin-top: auto;
+        /* ── SOPORTE LOCAL ── */
+        .soporte-box {
+            background: linear-gradient(135deg,#ecfdf5,#d1fae5);
+            border: 1px solid #6ee7b7;
+            border-left: 4px solid var(--verde);
+            border-radius: 8px;
+            padding: 11px 14px;
+            font-size: 10.5px;
+            color: #064e3b;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .soporte-box .soporte-titulo {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 700;
+            font-size: 11.5px;
+            color: #065f46;
+            margin-bottom: 5px;
+        }
+        .soporte-puntos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        .sp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            font-size: 9.5px;
+        }
+        .sp-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--verde); flex-shrink: 0; margin-top: 4px; }
+
+        /* ── FIRMAS ── */
+        .firmas {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
+            border-top: 1px solid var(--borde);
+            padding-top: 10px;
+            margin-top: auto;
         }
-        .sig-box { text-align: center; }
-        .sig-line {
-            height: 1px;
-            background: var(--border);
-            margin: 20px 10px 5px;
+        .firma-box { text-align: center; }
+        .firma-linea { height: 1px; background: var(--borde); margin: 18px 8px 5px; }
+        .firma-label { font-size: 7.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .firma-nombre { font-size: 9.5px; font-weight: 700; color: var(--texto); }
+        .firma-rol { font-size: 8px; color: var(--muted); }
+
+        /* ── PIE DE PÁGINA ── */
+        .pie {
+            background: #f1f5f9;
+            padding: 8px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9px;
+            color: var(--muted);
+            border-top: 1px solid var(--borde);
         }
-        .sig-label { font-size: 8.5px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-        .sig-name { font-size: 10px; font-weight: 700; color: var(--text-dark); }
-        .sig-role { font-size: 8.5px; color: var(--text-light); }
+        .pie-logo { font-weight: 800; color: var(--azul); font-size: 14px; letter-spacing: -0.5px; }
+        .pie-contacto { display: flex; gap: 15px; font-size: 8.5px; }
+        .pie-contacto span { color: var(--muted); }
+        .pie-contacto b { color: var(--azul); }
+
+        /* ── BOTÓN IMPRIMIR ── */
+        .no-print {
+            position: fixed; top: 25px; left: 25px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--borde);
+            z-index: 999;
+        }
+        .btn-print {
+            display: block;
+            background: var(--grad-med);
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-print:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37,99,235,0.3); }
     </style>
 </head>
 <body>
 
-    <div class="no-print">
-        <p style="font-size: 10px; margin-bottom: 15px; color: var(--text-light); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Control de Documento</p>
-        <button onclick="window.print()" class="btn">📄 IMPRIMIR / GUARDAR PDF</button>
+<div class="no-print">
+    <button onclick="window.print()" class="btn-print">📄 Imprimir / Guardar PDF</button>
+</div>
+
+<!-- ╔══════════════════════════════════════════════╗ -->
+<!-- ║  PÁGINA 1 — COTIZACIÓN OFICIAL              ║ -->
+<!-- ╚══════════════════════════════════════════════╝ -->
+<div class="pagina">
+
+    <div class="cabecera">
+        <div class="cab-izq">
+            <div class="escudo"></div>
+            <div class="logo-texto">
+                <div class="logo-nombre">Router</div>
+                <span class="logo-sub">Soluciones Tecnológicas · Lebu, Biobío</span>
+            </div>
+        </div>
+        <div class="cab-der">
+            <h1>COTIZACIÓN OFICIAL<br>SISTEMA DE MONITOREO</h1>
+            <span>CCTV Educacional · 24 Dependencias</span>
+        </div>
     </div>
 
-    <!-- ========================= PÁGINA 1: COTIZACIÓN ========================= -->
-    <div class="page-container">
-
-        <header>
-            <div class="logo-box">
-                <div class="shield-icon"></div>
-                <div class="logo-text-group">
-                    <span class="logo-main">Router</span>
-                    <span class="logo-sub">Seguridad & Tecnología</span>
-                </div>
+    <div class="franja-liceo">
+        <div>
+            <h2>📚 Liceo Isidora Ramos de Gajardo — Lebu</h2>
+            <p>Establecimiento de Educación Media · Corporación Municipal de Lebu</p>
+        </div>
+        <div class="franja-meta">
+            <div class="meta-item">
+                <label>Dirigido a</label>
+                <span>Sra. Nancy Torres</span>
             </div>
-            <div class="header-bg-shape">
-                <div class="header-title-block">
-                    <h1>PROPUESTA TÉCNICA<br>DE MONITOREO</h1>
-                    <span>Sistema CCTV Educacional</span>
-                </div>
+            <div class="meta-item">
+                <label>Cargo</label>
+                <span>Directora</span>
             </div>
-        </header>
-
-        <div class="school-banner">
-            <div class="school-banner-left">
-                <h2>📚 Liceo Isidora Ramos de Gajardo</h2>
-                <p>Lebu, Región del Biobío — Establecimiento Educacional Municipal</p>
+            <div class="meta-item">
+                <label>Fecha</label>
+                <span>Junio 2026</span>
             </div>
-            <div class="school-banner-right">
-                <div class="banner-meta">
-                    <label>Directora</label>
-                    <span>Nancy Torres</span>
-                </div>
-                <div class="banner-meta">
-                    <label>Fecha</label>
-                    <span>Junio 2026</span>
-                </div>
-                <div class="banner-meta">
-                    <label>N° Doc.</label>
-                    <span>COT-2026-032</span>
-                </div>
+            <div class="meta-item">
+                <label>N° Cotización</label>
+                <span>COT-2026-032</span>
             </div>
         </div>
-
-        <div class="info-strip">
-            <div class="info-strip-item">
-                <label>Proveedor</label>
-                <span>Router Seguridad</span>
-            </div>
-            <div class="info-strip-item">
-                <label>Tipo de Proyecto</label>
-                <span>CCTV Inalámbrico NVR</span>
-            </div>
-            <div class="info-strip-item">
-                <label>N° de Salas</label>
-                <span>24 Dependencias</span>
-            </div>
-            <div class="info-strip-item">
-                <label>Coordinación</label>
-                <span>Gestión DAEM</span>
-            </div>
-        </div>
-
-        <div class="content">
-
-            <!-- DAEM Alert -->
-            <div class="daem-alert">
-                <b>📋 COORDINACIÓN DAEM — INSTALACIÓN ELÉCTRICA:</b> A fin de no realizar perforaciones ni intervenciones estructurales sin autorización, y optimizar el costo del proyecto, <b>se solicitará formalmente al DAEM la instalación de 24 enchufes</b> (uno por sala), quedando así la infraestructura eléctrica habilitada para la puesta en marcha de las cámaras inalámbricas por parte de Router.
-            </div>
-
-            <div class="section-header">
-                <h3>📦 Detalle de Equipamiento</h3>
-                <div class="line"></div>
-            </div>
-
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="5%">#</th>
-                            <th width="45%">Descripción del Equipo / Insumo</th>
-                            <th width="10%" style="text-align:center;">Cant.</th>
-                            <th width="18%" style="text-align:right;">P. Unit. Neto</th>
-                            <th width="22%" style="text-align:right;">Subtotal Neto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align:center; font-weight:700; color:#1d4ed8;">01</td>
-                            <td>
-                                <b>Cámara IP Imou Cue 2 — 3MP</b>
-                                <span class="sub">2.8mm · Audio · Alarma Sirena · Color Blanco · WiFi 2.4GHz · IA PIR</span>
-                            </td>
-                            <td class="qty-col">24</td>
-                            <td class="price-col">$22.990</td>
-                            <td class="price-col">$551.760</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center; font-weight:700; color:#1d4ed8;">02</td>
-                            <td>
-                                <b>Disco Duro de Vigilancia 6TB</b>
-                                <span class="sub">Almacenamiento continuo 24/7 · Compatible NVR Dahua · Alta durabilidad</span>
-                            </td>
-                            <td class="qty-col">2</td>
-                            <td class="price-col">$199.480</td>
-                            <td class="price-col">$398.960</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center; font-weight:700; color:#1d4ed8;">03</td>
-                            <td>
-                                <b>Grabador NVR 32 Canales Dahua</b>
-                                <span class="sub">4K · H.265+ · Gestión centralizada · 2 bahías HDD · App móvil DMSS</span>
-                            </td>
-                            <td class="qty-col">1</td>
-                            <td class="price-col">$209.990</td>
-                            <td class="price-col">$209.990</td>
-                        </tr>
-                        <tr class="row-highlight">
-                            <td style="text-align:center; font-weight:700; color:#059669;">04</td>
-                            <td>
-                                <b>Instalación, Configuración y Puesta en Marcha</b>
-                                <span class="sub">Montaje de 24 cámaras en salas · Configuración NVR · Alta en App · Pruebas de sistema</span>
-                            </td>
-                            <td class="qty-col" style="color:#059669;">1</td>
-                            <td class="price-col" style="color:#059669;">$1.200.000</td>
-                            <td class="price-col" style="color:#059669;">$1.200.000</td>
-                        </tr>
-                        <tr class="row-highlight">
-                            <td style="text-align:center; font-weight:700; color:#059669;">05</td>
-                            <td>
-                                <b>Red WiFi Educacional y Gestión de Conectividad</b>
-                                <span class="sub">Configuración de red interna · Segmentación VLAN CCTV · Acceso remoto seguro · AP adicionales si se requiere</span>
-                            </td>
-                            <td class="qty-col" style="color:#059669;">1</td>
-                            <td class="price-col" style="color:#059669;">$750.000</td>
-                            <td class="price-col" style="color:#059669;">$750.000</td>
-                        </tr>
-                        <tr class="row-highlight">
-                            <td style="text-align:center; font-weight:700; color:#059669;">06</td>
-                            <td>
-                                <b>Capacitación, Protocolo y Garantía Anual</b>
-                                <span class="sub">Charla a directivos · Manual de uso · Protocolo ante fallas · Soporte técnico 12 meses</span>
-                            </td>
-                            <td class="qty-col" style="color:#059669;">1</td>
-                            <td class="price-col" style="color:#059669;">$489.290</td>
-                            <td class="price-col" style="color:#059669;">$489.290</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Service Items Summary -->
-            <div class="services-grid">
-                <div class="service-item">
-                    <span class="svc-icon">📡</span>
-                    <div class="svc-text">
-                        <b>24 Cámaras 100% Inalámbricas</b>
-                        <span>Conexión WiFi directa al NVR. Sin perforaciones adicionales.</span>
-                    </div>
-                </div>
-                <div class="service-item">
-                    <span class="svc-icon">🔌</span>
-                    <div class="svc-text">
-                        <b>DAEM gestiona enchufes eléctricos</b>
-                        <span>24 puntos de corriente, uno por sala. Reduce costo para el liceo.</span>
-                    </div>
-                </div>
-                <div class="service-item">
-                    <span class="svc-icon">💾</span>
-                    <div class="svc-text">
-                        <b>Almacenamiento centralizado 12TB</b>
-                        <span>2 HDD de 6TB en NVR Dahua. Grabación continua 24/7.</span>
-                    </div>
-                </div>
-                <div class="service-item">
-                    <span class="svc-icon">📱</span>
-                    <div class="svc-text">
-                        <b>Monitoreo remoto sin mensualidad</b>
-                        <span>App DMSS / Imou Life. Sin costos recurrentes de plataforma.</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Validity -->
-            <div class="validity-note">
-                ⏱️ <span><b>Vigencia de la oferta:</b> 30 días corridos desde la fecha de emisión &nbsp;|&nbsp; <b>Tiempo estimado de ejecución:</b> 5 a 7 días hábiles una vez confirmada la instalación de enchufes por DAEM.</span>
-            </div>
-
-            <!-- TOTALS -->
-            <div class="totals-section">
-                <div class="totals-inner">
-                    <div class="totals-box">
-                        <div class="total-row">
-                            <span class="total-label">Subtotal Equipamiento:</span>
-                            <span class="total-value">$1.160.710</span>
-                        </div>
-                        <div class="total-row">
-                            <span class="total-label">Servicios (Instalación + Red + Garantía):</span>
-                            <span class="total-value">$2.439.290</span>
-                        </div>
-                        <div class="total-row" style="background:#f8fafc;">
-                            <span class="total-label">Total Neto del Proyecto:</span>
-                            <span class="total-value">$3.600.000</span>
-                        </div>
-                        <div class="total-row" style="background:#f8fafc;">
-                            <span class="total-label">Descuento Especial Establecimiento Educacional:</span>
-                            <span class="total-value" style="color:#059669;">- $1.200.000</span>
-                        </div>
-                        <div class="total-row grand-total">
-                            <span class="total-label">VALOR TOTAL NETO DEL PROYECTO:</span>
-                            <span class="total-value">$4.800.000</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <footer>
-            <div class="footer-logo">Router</div>
-            <div style="text-align:right;">
-                                <p><b>Ricardo Mari</b> &nbsp;|&nbsp; +56 9 7858 9090 &nbsp;|&nbsp; <b>mari.ricardo@gmail.com</b></p>
-                <p><b>Cotización Liceo Isidora Ramos de Gajardo</b> | Página 1 de 2</p>
-            </div>
-        </footer>
     </div>
 
-
-    <!-- ========================= PÁGINA 2: PROTOCOLO TÉCNICO ========================= -->
-    <div class="page-container">
-
-        <header>
-            <div class="logo-box">
-                <div class="shield-icon"></div>
-                <div class="logo-text-group">
-                    <span class="logo-main">Router</span>
-                    <span class="logo-sub">Seguridad & Tecnología</span>
-                </div>
-            </div>
-            <div class="header-bg-shape">
-                <div class="header-title-block">
-                    <h1>PROTOCOLO TÉCNICO<br>DEL SISTEMA</h1>
-                    <span>Arquitectura e Implementación</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="school-banner">
-            <div class="school-banner-left">
-                <h2>📚 Liceo Isidora Ramos de Gajardo — Lebu</h2>
-                <p>Protocolo de Instalación CCTV Inalámbrico con Coordinación DAEM</p>
-            </div>
-            <div class="school-banner-right">
-                <div class="banner-meta">
-                    <label>N° Cámaras</label>
-                    <span>24 Unidades</span>
-                </div>
-                <div class="banner-meta">
-                    <label>N° Salas</label>
-                    <span>24 Dependencias</span>
-                </div>
-            </div>
+    <!-- Banda de contacto visible -->
+    <div class="banda-contacto">
+        <div class="contacto-item">
+            <span class="ico">👤</span>
+            <span><b>Ricardo Mari</b> · Técnico a Cargo</span>
         </div>
-
-        <div class="content">
-
-            <!-- Intro Protocol -->
-            <div class="protocol-intro">
-                El presente sistema de videovigilancia ha sido diseñado bajo el concepto de <b>instalación no invasiva</b>: las cámaras son 100% inalámbricas (WiFi 2.4GHz), por lo que no requieren cableado de red entre salas. La única intervención eléctrica necesaria es la conexión a un enchufe por sala, la cual será gestionada por el <b>DAEM</b>, resguardando así la integridad del establecimiento y simplificando los costos del proyecto para el liceo.
-            </div>
-
-            <!-- Protocol Cards -->
-            <div class="section-header">
-                <h3>⚙️ Fases del Protocolo de Instalación</h3>
-                <div class="line"></div>
-            </div>
-
-            <div class="protocol-grid">
-                <!-- Fase 1 -->
-                <div class="protocol-card">
-                    <div class="protocol-card-header" style="background: linear-gradient(135deg,#1e40af,#1d4ed8);">
-                        <span class="ph-icon">📋</span>
-                        <div>
-                            <h4>Fase 1 — Coordinación Previa</h4>
-                            <p>Gestión Administrativa DAEM</p>
-                        </div>
-                    </div>
-                    <div class="protocol-card-body">
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#2563eb;"></div>
-                            <span>Router emite solicitud formal al DAEM para instalación de <b>24 enchufes eléctricos</b> (uno por sala de clases).</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#2563eb;"></div>
-                            <span>El DAEM coordina a electricistas habilitados para instalar puntos de corriente en cada dependencia.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#2563eb;"></div>
-                            <span>Router supervisa la ubicación óptima de cada enchufe para el posterior montaje de las cámaras.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#2563eb;"></div>
-                            <span>Este procedimiento evita que Router realice perforaciones sin autorización, reduciendo riesgos y costos.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fase 2 -->
-                <div class="protocol-card">
-                    <div class="protocol-card-header" style="background: linear-gradient(135deg,#0f172a,#1e3a5f);">
-                        <span class="ph-icon">🔧</span>
-                        <div>
-                            <h4>Fase 2 — Instalación de Equipos</h4>
-                            <p>Infraestructura Central NVR</p>
-                        </div>
-                    </div>
-                    <div class="protocol-card-body">
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#0f172a;"></div>
-                            <span>Instalación del <b>NVR Dahua 32 Canales</b> en sala de informática o dirección, con los 2 discos duros de 6TB.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#0f172a;"></div>
-                            <span>Configuración de red WiFi dedicada para el sistema CCTV, con SSID separada de la red de alumnos.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#0f172a;"></div>
-                            <span>Montaje de las 24 cámaras <b>Imou Cue 2 (3MP)</b> en cada sala: fijación en pared o techo, conexión al enchufe.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#0f172a;"></div>
-                            <span>Emparejamiento WiFi de cada cámara al router/NVR y configuración de grabación continua 24/7.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fase 3 -->
-                <div class="protocol-card">
-                    <div class="protocol-card-header" style="background: linear-gradient(135deg,#059669,#047857);">
-                        <span class="ph-icon">📱</span>
-                        <div>
-                            <h4>Fase 3 — Configuración y Acceso</h4>
-                            <p>Puesta en Marcha y App Móvil</p>
-                        </div>
-                    </div>
-                    <div class="protocol-card-body">
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#059669;"></div>
-                            <span>Alta del sistema en la <b>aplicación DMSS (Dahua)</b> e <b>Imou Life</b> en smartphones de la directora y equipo directivo.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#059669;"></div>
-                            <span>Configuración de perfiles de acceso por jerarquía (Directora con acceso total, inspectoría con acceso parcial).</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#059669;"></div>
-                            <span>Activación del sistema de alertas inteligentes PIR: detección de movimiento en horario no escolar.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#059669;"></div>
-                            <span>Prueba integral del sistema: revisión de imagen en vivo, reproducción de grabaciones y notificaciones.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fase 4 -->
-                <div class="protocol-card">
-                    <div class="protocol-card-header" style="background: linear-gradient(135deg,#7c3aed,#5b21b6);">
-                        <span class="ph-icon">🎓</span>
-                        <div>
-                            <h4>Fase 4 — Capacitación y Protocolo</h4>
-                            <p>Entrega y Soporte Continuo</p>
-                        </div>
-                    </div>
-                    <div class="protocol-card-body">
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#7c3aed;"></div>
-                            <span>Charla presencial de capacitación a la Directora Nancy Torres y equipo directivo (uso de App, búsqueda de grabaciones).</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#7c3aed;"></div>
-                            <span>Entrega de <b>Manual de Uso</b> del sistema: procedimiento ante fallas, reinicio de equipos, contacto de soporte.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#7c3aed;"></div>
-                            <span><b>Garantía técnica de 12 meses:</b> soporte remoto y visitas técnicas ante fallas de equipo sin costo adicional.</span>
-                        </div>
-                        <div class="proto-item">
-                            <div class="proto-dot" style="background:#7c3aed;"></div>
-                            <span>Entrega de acta de recepción conforme del sistema y documentación técnica del proyecto.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Architecture Diagram -->
-            <div class="section-header">
-                <h3>🏗️ Arquitectura del Sistema — Diagrama de Conexión</h3>
-                <div class="line"></div>
-            </div>
-
-            <div class="arch-section">
-                <div class="arch-diagram">
-                    <!-- Top cameras row -->
-                    <div class="arch-row">
-                        <div class="arch-node cam">📷 Cám. Sala 1</div>
-                        <div class="arch-node cam">📷 Cám. Sala 2</div>
-                        <div class="arch-node cam">📷 Cám. Sala 3</div>
-                        <div class="arch-node cam">📷 ··· Sala 24</div>
-                    </div>
-                    <div class="arch-connector wifi">
-                        <span class="arch-connector-label">📡 WiFi 2.4GHz — Inalámbrico (Sin Cableado de Red)</span>
-                    </div>
-                    <div class="arch-row">
-                        <div class="arch-node core" style="max-width:280px; margin:0 auto;">🌐 Router WiFi Educacional (SSID CCTV Dedicada)</div>
-                    </div>
-                    <div class="arch-connector">
-                        <span class="arch-connector-label">Cable de Red Cat6 (Sala Central)</span>
-                    </div>
-                    <div class="arch-row">
-                        <div class="arch-node core" style="max-width:320px; margin:0 auto;">🖥️ NVR Dahua 32 Canales + 2× HDD 6TB (Sala Dirección / Informática)</div>
-                    </div>
-                    <div class="arch-connector">
-                        <span class="arch-connector-label">Internet del Establecimiento</span>
-                    </div>
-                    <div class="arch-row">
-                        <div class="arch-node" style="flex:0; min-width:130px;">📱 App DMSS<br><small style="color:#64748b;">Directora / Directivos</small></div>
-                        <div class="arch-node" style="flex:0; min-width:130px;">📱 App Imou Life<br><small style="color:#64748b;">Acceso Remoto Seguro</small></div>
-                        <div class="arch-node" style="flex:0; min-width:130px;">💾 Grabación Local<br><small style="color:#64748b;">12TB · 24/7 Continuo</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technical Specs -->
-            <div class="section-header" style="margin-top:10px;">
-                <h3>🔬 Especificaciones Técnicas Clave</h3>
-                <div class="line"></div>
-            </div>
-
-            <div class="specs-two-col">
-                <div class="spec-block">
-                    <h5>Cámara Imou Cue 2 — 3MP WiFi</h5>
-                    <ul class="spec-list">
-                        <li><strong>Resolución:</strong> 3 Megapíxeles (2304×1296px)</li>
-                        <li><strong>Ángulo de visión:</strong> 89° — ideal para interiores de sala</li>
-                        <li><strong>Visión nocturna:</strong> Luz de color (Color Night Vision)</li>
-                        <li><strong>Audio:</strong> Bidireccional con micrófono y parlante integrado</li>
-                        <li><strong>Alarma:</strong> Sirena integrada ante detección de movimiento</li>
-                        <li><strong>Conectividad:</strong> WiFi 2.4GHz IEEE 802.11b/g/n</li>
-                        <li><strong>Alimentación:</strong> 5V DC vía adaptador (enchufe estándar)</li>
-                        <li><strong>Detección IA:</strong> PIR humano + detección de movimiento</li>
-                    </ul>
-                </div>
-                <div class="spec-block">
-                    <h5>NVR Dahua 32 Canales + HDD 6TB ×2</h5>
-                    <ul class="spec-list">
-                        <li><strong>Canales:</strong> 32 canales IP simultáneos</li>
-                        <li><strong>Resolución máx.:</strong> Grabación hasta 4K por canal</li>
-                        <li><strong>Compresión:</strong> H.265+ (ahorro hasta 50% de almacenamiento)</li>
-                        <li><strong>Almacenamiento:</strong> 2× 6TB = 12TB total de grabación local</li>
-                        <li><strong>Capacidad grabación:</strong> Est. 30–60 días con las 24 cámaras</li>
-                        <li><strong>Conectividad:</strong> Ethernet RJ45 + acceso remoto vía App</li>
-                        <li><strong>Aplicación móvil:</strong> DMSS (iOS / Android) sin costo mensual</li>
-                        <li><strong>Exportación:</strong> USB · Búsqueda por fecha, hora y canal</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Signature Block -->
-            <div class="signature-strip">
-                <div class="sig-box">
-                    <div class="sig-line"></div>
-                    <div class="sig-label">Directora del Establecimiento</div>
-                    <div class="sig-name">Nancy Torres</div>
-                    <div class="sig-role">Liceo Isidora Ramos de Gajardo</div>
-                </div>
-                <div class="sig-box">
-                    <div class="sig-line"></div>
-                    <div class="sig-label">Proveedor — Router Seguridad</div>
-                    <div class="sig-name">Ricardo Mari</div>
-                    <div class="sig-role">Ingeniero de Redes</div>
-                </div>
-                <div class="sig-box">
-                    <div class="sig-line"></div>
-                    <div class="sig-label">Representante DAEM Lebu</div>
-                    <div class="sig-name">________________________</div>
-                    <div class="sig-role">Coordinación Técnica</div>
-                </div>
-            </div>
-
+        <div class="contacto-item">
+            <span class="ico">📞</span>
+            <a href="tel:+56978589090">+56 9 7858 9090</a>
         </div>
-
-        <footer>
-            <div class="footer-logo">Router</div>
-            <div style="text-align:right;">
-                                <p><b>Ricardo Mari</b> &nbsp;|&nbsp; +56 9 7858 9090 &nbsp;|&nbsp; <b>mari.ricardo@gmail.com</b></p>
-                <p><b>Cotización Liceo Isidora Ramos de Gajardo</b> | Página 2 de 2</p>
-            </div>
-        </footer>
+        <div class="contacto-item">
+            <span class="ico">✉️</span>
+            <a href="mailto:mari.ricardo@gmail.com">mari.ricardo@gmail.com</a>
+        </div>
+        <div class="contacto-item">
+            <span class="ico">📍</span>
+            <span>Empresa local de Lebu · Soporte en 24 hrs</span>
+        </div>
     </div>
+
+    <div class="contenido">
+
+        <div class="intro-box">
+            Router Soluciones Tecnológicas presenta a continuación la propuesta técnica y económica para la implementación de un <b>Sistema de Videovigilancia CCTV Inalámbrico</b> para el Liceo Isidora Ramos de Gajardo. La solución contempla la cobertura de las <b>24 salas de clases</b> del establecimiento con cámaras IP de alta definición, grabación centralizada y acceso remoto sin costo mensual.
+        </div>
+
+        <div class="sec-titulo">
+            <h3>💼 Desglose de la Propuesta por Módulos de Servicio</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="tabla-container">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th width="5%">Mód.</th>
+                        <th width="55%">Descripción del Servicio e Insumos</th>
+                        <th width="8%" style="text-align:center">Cant.</th>
+                        <th width="32%" style="text-align:right">Valor Neto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mod-id">01</td>
+                        <td>
+                            <b>Suministro de Equipamiento Principal</b>
+                            <span class="sub">24 Cámaras IP Imou 3MP WiFi · Grabador NVR 32 canales · 2 discos duros de 6TB para almacenamiento continuo 24/7</span>
+                        </td>
+                        <td class="cant">1</td>
+                        <td class="precio">$1.700.000</td>
+                    </tr>
+                    <tr class="fila-alt">
+                        <td class="mod-id">02</td>
+                        <td>
+                            <b>Instalación y Montaje del Sistema</b>
+                            <span class="sub">Montaje físico de 24 cámaras en salas · Conexión al enchufe habilitado por establecimiento · Configuración y emparejamiento WiFi de cada unidad al NVR · Pruebas de imagen y grabación</span>
+                        </td>
+                        <td class="cant">1</td>
+                        <td class="precio">$1.300.000</td>
+                    </tr>
+                    <tr>
+                        <td class="mod-id">03</td>
+                        <td>
+                            <b>Red WiFi Dedicada para CCTV</b>
+                            <span class="sub">Configuración de red inalámbrica segmentada exclusiva para cámaras · Acceso remoto cifrado · Optimización de señal para cobertura completa del establecimiento</span>
+                        </td>
+                        <td class="cant">1</td>
+                        <td class="precio">$900.000</td>
+                    </tr>
+                    <tr class="fila-alt">
+                        <td class="mod-id">04</td>
+                        <td>
+                            <b>Configuración de Acceso Remoto y App Móvil</b>
+                            <span class="sub">Alta en aplicaciones DMSS e Imou Life · Configuración de usuarios y perfiles de acceso jerarquizados · Alertas inteligentes de detección de movimiento PIR</span>
+                        </td>
+                        <td class="cant">1</td>
+                        <td class="precio">$500.000</td>
+                    </tr>
+                    <tr>
+                        <td class="mod-id">05</td>
+                        <td>
+                            <b>Capacitación, Documentación y Garantía Técnica</b>
+                            <span class="sub">Charla presencial a directivos · Manual de uso del sistema · Protocolo de operación ante fallas · Garantía técnica y soporte de 12 meses</span>
+                        </td>
+                        <td class="cant">1</td>
+                        <td class="precio">$400.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="totales-wrap">
+            <div class="totales-box">
+                <div class="t-fila">
+                    <span class="t-label">Total Módulos 01 al 05:</span>
+                    <span class="t-valor">$4.800.000</span>
+                </div>
+                <div class="t-fila">
+                    <span class="t-label">IVA (19%):</span>
+                    <span class="t-valor">$912.000</span>
+                </div>
+                <div class="t-fila total-principal">
+                    <span class="t-label">TOTAL CON IVA:</span>
+                    <span class="t-valor">$5.712.000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nota-validez">
+            ⏱️ <b>Valor neto total del proyecto: $4.800.000</b> &nbsp;|&nbsp; Vigencia de la oferta: <b>30 días corridos</b> desde la emisión de este documento &nbsp;|&nbsp; Forma de pago: a convenir &nbsp;|&nbsp; Tiempo de ejecución estimado: <b>5 a 7 días hábiles</b> una vez habilitados los puntos eléctricos.
+        </div>
+
+        <div class="prop-grid">
+            <div class="prop-item">
+                <span class="prop-ico">📡</span>
+                <div class="prop-texto">
+                    <b>100% Inalámbrico — Sin Cableado de Red</b>
+                    <span>Las cámaras transmiten por WiFi. No se requieren perforaciones para tendido de datos.</span>
+                </div>
+            </div>
+            <div class="prop-item">
+                <span class="prop-ico">💾</span>
+                <div class="prop-texto">
+                    <b>12 TB de Almacenamiento Local</b>
+                    <span>2 discos duros de 6TB en NVR. Grabación estimada de 30 a 60 días con 24 cámaras activas.</span>
+                </div>
+            </div>
+            <div class="prop-item">
+                <span class="prop-ico">📱</span>
+                <div class="prop-texto">
+                    <b>Monitoreo Remoto sin Mensualidad</b>
+                    <span>App DMSS e Imou Life. Sin contratos de arriendo ni plataformas externas de pago.</span>
+                </div>
+            </div>
+            <div class="prop-item">
+                <span class="prop-ico">🛡️</span>
+                <div class="prop-texto">
+                    <b>Garantía Técnica Incluida — 12 Meses</b>
+                    <span>Soporte y asistencia técnica sin costo adicional durante el primer año de operación.</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="pie">
+        <div class="pie-logo">Router</div>
+        <div class="pie-contacto">
+            <span><b>Ricardo Mari</b> · +56 9 7858 9090 · mari.ricardo@gmail.com</span>
+            <span>Router Soluciones Tecnológicas · Lebu, Biobío</span>
+        </div>
+        <span>Página 1 de 3 &nbsp;|&nbsp; COT-2026-032</span>
+    </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════╗ -->
+<!-- ║  PÁGINA 2 — PROTOCOLO DE IMPLEMENTACIÓN     ║ -->
+<!-- ╚══════════════════════════════════════════════╝ -->
+<div class="pagina">
+
+    <div class="cabecera">
+        <div class="cab-izq">
+            <div class="escudo"></div>
+            <div class="logo-texto">
+                <div class="logo-nombre">Router</div>
+                <span class="logo-sub">Soluciones Tecnológicas · Lebu, Biobío</span>
+            </div>
+        </div>
+        <div class="cab-der">
+            <h1>PROTOCOLO DE<br>IMPLEMENTACIÓN</h1>
+            <span>Fases de Trabajo y Coordinación</span>
+        </div>
+    </div>
+
+    <div class="franja-liceo">
+        <div>
+            <h2>📚 Liceo Isidora Ramos de Gajardo — Sistema CCTV 24 Salas</h2>
+            <p>Protocolo de Ejecución y Roles por Etapa · COT-2026-032</p>
+        </div>
+        <div class="franja-meta">
+            <div class="meta-item"><label>N° Cámaras</label><span>24 Unidades</span></div>
+            <div class="meta-item"><label>N° Salas</label><span>24 Dependencias</span></div>
+        </div>
+    </div>
+
+    <div class="banda-contacto">
+        <div class="contacto-item"><span class="ico">👤</span><span><b>Ricardo Mari</b> · Técnico a Cargo</span></div>
+        <div class="contacto-item"><span class="ico">📞</span><a href="tel:+56978589090">+56 9 7858 9090</a></div>
+        <div class="contacto-item"><span class="ico">✉️</span><a href="mailto:mari.ricardo@gmail.com">mari.ricardo@gmail.com</a></div>
+        <div class="contacto-item"><span class="ico">📍</span><span>Router · Lebu, Biobío</span></div>
+    </div>
+
+    <div class="contenido">
+
+        <!-- FASE 1: COORDINACIÓN ELÉCTRICA (ROL DEL LICEO) -->
+        <div class="sec-titulo">
+            <h3>⚙️ Fases de Implementación del Proyecto</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="proto-grid">
+            <!-- Fase 1 -->
+            <div class="proto-card">
+                <div class="proto-head" style="background:linear-gradient(135deg,#1e40af,#1d4ed8);">
+                    <span class="ph-ico">🏫</span>
+                    <div>
+                        <h4>Fase 1 — Habilitación Eléctrica</h4>
+                        <p>Rol: Liceo · Gestión ante DAEM</p>
+                    </div>
+                </div>
+                <div class="proto-body">
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#2563eb;"></div>
+                        <span>El <b>Liceo</b> coordina directamente con el <b>DAEM</b> la instalación de <b>24 enchufes eléctricos</b>, uno en cada sala de clases.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#2563eb;"></div>
+                        <span><b>Router</b> entrega al Liceo un <b>informe técnico con los requisitos eléctricos</b>: tipo de enchufe, altura de montaje y posición sugerida en sala para optimizar el ángulo de cámara.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#2563eb;"></div>
+                        <span>Este procedimiento resguarda la normativa institucional: <b>las intervenciones eléctricas las realiza el organismo competente</b> (DAEM) con personal autorizado.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#2563eb;"></div>
+                        <span>Router <b>no realiza perforaciones ni instalaciones eléctricas</b>, evitando cualquier riesgo normativo o de responsabilidad para el establecimiento.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 2 -->
+            <div class="proto-card">
+                <div class="proto-head" style="background:linear-gradient(135deg,#0f172a,#1e3a6e);">
+                    <span class="ph-ico">🔧</span>
+                    <div>
+                        <h4>Fase 2 — Instalación de Equipos</h4>
+                        <p>Rol: Router Soluciones Tecnológicas</p>
+                    </div>
+                </div>
+                <div class="proto-body">
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#0f172a;"></div>
+                        <span>Una vez habilitados los enchufes, Router instala el <b>NVR Dahua 32 canales</b> con 2 discos duros de 6TB en sala de dirección o informática.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#0f172a;"></div>
+                        <span>Se configura la <b>red WiFi segmentada y exclusiva</b> para el sistema CCTV, separada de la red de alumnos y administrativos.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#0f172a;"></div>
+                        <span>Montaje de las <b>24 cámaras Imou Cue 2 (3MP)</b>: fijación en punto de pared o techo sobre el enchufe habilitado y conexión a la red WiFi CCTV.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#0f172a;"></div>
+                        <span>Verificación de imagen, ángulo de visión y cobertura de cada sala antes de finalizar el montaje.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 3 -->
+            <div class="proto-card">
+                <div class="proto-head" style="background:linear-gradient(135deg,#059669,#047857);">
+                    <span class="ph-ico">📱</span>
+                    <div>
+                        <h4>Fase 3 — Configuración y Puesta en Marcha</h4>
+                        <p>Rol: Router Soluciones Tecnológicas</p>
+                    </div>
+                </div>
+                <div class="proto-body">
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#059669;"></div>
+                        <span>Configuración completa del <b>NVR</b>: grabación continua 24/7, nombres de canales por sala, horarios y calidad de imagen.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#059669;"></div>
+                        <span>Alta del sistema en <b>App DMSS</b> (Dahua) e <b>Imou Life</b> en celulares de la Directora y equipo directivo autorizado.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#059669;"></div>
+                        <span>Configuración de <b>perfiles de acceso jerarquizados</b>: Directora con acceso total, inspectoría con acceso parcial según preferencia.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#059669;"></div>
+                        <span>Activación de <b>alertas PIR inteligentes</b>: detección de movimiento en horario no escolar con notificación directa al celular.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 4 -->
+            <div class="proto-card">
+                <div class="proto-head" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);">
+                    <span class="ph-ico">🎓</span>
+                    <div>
+                        <h4>Fase 4 — Entrega, Capacitación y Soporte</h4>
+                        <p>Rol: Router + Equipo Liceo</p>
+                    </div>
+                </div>
+                <div class="proto-body">
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#7c3aed;"></div>
+                        <span><b>Prueba integral del sistema</b>: revisión de todas las cámaras en vivo, reproducción de grabaciones y verificación de notificaciones.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#7c3aed;"></div>
+                        <span><b>Charla de capacitación presencial</b> a la Directora Nancy Torres y equipo: uso de App, búsqueda de grabaciones por fecha, cámara y horario.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#7c3aed;"></div>
+                        <span>Entrega de <b>Manual de Usuario</b> del sistema: paso a paso para operar, reiniciar y reportar fallas.</span>
+                    </div>
+                    <div class="proto-item">
+                        <div class="pt-dot" style="background:#7c3aed;"></div>
+                        <span>Firma de <b>Acta de Recepción Conforme</b> y entrega de toda la documentación técnica del proyecto.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOPORTE LOCAL -->
+        <div class="sec-titulo">
+            <h3>🏠 Ventaja Local — Router en Lebu a su Disposición</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="soporte-box">
+            <div class="soporte-titulo">
+                ✅ Soporte Técnico Local Garantizado — Respuesta en Máximo 24 Horas
+            </div>
+            <p>
+                Router Soluciones Tecnológicas es una <b>empresa de Lebu</b>, lo que nos entrega una ventaja única frente a proveedores externos: estamos a minutos del establecimiento. Ante cualquier inconveniente técnico —ya sea una cámara fuera de línea, un problema de red o una duda de operación—, nuestro equipo estará en condiciones de responder de forma <b>presencial en un plazo máximo de 24 horas hábiles</b>. No hay tiempos de traslado desde otras ciudades, ni costos adicionales de visita durante el período de garantía.
+            </p>
+            <div class="soporte-puntos">
+                <div class="sp-item">
+                    <div class="sp-dot"></div>
+                    <span><b>Respuesta presencial en ≤24 horas</b> ante cualquier falla técnica del sistema.</span>
+                </div>
+                <div class="sp-item">
+                    <div class="sp-dot"></div>
+                    <span><b>Sin costo de visita técnica</b> durante los 12 meses de garantía incluida.</span>
+                </div>
+                <div class="sp-item">
+                    <div class="sp-dot"></div>
+                    <span><b>Soporte remoto inmediato</b> vía WhatsApp o llamada para resolución rápida.</span>
+                </div>
+                <div class="sp-item">
+                    <div class="sp-dot"></div>
+                    <span><b>Empresa local comprometida</b> con los establecimientos educacionales de Lebu.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-box" style="margin-bottom:0;">
+            <b>📌 Nota sobre la Coordinación Eléctrica:</b> La instalación de los 24 enchufes es gestionada íntegramente por el <b>Liceo en coordinación con el DAEM</b>. Router entrega oportunamente el <i>"Informe de Requisitos Eléctricos"</i> con todas las especificaciones necesarias para que el DAEM pueda ejecutar el trabajo sin contratiempos. Este procedimiento garantiza que las obras eléctricas queden dentro del marco regulatorio del establecimiento y optimiza el costo global del proyecto al evitar que Router deba subcontratar un electricista externo.
+        </div>
+
+    </div>
+
+    <div class="pie">
+        <div class="pie-logo">Router</div>
+        <div class="pie-contacto">
+            <span><b>Ricardo Mari</b> · +56 9 7858 9090 · mari.ricardo@gmail.com</span>
+            <span>Router Soluciones Tecnológicas · Lebu, Biobío</span>
+        </div>
+        <span>Página 2 de 3 &nbsp;|&nbsp; COT-2026-032</span>
+    </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════╗ -->
+<!-- ║  PÁGINA 3 — ESPECIFICACIONES Y ARQUITECTURA ║ -->
+<!-- ╚══════════════════════════════════════════════╝ -->
+<div class="pagina">
+
+    <div class="cabecera">
+        <div class="cab-izq">
+            <div class="escudo"></div>
+            <div class="logo-texto">
+                <div class="logo-nombre">Router</div>
+                <span class="logo-sub">Soluciones Tecnológicas · Lebu, Biobío</span>
+            </div>
+        </div>
+        <div class="cab-der">
+            <h1>ESPECIFICACIONES<br>TÉCNICAS DEL SISTEMA</h1>
+            <span>Arquitectura · Equipos · Acceso Remoto</span>
+        </div>
+    </div>
+
+    <div class="franja-liceo">
+        <div>
+            <h2>📚 Liceo Isidora Ramos de Gajardo — Ficha Técnica del Proyecto</h2>
+            <p>Sistema CCTV Inalámbrico NVR · 24 Cámaras IP · COT-2026-032</p>
+        </div>
+        <div class="franja-meta">
+            <div class="meta-item"><label>Almacenamiento</label><span>12 TB Locales</span></div>
+            <div class="meta-item"><label>Canales NVR</label><span>32 (24 en uso)</span></div>
+        </div>
+    </div>
+
+    <div class="banda-contacto">
+        <div class="contacto-item"><span class="ico">👤</span><span><b>Ricardo Mari</b> · Técnico a Cargo</span></div>
+        <div class="contacto-item"><span class="ico">📞</span><a href="tel:+56978589090">+56 9 7858 9090</a></div>
+        <div class="contacto-item"><span class="ico">✉️</span><a href="mailto:mari.ricardo@gmail.com">mari.ricardo@gmail.com</a></div>
+        <div class="contacto-item"><span class="ico">📍</span><span>Router · Lebu, Biobío</span></div>
+    </div>
+
+    <div class="contenido">
+
+        <!-- DIAGRAMA -->
+        <div class="sec-titulo">
+            <h3>🏗️ Arquitectura del Sistema — Diagrama de Conexión</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="diagrama">
+            <div class="diag-fila">
+                <div class="diag-nodo cam">📷 Cámara Sala 1</div>
+                <div class="diag-nodo cam">📷 Cámara Sala 2</div>
+                <div class="diag-nodo cam">📷 Cámara Sala 3</div>
+                <div class="diag-nodo cam">📷 ··· Sala 24</div>
+            </div>
+            <div class="diag-conector wifi">
+                <span class="diag-etiqueta">📡 WiFi 2.4GHz — Completamente Inalámbrico (Sin tendido de red)</span>
+            </div>
+            <div class="diag-fila">
+                <div class="diag-nodo core" style="max-width:300px;margin:0 auto;">🌐 Router WiFi Dedicado — Red CCTV Exclusiva del Liceo</div>
+            </div>
+            <div class="diag-conector">
+                <span class="diag-etiqueta">Cable de Red Cat6 (solo conexión NVR ↔ Router, sala central)</span>
+            </div>
+            <div class="diag-fila">
+                <div class="diag-nodo core" style="max-width:340px;margin:0 auto;">🖥️ NVR Dahua 32 Canales + 2× HDD 6TB — Sala de Dirección o Informática</div>
+            </div>
+            <div class="diag-conector">
+                <span class="diag-etiqueta">Conexión a Internet del Establecimiento (para acceso remoto)</span>
+            </div>
+            <div class="diag-fila">
+                <div class="diag-nodo" style="flex:0;min-width:130px;">📱 App DMSS<br><small style="color:#64748b;font-size:8px;">Directora · Directivos</small></div>
+                <div class="diag-nodo" style="flex:0;min-width:130px;">📱 App Imou Life<br><small style="color:#64748b;font-size:8px;">Acceso Remoto Seguro</small></div>
+                <div class="diag-nodo" style="flex:0;min-width:130px;">💾 Grabación Local<br><small style="color:#64748b;font-size:8px;">12TB · Continua 24/7</small></div>
+            </div>
+        </div>
+
+        <!-- ESPECIFICACIONES TÉCNICAS -->
+        <div class="sec-titulo">
+            <h3>🔬 Especificaciones Técnicas de los Equipos Principales</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="specs-cols">
+            <div class="spec-bloque">
+                <h5>Cámara IP Imou Cue 2 — 3MP WiFi</h5>
+                <ul class="spec-lista">
+                    <li><strong>Resolución:</strong> 3 Megapíxeles (2304×1296 px)</li>
+                    <li><strong>Ángulo de visión:</strong> 89° — cobertura amplia de sala</li>
+                    <li><strong>Visión nocturna:</strong> Color Night Vision — imagen a color en oscuridad</li>
+                    <li><strong>Audio:</strong> Bidireccional — micrófono y parlante integrado</li>
+                    <li><strong>Alarma:</strong> Sirena integrada ante detección de movimiento</li>
+                    <li><strong>Conectividad:</strong> WiFi 2.4GHz IEEE 802.11b/g/n</li>
+                    <li><strong>Alimentación:</strong> 5V DC — adaptador a enchufe estándar</li>
+                    <li><strong>Detección IA:</strong> PIR humano + detección de movimiento</li>
+                    <li><strong>Aplicación:</strong> Imou Life (iOS y Android) sin costo mensual</li>
+                </ul>
+            </div>
+            <div class="spec-bloque">
+                <h5>NVR Dahua 32 Canales + 2 HDD 6TB</h5>
+                <ul class="spec-lista">
+                    <li><strong>Canales IP:</strong> 32 simultáneos (24 en uso en este proyecto)</li>
+                    <li><strong>Resolución grabación:</strong> Hasta 4K por canal</li>
+                    <li><strong>Compresión:</strong> H.265+ — ahorro de hasta 50% de almacenamiento</li>
+                    <li><strong>Almacenamiento total:</strong> 2× 6TB = 12TB locales</li>
+                    <li><strong>Días estimados:</strong> 30–60 días de grabación continua con 24 cámaras</li>
+                    <li><strong>Conectividad:</strong> Ethernet RJ45 + acceso remoto app</li>
+                    <li><strong>Aplicación:</strong> DMSS — Dahua Mobile (iOS/Android) sin mensualidad</li>
+                    <li><strong>Exportación:</strong> USB · Búsqueda por fecha, hora y canal</li>
+                    <li><strong>Protección:</strong> UPS recomendado para cortes de luz (opcional)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TABLA RESUMEN EQUIPOS -->
+        <div class="sec-titulo">
+            <h3>📦 Listado de Equipamiento Incluido en el Proyecto</h3>
+            <div class="linea"></div>
+        </div>
+
+        <div class="tabla-container" style="margin-bottom:10px;">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th width="45%">Equipo / Insumo</th>
+                        <th width="10%" style="text-align:center">Cant.</th>
+                        <th width="45%">Descripción y Uso en el Sistema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Cámara IP Imou Cue 2 — 3MP</b><span class="sub">2.8mm · Audio · Sirena · Color Blanco · WiFi</span></td>
+                        <td class="cant">24</td>
+                        <td style="font-size:9px;color:var(--muted);">Una por sala de clases. Conexión inalámbrica al NVR. Detección PIR y visión nocturna a color.</td>
+                    </tr>
+                    <tr class="fila-alt">
+                        <td><b>Grabador NVR Dahua 32 Canales</b><span class="sub">4K · H.265+ · 2 bahías HDD</span></td>
+                        <td class="cant">1</td>
+                        <td style="font-size:9px;color:var(--muted);">Central de grabación. Almacena y gestiona el video de las 24 cámaras. Acceso remoto vía app DMSS.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Disco Duro de Vigilancia 6TB</b><span class="sub">Escritura continua 24/7 · Alta durabilidad</span></td>
+                        <td class="cant">2</td>
+                        <td style="font-size:9px;color:var(--muted);">Instalados dentro del NVR. 12TB totales para almacenamiento de grabaciones de larga duración.</td>
+                    </tr>
+                    <tr class="fila-alt">
+                        <td><b>Red WiFi CCTV Dedicada</b><span class="sub">SSID exclusiva · Segmentación de red</span></td>
+                        <td class="cant">1</td>
+                        <td style="font-size:9px;color:var(--muted);">Red separada de la red de alumnos. Solo las cámaras y el NVR acceden a ella. Mayor seguridad y estabilidad.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Configuración de Acceso Remoto</b><span class="sub">App DMSS + Imou Life · Perfiles de usuario</span></td>
+                        <td class="cant">1</td>
+                        <td style="font-size:9px;color:var(--muted);">Setup completo para acceso desde celular. Directora y equipo autorizado pueden ver cámaras en vivo y grabaciones desde cualquier lugar.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FIRMAS -->
+        <div class="firmas">
+            <div class="firma-box">
+                <div class="firma-linea"></div>
+                <div class="firma-label">Directora del Establecimiento</div>
+                <div class="firma-nombre">Nancy Torres</div>
+                <div class="firma-rol">Liceo Isidora Ramos de Gajardo</div>
+            </div>
+            <div class="firma-box">
+                <div class="firma-linea"></div>
+                <div class="firma-label">Router Soluciones Tecnológicas</div>
+                <div class="firma-nombre">Ricardo Mari</div>
+                <div class="firma-rol">Técnico a Cargo · +56 9 7858 9090</div>
+            </div>
+            <div class="firma-box">
+                <div class="firma-linea"></div>
+                <div class="firma-label">Representante DAEM Lebu</div>
+                <div class="firma-nombre">________________________</div>
+                <div class="firma-rol">Coordinación Habilitación Eléctrica</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="pie">
+        <div class="pie-logo">Router</div>
+        <div class="pie-contacto">
+            <span><b>Ricardo Mari</b> · +56 9 7858 9090 · mari.ricardo@gmail.com</span>
+            <span>Router Soluciones Tecnológicas · Lebu, Biobío · Soporte en máx. 24 hrs</span>
+        </div>
+        <span>Página 3 de 3 &nbsp;|&nbsp; COT-2026-032</span>
+    </div>
+</div>
 
 </body>
 </html>
