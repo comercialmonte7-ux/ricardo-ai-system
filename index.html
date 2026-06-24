@@ -1757,6 +1757,15 @@
         // System Data: Bitacora Records (preserved and sorted correctly)
         const bitacoraData = [
             {
+                id: 123,
+                date: "2026-06-24",
+                title: "🩺 Cotización: Clínica Leufu — Plan Esencial — Dr. Luis Paz",
+                desc: "Plan de entrada de seguridad integral: 1 cámara Imou 2MP interior con audio, 1 cámara Imou 5MP exterior con audio, y un sistema de alarma inteligente con sensores de humo, movimiento, puertas y ventanas. Cero mensualidades. Total: $464.100.",
+                tag: "Cotización",
+                isPremium: true,
+                url: "./data/router_seguridad/bitacora/2026-06-24_cotizacion_clinica_leufu_essencial.pdf"
+            },
+            {
                 id: 122,
                 date: "2026-06-21",
                 title: "🏫 Cotización: Liceo Isidora Ramos de Gajardo — Lebu",
@@ -2354,6 +2363,24 @@
                             </div>
                         `;
                     });
+            } else if (url.endsWith('.pdf')) {
+                // PDF files: render with <object> (more reliable than iframe) + download fallback
+                content.innerHTML = `
+                    <div style="display:flex; flex-direction:column; height:100%; gap:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px;">
+                            <span style="font-size:0.78rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600;">📄 Documento PDF</span>
+                            <a href="${url}" download class="btn-drawer" style="background: var(--accent-blue); color:white; padding:8px 16px; font-size:0.8rem;">⬇ Descargar PDF</a>
+                        </div>
+                        <object data="${url}" type="application/pdf" class="drawer-iframe" style="flex:1; min-height:0;">
+                            <div style="text-align:center; padding:60px 20px;">
+                                <p style="font-size:1.4rem; margin-bottom:15px;">📄 Tu navegador no puede previsualizar el PDF</p>
+                                <p style="color:var(--text-muted); margin-bottom:25px; font-size:0.85rem;">Descárgalo o ábrelo en una nueva pestaña:</p>
+                                <a href="${url}" target="_blank" class="btn-drawer" style="display:inline-flex; justify-content:center; margin:0 auto 12px; width:240px; background: var(--accent-blue); color:white;">Abrir PDF en Nueva Pestaña ↗</a><br>
+                                <a href="${url}" download class="btn-drawer" style="display:inline-flex; justify-content:center; margin:0 auto; width:240px;">⬇ Descargar PDF</a>
+                            </div>
+                        </object>
+                    </div>
+                `;
             } else {
                 // HTML files are rendered perfectly inside the iframe
                 content.innerHTML = `<iframe src="${url}" class="drawer-iframe" id="drawerFrame"></iframe>`;
