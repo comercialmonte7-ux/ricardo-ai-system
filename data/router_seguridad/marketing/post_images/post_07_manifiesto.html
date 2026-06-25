@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:'Outfit',sans-serif;overflow:hidden}
+.post{width:1080px;height:1080px;position:relative;background:linear-gradient(135deg,#0f172a 0%,#020617 100%);color:#fff;display:flex;flex-direction:column;padding:70px;overflow:hidden;align-items:center;text-align:center}
+.grid-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(0,210,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,210,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.glow1{position:absolute;top:-150px;left:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,210,255,.15) 0%,transparent 70%)}
+.glow2{position:absolute;bottom:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,210,255,.12) 0%,transparent 70%)}
+.brand{position:relative;display:flex;align-items:center;gap:16px;z-index:2;align-self:flex-start;text-align:left}
+.shield{width:54px;height:64px;background:linear-gradient(135deg,#00d2ff,#0284c7);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:26px}
+.brand-name{font-size:40px;font-weight:900;letter-spacing:-1px}
+.brand-sub{font-size:10px;font-weight:700;letter-spacing:3px;color:#00d2ff;text-transform:uppercase;margin-top:2px}
+.zero-huge{margin-top:50px;position:relative;z-index:2}
+.zero-huge .num{font-size:340px;font-weight:900;color:#00d2ff;line-height:0.85;text-shadow:0 0 60px rgba(0,210,255,.4)}
+.zero-huge .label{font-size:34px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-top:5px}
+.hook{font-size:38px;font-weight:700;line-height:1.2;margin-top:40px;position:relative;z-index:2;max-width:900px}
+.hook .accent{color:#00d2ff}
+.benefits{margin-top:35px;position:relative;z-index:2;display:flex;gap:30px;flex-wrap:wrap;justify-content:center}
+.benefit{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;color:#cbd5e1}
+.benefit .dot{width:10px;height:10px;background:#00d2ff;border-radius:50%}
+.footer{margin-top:auto;position:relative;z-index:2;align-self:stretch;padding-top:30px;border-top:2px solid rgba(0,210,255,.3);display:flex;justify-content:space-between;align-items:center}
+.manifiesto{font-size:16px;color:#94a3b8;text-align:left}
+.cta{font-size:16px;font-weight:600;color:#94a3b8;text-align:right}
+.cta strong{color:#00d2ff;font-size:20px;display:block}
+</style></head>
+<body><div class="post">
+<div class="grid-pattern"></div><div class="glow1"></div><div class="glow2"></div>
+<div class="brand"><div class="shield">⚡</div><div><div class="brand-name">Router</div><div class="brand-sub">Seguridad Inteligente</div></div></div>
+<div class="zero-huge"><div class="num">0</div><div class="label">Mensualidades</div></div>
+<div class="hook">No vivimos de tus mensualidades.<br>Vivimos de que <span class="accent">TÚ seas el dueño</span> de tu seguridad.</div>
+<div class="benefits">
+<div class="benefit"><div class="dot"></div>El equipo es tuyo</div>
+<div class="benefit"><div class="dot"></div>Alertas a tu celular</div>
+<div class="benefit"><div class="dot"></div>Atención directa de Ricardo</div>
+</div>
+<div class="footer">
+<div class="manifiesto">Filosofía ROUTER · Lebu, Arauco<br>Seguridad inteligente, propiedad real</div>
+<div class="cta"><strong>+56 9 7858 9090</strong>Conversemos</div>
+</div>
+</div></body></html>

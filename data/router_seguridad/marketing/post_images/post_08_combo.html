@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:'Outfit',sans-serif;overflow:hidden}
+.post{width:1080px;height:1080px;position:relative;background:linear-gradient(135deg,#1e293b 0%,#0f172a 50%,#020617 100%);color:#fff;display:flex;flex-direction:column;padding:65px;overflow:hidden}
+.grid-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(0,210,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,210,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,210,255,.1) 0%,transparent 70%)}
+.brand{position:relative;display:flex;align-items:center;gap:16px;z-index:2}
+.shield{width:54px;height:64px;background:linear-gradient(135deg,#00d2ff,#0284c7);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:26px}
+.brand-name{font-size:40px;font-weight:900;letter-spacing:-1px}
+.brand-sub{font-size:10px;font-weight:700;letter-spacing:3px;color:#00d2ff;text-transform:uppercase;margin-top:2px}
+.hook{font-size:46px;font-weight:800;line-height:1.1;margin-top:45px;position:relative;z-index:2}
+.hook .accent{color:#00d2ff}
+.combo-grid{margin-top:40px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.combo-card{background:rgba(255,255,255,.04);border:1px solid rgba(0,210,255,.3);border-radius:18px;padding:24px;display:flex;align-items:center;gap:18px}
+.combo-card .icon{font-size:52px;flex-shrink:0}
+.combo-card .info .title{font-size:22px;font-weight:800;color:#00d2ff;text-transform:uppercase;letter-spacing:.5px}
+.combo-card .info .desc{font-size:15px;color:#cbd5e1;margin-top:4px;line-height:1.3}
+.clients{margin-top:30px;position:relative;z-index:2;text-align:center}
+.clients .label{font-size:14px;color:#64748b;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.clients .names{font-size:18px;font-weight:600;color:#94a3b8}
+.clients .names strong{color:#00d2ff}
+.footer{margin-top:auto;padding-top:28px;border-top:2px solid rgba(0,210,255,.3);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.zero-badge{background:#00d2ff;color:#0f172a;padding:14px 30px;border-radius:50px;font-weight:900;font-size:24px;letter-spacing:1px}
+.cta{font-size:18px;font-weight:600;color:#94a3b8;text-align:right}
+.cta strong{color:#fff;font-size:22px;display:block}
+</style></head>
+<body><div class="post">
+<div class="grid-pattern"></div><div class="glow"></div>
+<div class="brand"><div class="shield">⚡</div><div><div class="brand-name">Router</div><div class="brand-sub">Seguridad Inteligente</div></div></div>
+<div class="hook">CCTV + Alarma + Conectividad<br><span class="accent">La protección completa en un solo lugar</span></div>
+<div class="combo-grid">
+<div class="combo-card"><div class="icon">📹</div><div class="info"><div class="title">CCTV</div><div class="desc">Cámaras interior/exterior con grabación 24/7</div></div></div>
+<div class="combo-card"><div class="icon">🚨</div><div class="info"><div class="title">Alarma</div><div class="desc">Central PGST con doble conexión WiFi + 4G</div></div></div>
+<div class="combo-card"><div class="icon">🛰️</div><div class="info"><div class="title">Starlink</div><div class="desc">Internet satelital para sectores sin cobertura</div></div></div>
+<div class="combo-card"><div class="icon">📱</div><div class="info"><div class="title">Monitoreo</div><div class="desc">Todo desde tu celular, sin intermediarios</div></div></div>
+</div>
+<div class="clients">
+<div class="label">Casos reales</div>
+<div class="names"><strong>Clínica Leufu</strong> · <strong>Liceo Isidora Ramos</strong> · <strong>Botillería Nataly</strong></div>
+</div>
+<div class="footer">
+<div class="zero-badge">COTIZACIÓN GRATIS</div>
+<div class="cta"><strong>+56 9 7858 9090</strong>Lebu · Cañete · Arauco</div>
+</div>
+</div></body></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:'Outfit',sans-serif;overflow:hidden}
+.post{width:1080px;height:1080px;position:relative;background:linear-gradient(135deg,#1c1917 0%,#0c0a09 100%);color:#fff;display:flex;flex-direction:column;padding:70px;overflow:hidden}
+.glow{position:absolute;bottom:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(239,68,68,.15) 0%,transparent 70%)}
+.grid-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(239,68,68,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(239,68,68,.04) 1px,transparent 1px);background-size:40px 40px}
+.brand{position:relative;display:flex;align-items:center;gap:16px;z-index:2}
+.shield{width:54px;height:64px;background:linear-gradient(135deg,#ef4444,#dc2626);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:26px}
+.brand-name{font-size:40px;font-weight:900;letter-spacing:-1px}
+.brand-sub{font-size:10px;font-weight:700;letter-spacing:3px;color:#fca5a5;text-transform:uppercase;margin-top:2px}
+.clock{margin-top:40px;position:relative;z-index:2;text-align:center}
+.clock .time{font-size:130px;font-weight:900;color:#ef4444;letter-spacing:-4px;text-shadow:0 0 40px rgba(239,68,68,.5)}
+.clock .label{font-size:20px;color:#fca5a5;letter-spacing:6px;text-transform:uppercase;margin-top:5px}
+.compare{margin-top:45px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col{border-radius:18px;padding:28px;border:2px solid}
+.col.bad{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.4)}
+.col.good{background:rgba(0,210,255,.08);border-color:rgba(0,210,255,.4)}
+.col .head{font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.col.bad .head{color:#fca5a5}
+.col.good .head{color:#00d2ff}
+.col .line{font-size:17px;color:#cbd5e1;margin-bottom:7px;line-height:1.3}
+.footer{margin-top:auto;padding-top:28px;border-top:2px solid rgba(239,68,68,.3);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.zero-badge{background:#ef4444;color:#fff;padding:12px 26px;border-radius:50px;font-weight:900;font-size:22px;letter-spacing:1px}
+.cta{font-size:18px;font-weight:600;color:#fca5a5;text-align:right}
+.cta strong{color:#fff;font-size:21px;display:block}
+</style></head>
+<body><div class="post">
+<div class="grid-pattern"></div><div class="glow"></div>
+<div class="brand"><div class="shield">⚡</div><div><div class="brand-name">Router</div><div class="brand-sub">Seguridad Inteligente</div></div></div>
+<div class="clock"><div class="time">3:14</div><div class="label">AM · Alguien fuerza tu puerta</div></div>
+<div class="compare">
+<div class="col bad"><div class="head">💔 Sin alarma</div><div class="line">El intruso entra tranquilo</div><div class="line">Tomas lo que quiere y se va</div><div class="line">Te enteras a las 8 AM</div></div>
+<div class="col good"><div class="head">🛡️ Con Router</div><div class="line">Sirena a los 3 segundos</div><div class="line">Llamada a tu celular a los 5s</div><div class="line">Evidencia grabada para Carabineros</div></div>
+</div>
+<div class="footer">
+<div class="zero-badge">REACCIONA A TIEMPO</div>
+<div class="cta"><strong>+56 9 7858 9090</strong>Sistema PGST · Arauco</div>
+</div>
+</div></body></html>

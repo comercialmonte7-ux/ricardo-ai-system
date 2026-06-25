@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:'Outfit',sans-serif;overflow:hidden}
+.post{width:1080px;height:1080px;position:relative;background:linear-gradient(135deg,#1e293b 0%,#0f172a 60%,#020617 100%);color:#fff;display:flex;flex-direction:column;padding:70px;overflow:hidden}
+.bg-img{position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,41,59,.92),rgba(15,23,42,.97)),url('https://images.unsplash.com/photo-1557324232-b8917d3c3dcb?w=1080') center/cover;opacity:.25}
+.grid-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(0,210,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,210,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.glow{position:absolute;top:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,210,255,.18) 0%,transparent 70%)}
+.brand{position:relative;display:flex;align-items:center;gap:16px;z-index:2}
+.shield{width:54px;height:64px;background:linear-gradient(135deg,#00d2ff,#0284c7);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:26px}
+.brand-name{font-size:40px;font-weight:900;letter-spacing:-1px}
+.brand-sub{font-size:10px;font-weight:700;letter-spacing:3px;color:#00d2ff;text-transform:uppercase;margin-top:2px}
+.emoji{font-size:90px;margin-top:55px;position:relative;z-index:2}
+.hook{font-size:52px;font-weight:800;line-height:1.1;margin-top:25px;position:relative;z-index:2;max-width:900px}
+.hook .accent{color:#00d2ff}
+.benefits{margin-top:auto;position:relative;z-index:2}
+.benefit{display:flex;align-items:center;gap:16px;font-size:27px;font-weight:600;margin-bottom:14px}
+.benefit .check{width:38px;height:38px;background:rgba(0,210,255,.15);border:2px solid #00d2ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.footer{margin-top:45px;padding-top:30px;border-top:2px solid rgba(0,210,255,.3);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.zero-badge{background:#00d2ff;color:#0f172a;padding:12px 26px;border-radius:50px;font-weight:900;font-size:22px;letter-spacing:1px}
+.cta{font-size:18px;font-weight:600;color:#94a3b8;text-align:right}
+.cta strong{color:#fff;font-size:21px;display:block}
+</style></head>
+<body><div class="post">
+<div class="bg-img"></div><div class="grid-pattern"></div><div class="glow"></div>
+<div class="brand"><div class="shield">⚡</div><div><div class="brand-name">Router</div><div class="brand-sub">Seguridad Inteligente</div></div></div>
+<div class="emoji">📹</div>
+<div class="hook">¿Tu negocio queda solo de noche y descubres el robo <span class="accent">a la mañana siguiente?</span></div>
+<div class="benefits">
+<div class="benefit"><div class="check">✓</div>Monitoreo en vivo 24/7 desde tu celular</div>
+<div class="benefit"><div class="check">✓</div>Grabación continua en MicroSD industrial</div>
+<div class="benefit"><div class="check">✓</div>Audio bidireccional integrado</div>
+</div>
+<div class="footer">
+<div class="zero-badge">CERO MENSUALIDADES</div>
+<div class="cta"><strong>+56 9 7858 9090</strong>Lebu · Cañete · Arauco</div>
+</div>
+</div></body></html>
