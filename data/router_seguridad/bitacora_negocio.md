@@ -118,3 +118,14 @@ Este documento es el registro histórico completo y detallado de todas las estra
 *   **Enlace HTML:** [presentacion_vista_al_mar.html](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-09_presentacion_vista_al_mar.html)
 *   **Enlace PPTX:** [presentacion_vista_al_mar.pptx](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-06-09_presentacion_vista_al_mar.pptx)
 
+---
+
+### 🎬 Presentación de Cierre GORE: Villa El Bosque - Los Álamos
+**Fecha:** 6 de Julio, 2026
+**Hito:** Creación de la presentación interactiva y PowerPoint para la Junta de Vecinos Villa El Bosque, Los Álamos.
+*   **Proyecto:** 16 cámaras IP 4MP Ultra HD, 1 NVR, grabación 24/7, App P2P Smartphone. Presupuesto GORE Biobío $7.000.000 (equipo $5.600.000).
+*   **Código de Postulación:** 2024SCXXXX (pendiente asignación definitiva).
+*   **Promo Comercial:** Válida hasta el 5 de Agosto de 2026.
+*   **Enlace HTML:** [2026-07-06_presentacion_villa_el_bosque.html](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-07-06_presentacion_villa_el_bosque.html)
+*   **Enlace PPTX:** [2026-07-06_presentacion_villa_el_bosque.pptx](file:///Users/ricardomarimodinger/.gemini/antigravity/scratch/ricardo-ai-system/data/router_seguridad/bitacora/2026-07-06_presentacion_villa_el_bosque.pptx)
+
